@@ -1,4 +1,5 @@
-﻿using System;
+﻿using LabelHtml.Forms.Plugin.UWP;
+using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
@@ -42,6 +43,7 @@ namespace CognativeSurveyX.UWP
 
 
             Frame rootFrame = Window.Current.Content as Frame;
+HtmlLabelRenderer.Initialize();
 
             // Do not repeat app initialization when the Window already has content,
             // just ensure that the window is active

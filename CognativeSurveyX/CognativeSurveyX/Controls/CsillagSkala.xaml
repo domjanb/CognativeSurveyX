@@ -1,0 +1,11 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CognativeSurveyX.Controls.CsillagSkala">
+    <ContentView.Content>
+        <StackLayout x:Name="myLayout" Orientation="Horizontal" VerticalOptions="Fill"  Margin="10,0,10,0">
+
+
+        </StackLayout>
+    </ContentView.Content>
+</ContentView>

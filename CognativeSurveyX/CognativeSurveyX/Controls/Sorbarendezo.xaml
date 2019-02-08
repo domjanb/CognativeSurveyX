@@ -1,0 +1,29 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CognativeSurveyX.Controls.Sorbarendezo">
+    
+    <Frame x:Name="myFrame"  BorderColor="Black"  CornerRadius="20" Margin="0,0,0,0" Padding="0,3,0,3">
+        <StackLayout Orientation="Horizontal" HorizontalOptions="FillAndExpand" VerticalOptions="Fill"  Margin="10,0,10,0">
+            <Grid  HorizontalOptions="FillAndExpand">
+                <Grid.ColumnDefinitions>
+                    <ColumnDefinition Width="1*"/>
+                    <ColumnDefinition Width="7*"/>
+                </Grid.ColumnDefinitions>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="*" />
+                    <RowDefinition Height="Auto" x:Name="otherSor"/>
+                </Grid.RowDefinitions>
+            
+            <Label x:Name="sorszamLabel" Text="" IsVisible="False" />
+            <Label x:Name="textLabel"  Grid.Column="1"/>
+            <Entry x:Name="textOther" TextChanged="TextOther_TextChanged"   Placeholder="...." IsVisible="False" Grid.Row="1" Grid.Column="1"  />
+            </Grid>
+
+        </StackLayout>
+    </Frame>
+    
+    <ContentView.GestureRecognizers>
+        <TapGestureRecognizer Tapped="OnCheckBoxTapped" />
+    </ContentView.GestureRecognizers>
+</ContentView>

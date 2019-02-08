@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://xamarin.com/schemas/2014/forms"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CognativeSurveyX.Fregments.FRadioButton"
+             xmlns:translate="clr-namespace:CognativeSurveyX.Helpers"
+             >
+    <ContentPage.Content>
+        <StackLayout  >
+            <StackLayout VerticalOptions="StartAndExpand">
+                <StackLayout BackgroundColor="Aqua" HorizontalOptions="FillAndExpand" Padding="20">
+                    <Label Text="Cognative TouchPoint"
+                   FontAttributes="Bold"
+                HeightRequest="20"
+                HorizontalOptions="CenterAndExpand"
+                VerticalOptions="CenterAndExpand" />
+                </StackLayout>
+                <StackLayout x:Name="myLayout">
+                    <!-- Unified Design -->
+
+
+                    
+                </StackLayout>
+            </StackLayout>
+
+            <StackLayout Orientation="Horizontal"
+             VerticalOptions="EndAndExpand">
+                <Button x:Name="_Back" IsVisible="False" Text="Back"  HorizontalOptions="Center" Grid.Column="0" />
+                <Button x:Name="_Continue"  Text="{translate:Translate Continue}" HorizontalOptions="CenterAndExpand" Grid.Column="1" Clicked="_Continue_Clicked"/>
+
+            </StackLayout>
+        </StackLayout>
+
+
+
+    </ContentPage.Content>
+
+</ContentPage>

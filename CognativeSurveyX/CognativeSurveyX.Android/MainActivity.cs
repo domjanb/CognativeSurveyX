@@ -6,6 +6,10 @@ using Android.Runtime;
 using Android.Views;
 using Android.Widget;
 using Android.OS;
+using LabelHtml.Forms.Plugin.Droid;
+using CognativeSurveyX.Modell;
+using System.IO;
+
 
 namespace CognativeSurveyX.Droid
 {
@@ -18,6 +22,11 @@ namespace CognativeSurveyX.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
+
+	        //Constants.myZipPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal));
+            HtmlLabelRenderer.Initialize();
+
+
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
         }

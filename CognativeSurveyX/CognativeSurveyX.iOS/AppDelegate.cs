@@ -4,6 +4,8 @@ using System.Linq;
 
 using Foundation;
 using UIKit;
+using CognativeSurveyX.Modell;
+using LabelHtml.Forms.Plugin.iOS;
 
 namespace CognativeSurveyX.iOS
 {
@@ -24,6 +26,11 @@ namespace CognativeSurveyX.iOS
         {
             global::Xamarin.Forms.Forms.Init();
             LoadApplication(new App());
+
+
+//Constans.myZipPath = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Personal));
+            HtmlLabelRenderer.Initialize();
+
 
             return base.FinishedLaunching(app, options);
         }

@@ -12,6 +12,7 @@ using Windows.UI.Xaml.Data;
 using Windows.UI.Xaml.Input;
 using Windows.UI.Xaml.Media;
 using Windows.UI.Xaml.Navigation;
+using CognativeSurveyX.Modell;
 
 namespace CognativeSurveyX.UWP
 {
@@ -20,7 +21,7 @@ namespace CognativeSurveyX.UWP
         public MainPage()
         {
             this.InitializeComponent();
-
+//Constans.myZipPath = Path.Combine(ApplicationData.Current.LocalFolder.Path);
             LoadApplication(new CognativeSurveyX.App());
         }
     }

@@ -1,4 +1,6 @@
-﻿using System;
+﻿using CognativeSurveyX.Nyelv;
+using Plugin.Multilingual;
+using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -10,7 +12,7 @@ namespace CognativeSurveyX
         public App()
         {
             InitializeComponent();
-
+            AppResource.Culture = CrossMultilingual.Current.DeviceCultureInfo;
             MainPage = new MainPage();
         }
 
