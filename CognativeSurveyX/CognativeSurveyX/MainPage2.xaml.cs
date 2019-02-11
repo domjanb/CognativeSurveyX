@@ -28,7 +28,7 @@ using CognativeSurveyX.Helpers;
 
 namespace CognativeSurveyX
 {
-    public partial class MainPage : ContentPage
+    public partial class MainPage2 : ContentPage
     {
 
         IDownloader downloader = DependencyService.Get<IDownloader>();
@@ -41,16 +41,17 @@ namespace CognativeSurveyX
 
         Button reggomb;
         private RestApiModell vissza;
-        
+        private RestApiModell vissza2;
+
         //private Button[] buttons;
         List<Button> listOfButtons = new List<Button>();
 
-        
+
         protected override bool OnBackButtonPressed()
         {
             return base.OnBackButtonPressed();
         }
-        public MainPage()
+        public MainPage2()
         {
 
             InitializeComponent();
@@ -60,12 +61,12 @@ namespace CognativeSurveyX
 
 
             Constans.myZipPath = mypt.MyPath;
-            Constans.ScreenHeight=display.Height;
+            Constans.ScreenHeight = display.Height;
             Constans.ScreenWidth = display.Width;
             downloader.OnFileDownloaded += OnFileDownloaded;
             CrossDownloadManager.Current.CollectionChanged += (sender, e) =>
             System.Diagnostics.Debug.WriteLine(
-                "[DownloadManager] " + e.Action + 
+                "[DownloadManager] " + e.Action +
                 " -> New Items: " + (e.NewItems?.Count ?? 0) +
                 " at " + e.NewStartingIndex +
                 " || old items: " + (e.OldItems?.Count ?? 0) +
@@ -109,7 +110,20 @@ namespace CognativeSurveyX
             int regisztrácioDarab = adatBazis.GetCogAzon().Count();
             if (regisztrácioDarab == 1)
             {
+                User user2 = new User();
+                var reggiAdatok = adatBazis.GetCogAzon();
+                foreach(Cogazon item in reggiAdatok)
+                {
+                    user2.user_name = item.uname;
+                    user2.user_surnamed = item.usname;
+                    user2.user_kod = Convert.ToString(item.userid);
+                    user2.user_password = item.upass;
+                    user2.user_emil = item.uemail;
+                }
 
+                vissza2 = await useradat(user2);
+                
+                var a= 2;
             }
             else
             {
@@ -141,16 +155,16 @@ namespace CognativeSurveyX
                     //regForm.ColumnDefinitions.w
                     var zeroC = new Label { Text = "", HorizontalTextAlignment = TextAlignment.End };
                     var nameC = new Label { Text = Nyelv.AppResource.Name, HorizontalTextAlignment = TextAlignment.End, VerticalTextAlignment = TextAlignment.Center };
-                    var name = new Entry { Placeholder = Nyelv.AppResource.Name};
+                    var name = new Entry { Placeholder = Nyelv.AppResource.Name };
                     name.TextChanged += OnEntryTextChanged;
                     var name2C = new Label { Text = Nyelv.AppResource.Surename, HorizontalTextAlignment = TextAlignment.End };
                     var name2 = new Entry { Placeholder = Nyelv.AppResource.Surename };
                     name2.TextChanged += OnEntryTextChanged;
                     var codeC = new Label { Text = Nyelv.AppResource.Code, HorizontalTextAlignment = TextAlignment.End };
-                    var code = new Entry { Placeholder = Nyelv.AppResource.Code, Keyboard=Keyboard.Numeric};
+                    var code = new Entry { Placeholder = Nyelv.AppResource.Code, Keyboard = Keyboard.Numeric };
                     code.TextChanged += OnEntryTextChanged;
                     var passC = new Label { Text = Nyelv.AppResource.Password, HorizontalTextAlignment = TextAlignment.End };
-                    var pass = new Entry { Placeholder = Nyelv.AppResource.Password, IsPassword=true };
+                    var pass = new Entry { Placeholder = Nyelv.AppResource.Password, IsPassword = true };
                     pass.TextChanged += OnEntryTextChanged;
                     var emilC = new Label { Text = Nyelv.AppResource.Email, HorizontalTextAlignment = TextAlignment.End };
                     var emil = new Entry { Placeholder = Nyelv.AppResource.Email };
@@ -174,7 +188,7 @@ namespace CognativeSurveyX
                         var rs = new Data.RestService();
                         Debug.WriteLine(user);
                         vissza = await rs.Reggi(user);
-                        Debug.WriteLine("visszastring:"+Convert.ToString( vissza));
+                        Debug.WriteLine("visszastring:" + Convert.ToString(vissza));
                         if (vissza.error)
                         {
                             var idd2 = adatBazis.SaveCogAzon(new Cogazon
@@ -182,7 +196,7 @@ namespace CognativeSurveyX
                                 uemail = user.user_emil,
                                 uname = user.user_name,
                                 upass = user.user_password,
-                                userid =Convert.ToInt16(user.user_kod),
+                                userid = Convert.ToInt16(user.user_kod),
                                 usname = user.user_surnamed
                             });
 
@@ -197,11 +211,11 @@ namespace CognativeSurveyX
                             //codeC.IsVisible = false;
                             //passC.IsVisible = false;
                             //regButton.IsVisible = false;
-                            
+                            var alfa = adatBazis.GetCogAzon().Count();
                             myLayout.Children.Remove(regForm);
                             myLayout.Children.Remove(regButton);
                             var scroll = new ScrollView();
-                            
+
 
                             var stack = new StackLayout();
                             scroll.Content = stack;
@@ -214,12 +228,12 @@ namespace CognativeSurveyX
                             regForm2.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                             regForm2.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
 
-                            for (int i=0; i<vissza.darab;i++)
+                            for (int i = 0; i < vissza.darab; i++)
                             {
                                 var ReferenceDate = new DateTime(1970, 1, 1);
                                 DateTime CacheUtcTime = ReferenceDate.AddSeconds(Convert.ToInt64(vissza.kerdivadat[i].kerdiv2_le));
 
-                                adatBazis.DeleteCogAzonAll();
+                                //adatBazis.DeleteCogAzonAll();
                                 var idd = adatBazis.SaveCogDataKerdiv(new Cogkerdiv
                                 {
                                     kerdiv1nev = vissza.kerdivadat[i].kerdiv1_nev,
@@ -247,7 +261,7 @@ namespace CognativeSurveyX
                                     buttonM.IsVisible = true;
                                 }
                                 //buttonM.Clicked += ButtonM_Clicked;
-                                buttonM.Clicked += ( aktButton,  eredmeny) =>
+                                buttonM.Clicked += (aktButton, eredmeny) =>
                                 {
                                     Button button = (Button)aktButton;
                                     foreach (var itemT in Constans.myParam2)
@@ -255,9 +269,9 @@ namespace CognativeSurveyX
                                         if (Convert.ToString(button.Id) == itemT.Item1)
                                         {
                                             string ffilenev = itemT.Item3 + ".json";
-                                            Constans.myFilePath = Path.Combine( Constans.myZipPath, "cognative", itemT.Item2);
-                                            String ffile = Path.Combine(Constans.myZipPath ,"cognative",  itemT.Item2 , ffilenev);
-                                            Debug.WriteLine("ffileneve: "+  ffile);
+                                            Constans.myFilePath = Path.Combine(Constans.myZipPath, "cognative", itemT.Item2);
+                                            String ffile = Path.Combine(Constans.myZipPath, "cognative", itemT.Item2, ffilenev);
+                                            Debug.WriteLine("ffileneve: " + ffile);
                                             //string jsonString = "";
                                             string jsonString = File.ReadAllText(ffile);
                                             jsonString = Constans.RemoveNewLines(jsonString);
@@ -265,7 +279,7 @@ namespace CognativeSurveyX
                                             //using (var streamReader = new StreamReader(ffile))
                                             //{
                                             //    jsonString = streamReader.ReadToEnd();
-                                                
+
                                             //}
                                             //Questions  responseObject = JsonConvert.DeserializeObject<Questions>(Path.Combine(jsonString));
                                             Questions responseObject = JsonConvert.DeserializeObject<Questions>(jsonString);
@@ -273,7 +287,7 @@ namespace CognativeSurveyX
                                             Constans.aktSurvey = responseObject;
                                             Constans.pageNumber = 1;
                                             var vissza = adatBazis.GetCogDataKerdivAsSern(itemT.Item4) as Cogkerdiv;
-                                            Constans.kerdivId = Convert.ToString( vissza.projid);
+                                            Constans.kerdivId = Convert.ToString(vissza.projid);
                                             Constans.kerdivVer = vissza.kerdiv1ver;
 
                                             //var a = "aa";
@@ -286,8 +300,8 @@ namespace CognativeSurveyX
 
                                 //Debug.WriteLine("button_id:" + buttonM.Id);
                                 Constans.myParam.Add(Convert.ToString(buttonM.Id), zipFileName);
-                                Constans.myParam2.Add(Tuple.Create(Convert.ToString(buttonM.Id), zipFileName, vissza.kerdivadat[i].kerdiv1_nev,idd));
-                                
+                                Constans.myParam2.Add(Tuple.Create(Convert.ToString(buttonM.Id), zipFileName, vissza.kerdivadat[i].kerdiv1_nev, idd));
+
                                 listOfButtons.Add(buttonM);
 
 
@@ -295,7 +309,7 @@ namespace CognativeSurveyX
                                 //Debug.WriteLine(Convert.ToDateTime(vissza.kerdivadat[i].kerdiv2_le));
                             }
                             Constans.kellZipIndex = 0;
-                            foreach(var button in listOfButtons)
+                            foreach (var button in listOfButtons)
                             {
                                 if (!button.IsVisible)
                                 {
@@ -311,7 +325,7 @@ namespace CognativeSurveyX
                                         }
                                     }
 
-                                        
+
                                 }
                             }
                             if (Constans.kellZip.Count > 0)
@@ -321,7 +335,7 @@ namespace CognativeSurveyX
                                 Constans.kellZipIndex++;
                             }
 
-                            
+
                             /*string mostFile = "/kerdiv_1_1.zip";
                             Debug.WriteLine(Constans.myZipPath + "/" + Constans.myZipFile);
                             if (!File.Exists(Constans.myZipPath+ mostFile))
@@ -338,21 +352,21 @@ namespace CognativeSurveyX
                             myLayout.Children.Add(scroll);
 
                         }
-                            //var aa = vissza.getError();
-                            //var bb = vissza.getMessage();
-                            var cc = vissza.message;
-                        
+                        //var aa = vissza.getError();
+                        //var bb = vissza.getMessage();
+                        var cc = vissza.message;
+
                         //var visszatrue= vissza.Rootobject.error;
                         Debug.WriteLine("vlasz " + Convert.ToString(vissza));
-                    }; 
+                    };
                     reggomb = regButton;
-                    
-                    valaszok.Add( name);
-                    valaszok.Add( name2);
-                    valaszok.Add( code);
+
+                    valaszok.Add(name);
+                    valaszok.Add(name2);
+                    valaszok.Add(code);
                     valaszok.Add(pass);
                     valaszok.Add(emil);
-                    
+
                     //regForm.Children.Add(zeroC, 0, 0);
                     regForm.Children.Add(nameC, 1, 0);
                     regForm.Children.Add(name, 2, 0);
@@ -364,23 +378,31 @@ namespace CognativeSurveyX
                     regForm.Children.Add(pass, 2, 3);
                     regForm.Children.Add(emilC, 1, 4);
                     regForm.Children.Add(emil, 2, 4);
-                    
+
                     //regForm.Children.Add(regButton, 1, 6);
                     //Grid.SetColumnSpan(regButton, 2);
                     //Grid.SetColumnSpan(regButton, 1);
 
 
 
-                    
+
                     myLayout.Children.Add(regForm);
                     myLayout.Children.Add(regButton);
                     //ide jön a http reg
                 }
             }
 
-            bazsiInit(myLayout, adatBazis);
+            //bazsiInit(myLayout, adatBazis);
 
             Content = myLayout;
+        }
+
+        private Task<RestApiModell> useradat(User user2)
+        {
+            var rs = new RestService();
+            //Debug.WriteLine(user2);
+            RestApiModell c= IAsyncResult rs.Reggi(user2);
+            return c;
         }
 
         private void ButtonM_Clicked(Button sender, EventArgs e)
@@ -390,7 +412,7 @@ namespace CognativeSurveyX
                 if (Convert.ToString(sender.Id) == itemT.Item1)
                 {
 
-                    Questions responseObject = JsonConvert.DeserializeObject<Questions>(Path.Combine(Constans.myZipPath,"cognative",  itemT.Item3 + ".json"));
+                    Questions responseObject = JsonConvert.DeserializeObject<Questions>(Path.Combine(Constans.myZipPath, "cognative", itemT.Item3 + ".json"));
                     Constans.pageNumber = -1;
                     if (responseObject.survey_properties.skip_intro)
                     {
@@ -399,8 +421,8 @@ namespace CognativeSurveyX
                     //var a = "aa";
                 }
             }
-                    
-            
+
+
         }
 
         private void gombEllAll()
@@ -408,29 +430,29 @@ namespace CognativeSurveyX
             throw new NotImplementedException();
         }
 
-        
+
 
         public string name { get; internal set; }
         public string name2 { get; internal set; }
         public string code { get; internal set; }
         public string pass { get; internal set; }
         public string emil { get; internal set; }
-        
+
         private void OnEntryTextChanged(object sender, TextChangedEventArgs e)
         {
-            
+
             //
             var oldText = e.OldTextValue;
             var newText = e.NewTextValue;
 
             var inputBox = (Entry)sender;
             Boolean nyert = true;
-            for (var i=0; i < valaszok.Count ; i++)
+            for (var i = 0; i < valaszok.Count; i++)
             {
                 if (Length(valaszok[i].Text) > 0)
                 {
                     Trace.WriteLine(valaszok[i].Text);
-                    
+
 
                 }
                 if (Length(BTrim(valaszok[i].Text)) == 0)
@@ -457,7 +479,7 @@ namespace CognativeSurveyX
 
 
         }
-        
+
         private int Length(string v)
         {
             int vissza = 0;
@@ -469,7 +491,7 @@ namespace CognativeSurveyX
             return vissza;
         }
 
-        
+
         private string BTrim(string text)
         {
             String vissza = text;
@@ -481,11 +503,11 @@ namespace CognativeSurveyX
                     vissza = text2.TrimStart(' ');
                 }
             }
-            
+
 
             return vissza;
         }
-        
+
         private static void bazsiInit(StackLayout myLayout, UsersDataAccess adatBazis)
         {
             ///
@@ -524,7 +546,7 @@ namespace CognativeSurveyX
             {
                 var alfa2 = "aaaa";
             }*/
-            
+
             /*var todoData = new TodoItemDatabase("");
             todoData.SaveItemAsync(new TodoItem
             {
@@ -594,7 +616,7 @@ namespace CognativeSurveyX
                 {
                     vissza = 3;
                 }
-                else 
+                else
                 {
                     vissza = 4;
                 }
@@ -606,7 +628,7 @@ namespace CognativeSurveyX
         public bool DoIHaveInternet()
         {
 
-            
+
             return CrossConnectivity.Current.IsConnected;
 
         }
@@ -626,24 +648,24 @@ namespace CognativeSurveyX
                         break;
                     }
                 }
-                
+
 
             }
             else
             {
                 DisplayAlert("XF Downloader", "Error while saving the file", "Close");
             }
-            if (Constans.kellZip.Count > 0 && Constans.kellZipIndex<=Constans.kellZip.Count)
+            if (Constans.kellZip.Count > 0 && Constans.kellZipIndex <= Constans.kellZip.Count)
             {
                 var aktUrl = Constans.kellZip.ElementAt(Constans.kellZipIndex);
                 downloader.DownloadFile(aktUrl, "cognative");
-                ExtractZipFile(Constans.myZipPath + "/cognative/" + e.ZipFileMentett, null, Constans.myZipPath+"/cognative/");
+                ExtractZipFile(Constans.myZipPath + "/cognative/" + e.ZipFileMentett, null, Constans.myZipPath + "/cognative/");
                 Constans.kellZipIndex++;
                 foreach (var itemT in Constans.myParam2)
                 {
                     if ((itemT.Item2 + ".zip") == e.ZipFileMentett)
                     {
-                        if (File.Exists(Constans.myZipPath + "cognative/"+ itemT.Item2 + "/" + itemT.Item3 + ".json"))
+                        if (File.Exists(Constans.myZipPath + "cognative/" + itemT.Item2 + "/" + itemT.Item3 + ".json"))
                         {
                             foreach (var button in listOfButtons)
                             {
@@ -658,7 +680,7 @@ namespace CognativeSurveyX
                 }
             }
         }
-        
+
         public void ExtractZipFile(string archiveFilenameIn, string password, string outFolder)
         {
             int zipDarab = 0;
@@ -711,7 +733,7 @@ namespace CognativeSurveyX
                 }
             }
         }
-        
+
     }
 
 }

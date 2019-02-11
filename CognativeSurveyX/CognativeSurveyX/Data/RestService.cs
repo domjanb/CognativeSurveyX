@@ -49,6 +49,21 @@ namespace CognativeSurveyX.Data
             return response;
 
         }
+        public  Task<RestApiModell> Reggi2(User user)
+        {
+            var postData = new List<KeyValuePair<string, string>>();
+            postData.Add(new KeyValuePair<string, string>("user_name", user.user_name));
+            postData.Add(new KeyValuePair<string, string>("user_surname", user.user_surnamed));
+            postData.Add(new KeyValuePair<string, string>("user_kod", user.user_kod));
+            postData.Add(new KeyValuePair<string, string>("user_password", user.user_password));
+            postData.Add(new KeyValuePair<string, string>("user_email", user.user_emil));
+            var content = new FormUrlEncodedContent(postData);
+            var uri = Constans.webUrl;
+            //Debug.WriteLine("egynek jo");
+            var response =  PostResponseReggi<Token>(uri, content);
+            return response;
+
+        }
         public async Task<RestApiModell> PostResponseReggi<T>(string uri,FormUrlEncodedContent content) where T: class
         {
             //Debug.WriteLine("kodeaaaaaa " );
@@ -83,6 +98,7 @@ namespace CognativeSurveyX.Data
             return null;
             
         }
+        
         public async Task<T> PostResponse<T>(string uri, string jsonstring) where T : class
         {
             var token =  tokenDatabase.GetToken();

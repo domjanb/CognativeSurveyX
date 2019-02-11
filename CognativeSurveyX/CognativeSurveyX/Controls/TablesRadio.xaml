@@ -3,7 +3,7 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CognativeSurveyX.Controls.TablesRadio">
   <ContentView.Content>
-        <StackLayout x:Name="myLayout" Orientation="Horizontal" VerticalOptions="Fill"  Margin="10,0,10,0">
+        <StackLayout x:Name="myLayout" Orientation="Horizontal" VerticalOptions="Fill"  Margin="0,0,0,0">
             
             
         </StackLayout>

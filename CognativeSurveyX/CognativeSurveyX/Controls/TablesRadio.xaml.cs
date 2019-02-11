@@ -41,7 +41,7 @@ namespace CognativeSurveyX.Controls
         public event EventHandler<int> CheckedChange;
         Label lbl = new Label();
         Grid sor = new Grid();
-        List<RadioButton> listCheckbox = new List<RadioButton>();
+        List<RadioButtonCsakBumbuc> listCheckbox = new List<RadioButtonCsakBumbuc>();
         List<BoxView> listGr = new List<BoxView>();
         public TablesRadio ()
 		{
@@ -82,7 +82,7 @@ namespace CognativeSurveyX.Controls
                 gr.Tapped += Gr_Tapped;
                 //listGr.Add(gr);
                 
-                RadioButton rb = new RadioButton();
+                RadioButtonCsakBumbuc rb = new RadioButtonCsakBumbuc();
                 //rb.BackgroundColor = Color.Peru;
                 rb.HorizontalOptions = LayoutOptions.Center;
                 rb.VerticalOptions = LayoutOptions.Center;
@@ -167,7 +167,7 @@ namespace CognativeSurveyX.Controls
             foreach(var item in listCheckbox)
             {
                 idx++;
-                if (item.Id == ((RadioButton)sender).Id)
+                if (item.Id == ((RadioButtonCsakBumbuc)sender).Id)
                 {
                     _Value = idx;
                     item.myIschecked = true;

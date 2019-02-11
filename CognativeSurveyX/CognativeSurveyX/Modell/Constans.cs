@@ -130,11 +130,21 @@ namespace CognativeSurveyX.Modell
         public static Exception exception;
         public static string valaszok = "";
 
+        public static string kerdivId = "";
+        public static string kerdivVer = "";
+        public static string kerdivUser = "33";
+        public static string kerdivTip = "";
+
+        public static string kerdivPlatformGep = "";
+        public static string kerdivPlatformSoftver = "";
+
+
         //List<string> paramFromId = new List<string, int>();
         //public static string 
 
         public static  void nextPage()
         {
+            ValaszokKiiratasa(valaszok);
             Constans.pageNumber++;
             int idx = 0;
             foreach (var item in aktSurvey.questions)
@@ -152,6 +162,28 @@ namespace CognativeSurveyX.Modell
                 
             }
         }
+
+        private static void ValaszokKiiratasa(string valasz)
+        {
+            UsersDataAccess adatBazis = new UsersDataAccess();
+            var darabol = valasz.Split(Convert.ToChar(";"));
+            foreach(var item in darabol)
+            {
+                var darabol2 = item.Split(Convert.ToChar("="));
+                var idd2 = adatBazis.SaveCogData(new Cogdata
+                {
+                    kerdes = darabol2[0],
+                    valasz = darabol2[1],
+                    kerdivdate = DateTime.Now,
+                    egyedi2 =kerdivPlatformGep,
+                    egyedi3 =kerdivPlatformSoftver,
+                    kerdivver =kerdivVer,
+                    kerdivtip =Convert.ToInt16( kerdivTip),
+                    kerdivid =Convert.ToInt16(kerdivUser)
+                });
+            }
+        }
+
         public static string kipofoz(string duma)
         {
             string vissza = "";

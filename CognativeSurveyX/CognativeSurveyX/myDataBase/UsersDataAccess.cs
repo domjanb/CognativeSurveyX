@@ -15,6 +15,7 @@ namespace CognativeSurveyX
 
         public ObservableCollection<Cogazon> CogUser { get; set; }
         public ObservableCollection<Cogkerdiv> CogDataKerdiv { get; set; }
+        public ObservableCollection<Cogdata> CogData { get; set; }
 
         public UsersDataAccess()
         {
@@ -22,13 +23,16 @@ namespace CognativeSurveyX
            
             database.CreateTable<Cogazon>();
             database.CreateTable<Cogkerdiv>();
+            database.CreateTable<Cogdata>();
+
 
             this.CogUser = new ObservableCollection<Cogazon>(database.Table<Cogazon>());
             this.CogDataKerdiv = new ObservableCollection<Cogkerdiv>(database.Table<Cogkerdiv>());
+            this.CogData = new ObservableCollection<Cogdata>(database.Table<Cogdata>());
 
             if (!database.Table<Cogazon>().Any())
             {
-                AddNewUser();
+                //AddNewUser();
             }
 
         }
@@ -127,7 +131,14 @@ namespace CognativeSurveyX
 
 
 
-
+        public IEnumerable<Cogkerdiv> GetCogDataKerdivAsSern(int Sern)
+        {
+            lock (collisionLock)
+            {
+                var query = from adat in database.Table<Cogkerdiv>() where adat.id == Sern select adat;
+                return query.AsEnumerable();
+            }
+        }
         public IEnumerable<Cogkerdiv> GetCogDataKerdiv()
         {
             lock (collisionLock)
@@ -176,5 +187,60 @@ namespace CognativeSurveyX
 
 
         }
+
+
+
+
+
+        public IEnumerable<Cogdata> GetCogData()
+        {
+            lock (collisionLock)
+            {
+                return database.Query<Cogdata>("Select * from Cogdata").AsEnumerable();
+
+            }
+        }
+        public int SaveCogData(Cogdata CogDataAdat)
+        {
+            lock (collisionLock)
+            {
+                if (CogDataAdat.id != 0)
+                {
+                    database.Update(CogDataAdat);
+                    return CogDataAdat.id;
+                }
+                else
+                {
+                    database.Insert(CogDataAdat);
+                    return CogDataAdat.id;
+                }
+            }
+        }
+        public int DeleteCogData(Cogdata CogDataAdat)
+        {
+            var id = CogDataAdat.id;
+            if (id != 0)
+            {
+                lock (collisionLock)
+                {
+                    database.Delete<Cogdata>(id);
+                }
+
+            }
+            this.CogData.Remove(CogDataAdat);
+            return id;
+        }
+        public void DeleteCogDataAll()
+        {
+            lock (collisionLock)
+            {
+                database.DeleteAll<Cogdata>();
+            }
+
+
+
+        }
+
+
     }
 }

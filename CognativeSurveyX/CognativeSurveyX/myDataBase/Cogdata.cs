@@ -6,7 +6,7 @@ using System.Text;
 
 namespace CognativeSurveyX
 {
-    [Table("CogData")]
+    [Table("Cogdata")]
     public class Cogdata : INotifyPropertyChanged
     {
         private int _id;
@@ -154,7 +154,7 @@ namespace CognativeSurveyX
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnProperityChange(string propertyName)
         {
-            this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            //this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
     }

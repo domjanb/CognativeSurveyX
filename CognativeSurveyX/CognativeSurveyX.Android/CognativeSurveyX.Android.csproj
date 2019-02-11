@@ -83,6 +83,7 @@
   <ItemGroup>
     <Compile Include="AndroidDownloader.cs" />
     <Compile Include="AndroidIPath.cs" />
+    <Compile Include="AndroidPlatformInfo.cs" />
     <Compile Include="DatabaseConnection_Android.cs" />
     <Compile Include="Display.cs" />
     <Compile Include="MainActivity.cs" />

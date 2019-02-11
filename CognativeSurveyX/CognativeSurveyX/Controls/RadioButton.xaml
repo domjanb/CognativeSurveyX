@@ -13,7 +13,7 @@
         </Grid.RowDefinitions>
 
         <Label x:Name="boxLabel" Text="⚪" />
-        <Label x:Name="textLabel" Grid.Column="1"/>
+        <Label x:Name="textLabel" Grid.Column="1" IsVisible="False"/>
         <Entry x:Name="textOther" Margin="0,-10,0,0" TextChanged="TextOther_TextChanged"   Placeholder="...." IsVisible="False" Grid.Row="1" Grid.Column="1"  />
 
     </Grid>

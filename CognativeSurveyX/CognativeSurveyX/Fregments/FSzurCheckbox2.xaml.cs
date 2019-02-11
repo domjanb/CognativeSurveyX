@@ -70,6 +70,7 @@ namespace CognativeSurveyX.Fregments
 
         private void nyilo_CheckedChange(object sender, bool e)
         {
+            Constans.valaszok = "";
             Kinyilo kinyilo = (Kinyilo)sender;
             foreach (var item in myCheckbox)
             {
@@ -78,6 +79,7 @@ namespace CognativeSurveyX.Fregments
                     if (kinyilo.IsChecked)
                     {
                         item.Item2.IsVisible = true;
+                        Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(item.Item1) + "=" + Convert.ToString(item.Item1) + ";" ;
                     }
                     else
                     {
@@ -92,14 +94,28 @@ namespace CognativeSurveyX.Fregments
 
         private void Button_CheckedChange(object sender, bool e)
         {
-            foreach (var item in listCheckbox)
+            Constans.valaszok = "";
+            /*foreach (var item in listCheckbox)
             {
                 if (item.IsChecked)
                 {
-
                     Debug.WriteLine(((Checkbox)item).Text);
                 }
+            }*/
+            foreach (var item in myCheckbox)
+            {
+
+                if (item.Item2.IsChecked)
+                {
+                    string otherDuma = "";
+                    if (item.Item2.KellEOther)
+                    {
+                        otherDuma = Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(item.Item1) + "other=" + Convert.ToString(Constans.kipofoz(item.Item2.TextOther)) + ";";
+                    }
+                    Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(item.Item1) + "=" + Convert.ToString(item.Item1) + ";" + otherDuma;
+                }
             }
+            Constans.valaszok = Constans.valaszok.Substring(0, Constans.valaszok.Length);
             //throw new NotImplementedException();
         }
         private void _Continue_Clicked(object sender, EventArgs e)

@@ -98,7 +98,7 @@ namespace CognativeSurveyX.Fregments
             {
                 if (item.IsChecked)
                 {
-                    
+                    Constans.valaszok = Constans.aktQuestion.kerdeskod + "=" + Convert.ToString(e);
                     Debug.WriteLine(((Checkbox)item).Text);
                 }
             }

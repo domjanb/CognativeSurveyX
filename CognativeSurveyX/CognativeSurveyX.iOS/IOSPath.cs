@@ -8,7 +8,7 @@ using UIKit;
 using CognativeSurveyX.iOS;
 using System.IO;
 
-[assembly: Xamarin.Forms.Dependency(typeof(DatabaseConnection_IOS))]
+[assembly: Xamarin.Forms.Dependency(typeof(IOSPath))]
 namespace CognativeSurveyX.iOS
 {
     public class IOSPath :IPath

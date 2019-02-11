@@ -25,7 +25,7 @@
 	<key>CFBundleDisplayName</key>
 	<string>CognativeSurveyX</string>
 	<key>CFBundleIdentifier</key>
-	<string>com.companyname.CognativeSurveyX</string>
+	<string>hu.cognative.CognativeSurveyX</string>
 	<key>CFBundleVersion</key>
 	<string>1.0</string>
 	<key>UILaunchStoryboardName</key>
@@ -37,6 +37,15 @@
 	<key>UIBackgroundModes</key>
 	<array>
 		<string>location</string>
+	</array>
+	<key>XSLaunchImageAssets</key>
+	<string>Assets.xcassets/LaunchImages.launchimage</string>
+	<key>CFBundleDocumentTypes</key>
+	<array>
+		<dict>
+			<key>CFBundleTypeName</key>
+			<string>Document Type 1</string>
+		</dict>
 	</array>
 </dict>
 </plist>

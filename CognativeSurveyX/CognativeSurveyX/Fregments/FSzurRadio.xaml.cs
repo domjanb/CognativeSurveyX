@@ -162,6 +162,7 @@ namespace CognativeSurveyX.Fregments
                 if (item.Id == ((RadioButton)sender).Id)
                 {
                     item.myIschecked = true;
+                    Constans.valaszok = Constans.aktQuestion.kerdeskod + "=" + Convert.ToString(e);
                 }
                 else
                 {

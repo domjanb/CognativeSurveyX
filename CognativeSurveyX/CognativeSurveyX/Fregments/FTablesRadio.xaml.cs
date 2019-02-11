@@ -15,7 +15,8 @@ namespace CognativeSurveyX.Fregments
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class FTablesRadio : ContentPage
 	{
-		public FTablesRadio ()
+        List<TablesRadio> listTablesRadio = new List<TablesRadio>();
+        public FTablesRadio ()
 		{
 			InitializeComponent ();
             myLayout.Margin = new Thickness(10, 0, 10, 0);
@@ -30,34 +31,7 @@ namespace CognativeSurveyX.Fregments
             kerdes.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
             myStack.Children.Add(kerdes);
 
-            /*var darab = 4;
-            TablesRadio tablesSor = new TablesRadio
-            {
-                Text = "1subidubisuiuu",
-                ValaszDB =4,
-        };
-            //tablesSor.Text = "1subidubisuiuu";
-            //tablesSor.ValaszDB = darab;
-            tablesSor.BackgroundColor = Color.AliceBlue;
-            myStack.Children.Add(tablesSor);
-
-            TablesRadio tablesSor2 = new TablesRadio();
-            tablesSor2.Text = "2subidubisuiusu aksdmn,sadna";
-            tablesSor2.ValaszDB = darab;
-            tablesSor2.BackgroundColor = Color.AntiqueWhite;
-            myStack.Children.Add(tablesSor2);
-
-            TablesRadio tablesSor3 = new TablesRadio();
-            tablesSor3.Text = "3subidubisuiuu subidubisuiuu subidubisuiuu subidubisuiuu subidubisuiuu subidubisuiuu subidubisuiuu v";
-            tablesSor3.ValaszDB = darab;
-            tablesSor3.BackgroundColor = Color.AliceBlue;
-            myStack.Children.Add(tablesSor3);
-
-            TablesRadio tablesSor4 = new TablesRadio();
-            tablesSor4.Text = "4subidubisuiuu";
-            tablesSor4.ValaszDB = darab;
-            tablesSor4.BackgroundColor = Color.AntiqueWhite;
-            myStack.Children.Add(tablesSor4);*/
+           
             
             List<string> fejlec = new List<string>();
             foreach (var item in Constans.aktQuestion.choices)
@@ -90,6 +64,7 @@ namespace CognativeSurveyX.Fregments
                 }
 
                 //listCheckbox.Add(button);
+                listTablesRadio.Add(button);
                 //button.Opacity = 1;
                 //button.CheckedChange += Button_CheckedChange;
                 myStack.Children.Add(button);
@@ -102,6 +77,19 @@ namespace CognativeSurveyX.Fregments
             //throw new NotImplementedException();
             Debug.WriteLine("Nyomi:" + ((TablesRadio)sender).Text + Convert.ToString(e));
 
+            Constans.valaszok = "";
+            var idx = 0;
+            foreach(TablesRadio item in listTablesRadio)
+            {
+                if (item.Value != null)
+                {
+                    if (item.Value > 0)
+                    {
+                        Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(idx) + "=" + Convert.ToString(item.Value) + ";"; 
+                    }
+                }
+            }
+            Constans.valaszok = Constans.valaszok.Substring(0, Constans.valaszok.Length);
         }
 
         
