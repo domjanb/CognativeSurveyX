@@ -130,7 +130,14 @@ namespace CognativeSurveyX
         }
 
 
-
+        public Object GetCogDataKerdivAsSernO(int Sern)
+        {
+            lock (collisionLock)
+            {
+                var query = from adat in database.Table<Cogkerdiv>() where adat.id == Sern select adat;
+                return query;
+            }
+        }
         public IEnumerable<Cogkerdiv> GetCogDataKerdivAsSern(int Sern)
         {
             lock (collisionLock)
@@ -139,6 +146,8 @@ namespace CognativeSurveyX
                 return query.AsEnumerable();
             }
         }
+        
+
         public IEnumerable<Cogkerdiv> GetCogDataKerdiv()
         {
             lock (collisionLock)
@@ -191,7 +200,14 @@ namespace CognativeSurveyX
 
 
 
-
+        public IEnumerable<Cogdata> GetCogDataAsProjid(int projid)
+        {
+            lock (collisionLock)
+            {
+                var query = from adat in database.Table<Cogdata>() where adat.projid== projid select adat;
+                return query.AsEnumerable();
+            }
+        }
         public IEnumerable<Cogdata> GetCogData()
         {
             lock (collisionLock)

@@ -134,6 +134,10 @@ namespace CognativeSurveyX.Modell
         public static string kerdivVer = "";
         public static string kerdivUser = "33";
         public static string kerdivTip = "";
+        public static int kerdivAlid = 0;
+
+        public static double kerdivGPSLongitude = 0;
+        public static double kerdivGPSLatitude = 0;
 
         public static string kerdivPlatformGep = "";
         public static string kerdivPlatformSoftver = "";
@@ -147,6 +151,7 @@ namespace CognativeSurveyX.Modell
             ValaszokKiiratasa(valaszok);
             Constans.pageNumber++;
             int idx = 0;
+            //aktQuestion = "";
             foreach (var item in aktSurvey.questions)
             {
                 idx++;
@@ -154,9 +159,21 @@ namespace CognativeSurveyX.Modell
                 {
                     aktQuestion = item;
                 }
+                
             }
-            
-            if (Constans.aktQuestion.question_type == "Radioboxes")
+            if (pageNumber  == aktSurvey.questions.Count + 1)
+            {
+                aktQuestion.kerdeskod = "VEGE";
+                aktQuestion.question_title = aktSurvey.survey_properties.end_message;
+                aktQuestion.question_type = "vegeIntro";
+                valaszok = "VEGE=VEGE";
+            }
+            if (pageNumber == aktSurvey.questions.Count + 2)
+            {
+                aktQuestion.question_type = "vege";
+            }
+
+                if (Constans.aktQuestion.question_type == "Radioboxes")
             {
                 //Navigation.PushModalAsync(new Radioboxes());
                 
@@ -179,7 +196,10 @@ namespace CognativeSurveyX.Modell
                     egyedi3 =kerdivPlatformSoftver,
                     kerdivver =kerdivVer,
                     kerdivtip =Convert.ToInt16( kerdivTip),
-                    kerdivid =Convert.ToInt16(kerdivUser)
+                    projid =Convert.ToInt16(kerdivId),
+                    alid =kerdivAlid,
+                    egyedi1 =Convert.ToString(kerdivGPSLongitude) + ";" + Convert.ToString(kerdivGPSLatitude)
+
                 });
             }
         }

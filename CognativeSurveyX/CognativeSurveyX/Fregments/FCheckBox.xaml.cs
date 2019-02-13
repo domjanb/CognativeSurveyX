@@ -86,6 +86,7 @@ namespace CognativeSurveyX.Fregments
                     string otherDuma = "";
                     if (item.Item2.KellEOther)
                     {
+                        var akkod=Constans.aktQuestion.choicesKod[item.Item1];
                         otherDuma = Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(item.Item1) + "other=" + Convert.ToString(Constans.kipofoz(item.Item2.TextOther)) + ";";
                     }
                     Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(item.Item1) + "=" + Convert.ToString(item.Item1) + ";" + otherDuma;

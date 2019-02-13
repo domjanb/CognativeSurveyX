@@ -18,7 +18,7 @@ namespace CognativeSurveyX.Fregments
 			InitializeComponent ();
 
             //Constans.nextPage();
-            if (Constans.pageNumber <= Constans.aktSurvey.questions.Count())
+            if (Constans.pageNumber <= Constans.aktSurvey.questions.Count()+1)
             {
                 if (Constans.aktQuestion.question_type == "Radioboxes")
                 {
@@ -72,10 +72,18 @@ namespace CognativeSurveyX.Fregments
                 {
                     Navigation.PushModalAsync(new FFejek());
                 }
+                else if (Constans.aktQuestion.question_type == "vegeIntro")
+                {
+                    Navigation.PushModalAsync(new FVegeIntro());
+                }
+                else if (Constans.aktQuestion.question_type == "vege")
+                {
+                    Navigation.PushModalAsync(new MainPage2());
+                }
             }
             else
             {
-                Navigation.PushModalAsync(new MainPage());
+                Navigation.PushModalAsync(new MainPage2());
             }
             
             //break;

@@ -103,27 +103,27 @@ namespace CognativeSurveyX
             }
         }
 
-        private int _kisid;
+        private int _alid;
         [NotNull]
-        public int kisid
+        public int alid
         {
-            get { return _kisid; }
+            get { return _alid; }
             set
             {
-                this._kisid = value;
-                OnProperityChange(nameof(kisid));
+                this._alid = value;
+                OnProperityChange(nameof(alid));
             }
         }
 
-        private int _kerdivid;
+        private int _projid;
         [NotNull]
-        public int kerdivid
+        public int projid
         {
-            get { return _kerdivid; }
+            get { return _projid; }
             set
             {
-                this._kerdivid = value;
-                OnProperityChange(nameof(kerdivid));
+                this._projid = value;
+                OnProperityChange(nameof(projid));
             }
         }
 

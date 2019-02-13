@@ -26,6 +26,7 @@ namespace CognativeSurveyX.Modell
             public bool visible { get; set; }
             public bool random_choices { get; set; }
             public IList<string> choices { get; set; }
+            public List<string> choicesKod { get; set; }
             public IList<string> rules { get; set; }
             public IList<string> items { get; set; }
         }

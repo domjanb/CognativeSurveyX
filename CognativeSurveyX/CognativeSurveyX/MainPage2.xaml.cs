@@ -23,14 +23,14 @@ using System.ComponentModel;
 using CognativeSurveyX.Fregments;
 using CognativeSurveyX.Nyelv;
 using CognativeSurveyX.Helpers;
-
-
+using Xamarin.Essentials;
 
 namespace CognativeSurveyX
 {
+    
     public partial class MainPage2 : ContentPage
     {
-
+        
         IDownloader downloader = DependencyService.Get<IDownloader>();
         IDisplay display = DependencyService.Get<IDisplay>();
         IPath mypt = DependencyService.Get<IPath>();
@@ -42,6 +42,9 @@ namespace CognativeSurveyX
         Button reggomb;
         private RestApiModell vissza;
         private RestApiModell vissza2;
+
+        ScrollView scroll = new ScrollView();
+        
 
         //private Button[] buttons;
         List<Button> listOfButtons = new List<Button>();
@@ -59,6 +62,7 @@ namespace CognativeSurveyX
             //var w2 = this.WidthRequest;
             //Nyelv.AppResource.
 
+            gpsBeallit();
 
             Constans.myZipPath = mypt.MyPath;
             Constans.ScreenHeight = display.Height;
@@ -93,7 +97,7 @@ namespace CognativeSurveyX
 
             myLayout.Children.Add(fejlecL);
 
-
+            myLayout.Children.Add(scroll);
 
 
             /// Milyen a net? 
@@ -107,12 +111,15 @@ namespace CognativeSurveyX
             int netTipus = milyenANet();
 
             UsersDataAccess adatBazis = new UsersDataAccess();
+            //adatBazis.DeleteCogDataKerdivAll();
+            //adatBazis.DeleteCogDataAll();
+            //adatBazis.DeleteCogAzonAll();
             int regisztrácioDarab = adatBazis.GetCogAzon().Count();
             if (regisztrácioDarab == 1)
             {
                 User user2 = new User();
                 var reggiAdatok = adatBazis.GetCogAzon();
-                foreach(Cogazon item in reggiAdatok)
+                foreach (Cogazon item in reggiAdatok)
                 {
                     user2.user_name = item.uname;
                     user2.user_surnamed = item.usname;
@@ -121,9 +128,9 @@ namespace CognativeSurveyX
                     user2.user_emil = item.uemail;
                 }
 
-                vissza2 = await useradat(user2);
-                
-                var a= 2;
+                var vissza3 = useradat(user2);
+
+                var a = 2;
             }
             else
             {
@@ -286,9 +293,18 @@ namespace CognativeSurveyX
                                             Constans.aktQuestion = responseObject.questions.ElementAt(0);
                                             Constans.aktSurvey = responseObject;
                                             Constans.pageNumber = 1;
-                                            var vissza = adatBazis.GetCogDataKerdivAsSern(itemT.Item4) as Cogkerdiv;
-                                            Constans.kerdivId = Convert.ToString(vissza.projid);
-                                            Constans.kerdivVer = vissza.kerdiv1ver;
+                                            var visszaz = adatBazis.GetCogDataKerdivAsSern(itemT.Item4) ;
+                                            if (visszaz.Count() == 1)
+                                            {
+                                                foreach(Cogkerdiv itemz in visszaz)
+                                                {
+                                                    Constans.kerdivId = Convert.ToString(itemz.projid);
+                                                    Constans.kerdivVer = itemz.kerdiv1ver;
+                                                    Constans.kerdivAlid = kerdivAlidKeres(itemz.projid);
+                                                    Constans.kerdivTip = Convert.ToString(itemz.kerdivtip);
+                                                }
+                                            }
+                                            
 
                                             //var a = "aa";
                                             Navigation.PushModalAsync(new FPage());
@@ -397,12 +413,280 @@ namespace CognativeSurveyX
             Content = myLayout;
         }
 
-        private Task<RestApiModell> useradat(User user2)
+        private async void gpsBeallit()
         {
+            /*var locator = CrossGeolocator.Current;
+            locator.DesiredAccuracy = 50;
+            TimeSpan csusza = new TimeSpan(100000);
+            
+            var position = await locator.GetPositionAsync(timeout:csusza);
+            Constans.kerdivGPSLongitude = position.Longitude;
+            Constans.kerdivGPSLatitude = position.Latitude;*/
+            try
+            {
+                var request = new GeolocationRequest(GeolocationAccuracy.Medium);
+                var location = await Geolocation.GetLocationAsync(request);
+
+                if (location != null)
+                {
+                    Console.WriteLine($"Latitude: {location.Latitude}, Longitude: {location.Longitude}, Altitude: {location.Altitude}");
+                    Constans.kerdivGPSLongitude = location.Longitude;
+                    Constans.kerdivGPSLatitude = location.Latitude; 
+                }
+            }
+            catch (FeatureNotSupportedException fnsEx)
+            {
+                // Handle not supported on device exception
+            }
+            catch (FeatureNotEnabledException fneEx)
+            {
+                // Handle not enabled on device exception
+            }
+            catch (PermissionException pEx)
+            {
+                // Handle permission exception
+            }
+            catch (Exception ex)
+            {
+                // Unable to get location
+            }
+        }
+
+        private async Task<RestApiModell> useradat(User user2)
+        {
+            bool kellgomb = false;
+            var ReferenceDate = new DateTime(1970, 1, 1);
+            var ma = DateTime.Now;
             var rs = new RestService();
-            //Debug.WriteLine(user2);
-            RestApiModell c= IAsyncResult rs.Reggi(user2);
-            return c;
+            RestApiModell visszaMost = await rs.Reggi(user2);
+
+            UsersDataAccess adatBazis = new UsersDataAccess();
+
+            Debug.WriteLine(visszaMost.darab);
+            for (int i = 0; i < visszaMost.darab; i++)
+            {
+                DateTime CacheUtcTime = ReferenceDate.AddSeconds(Convert.ToInt64(visszaMost.kerdivadat[i].kerdiv2_le));
+                if (CacheUtcTime < ma)
+                {
+                    //adatokat felpakolni
+                    //adatokat törölni
+                    //törölni a recordot ha van
+                    foreach (var item in adatBazis.CogDataKerdiv)
+                    {
+                        if (item.projid == Convert.ToInt16(visszaMost.kerdivadat[i].proj_id)
+                             && item.kerdiv1ver == visszaMost.kerdivadat[i].kerdiv1_ver)
+                        {
+                            adatBazis.DeleteCogDataKerdiv(item);
+                        }
+                    }
+                }
+                else
+                {
+                    var zipFileName = "kerdiv_" + visszaMost.kerdivadat[i].proj_id + "_" + visszaMost.kerdivadat[i].kerdiv1_ver;
+                    if (!File.Exists(Constans.myZipPath + "/cognative/" + zipFileName + "/" + visszaMost.kerdivadat[i].kerdiv1_nev + ".json"))
+                    {
+                        var Url = Constans.downUrl + zipFileName + ".zip";
+                        Constans.kellZip.Add(Url);
+                    }
+
+
+                    //ide majd sorban kell a tipizálás
+                    //if (visszaMost.kerdivadat[i].kerdivtip == "1")
+
+                    {
+                        kellgomb = true;
+                    }
+
+                }
+
+
+
+            }
+            if (kellgomb)
+            {
+                gombokKipakol();
+            }
+
+
+
+            return visszaMost;
+        }
+
+        private void gombokKipakol()
+        {
+
+            UsersDataAccess adatBazis = new UsersDataAccess();
+            
+            var stack = new StackLayout();
+            scroll.Content = stack;
+            var regForm2 = new Grid();
+            regForm2.HorizontalOptions = LayoutOptions.Center;
+            //regForm2.BackgroundColor = Color.LightGray;
+            regForm2.Padding = 5;
+            regForm2.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            regForm2.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(8, GridUnitType.Star) });
+            regForm2.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            regForm2.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
+            var indexMost = -1;
+            foreach (var item in adatBazis.CogDataKerdiv)
+            {
+                indexMost++;
+                var zipFileName = "kerdiv_" + item.projid + "_" + item.kerdiv1ver;
+
+                var buttonM = new Button();
+                buttonM.Text = item.kerdivtitle;
+                regForm2.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
+                regForm2.Children.Add(buttonM, 1, indexMost);
+                buttonM.IsVisible = false;
+                if (File.Exists(Constans.myZipPath + "/cognative/" + zipFileName + "/" + item.kerdiv1nev + ".json"))
+                {
+                    buttonM.IsVisible = true;
+                }
+                buttonM.Clicked += (aktButton, eredmeny) =>
+                {
+                    Button button = (Button)aktButton;
+                    foreach (var itemT in Constans.myParam2)
+                    {
+                        if (Convert.ToString(button.Id) == itemT.Item1)
+                        {
+                            string ffilenev = itemT.Item3 + ".json";
+                            Constans.myFilePath = Path.Combine(Constans.myZipPath, "cognative", itemT.Item2);
+                            String ffile = Path.Combine(Constans.myZipPath, "cognative", itemT.Item2, ffilenev);
+                            Debug.WriteLine("ffileneve: " + ffile);
+                            string jsonString = File.ReadAllText(ffile);
+                            jsonString = Constans.RemoveNewLines(jsonString);
+
+                            Questions responseObject = JsonConvert.DeserializeObject<Questions>(jsonString);
+                            
+                            foreach (Questions.Question itemQ in responseObject.questions)
+                            {
+                                List<string> listValasz = new List<string>();
+                                if (itemQ.question_type != "SzurRadio2")
+                                {
+                                    bool vanvalasz = true;
+                                    if (itemQ.choices!=null)
+                                    {
+                                        foreach (var itemQV in itemQ.choices)
+                                        {
+                                            int inte = 0;
+                                            int kezd = itemQV.IndexOf(Convert.ToChar("-"));
+                                            if (kezd != null)
+                                            {
+                                                if (kezd > 0)
+                                                {
+                                                    string str = itemQV.Substring(0, kezd);
+                                                    inte = Convert.ToInt32(str);
+                                                }
+                                            }
+                                            if (inte == 0)
+                                            {
+                                                vanvalasz = false;
+                                                break;
+                                            }
+                                        }
+                                        if (!vanvalasz)
+                                        {
+                                            int idx = 0;
+                                            foreach (var itemQV in itemQ.choices)
+                                            {
+                                                idx++;
+                                                //itemQ.choicesKod[idx]=(Convert.ToString(idx));
+                                                //itemQ.choicesKod.Add(Convert.ToString(idx));
+                                                listValasz.Add(Convert.ToString(idx));
+
+                                            }
+                                            
+                                        }
+                                        itemQ.choicesKod = (listValasz);
+                                    }
+                                    
+                                    
+                                }
+                                else
+                                {
+                                    int idx = 0;
+                                    foreach (var itemQV in itemQ.choices)
+                                    {
+                                        idx++;
+                                        int inte = 0;
+                                        int kezd = itemQV.IndexOf(Convert.ToChar("-"));
+                                        if (kezd != null)
+                                        {
+                                            if (kezd > 0)
+                                            {
+                                                string str = itemQV.Substring(0, kezd );
+                                                inte = Convert.ToInt32(str);
+
+
+                                            }
+                                        }
+                                        if (inte > 0)
+                                        {
+                                            //itemQ.choicesKod.Add(Convert.ToString(inte));
+                                            //itemQ.choicesKod[idx] = (Convert.ToString(inte));
+                                            listValasz.Add(Convert.ToString(inte));
+
+                                        }
+                                        else
+                                        {
+                                            //itemQ.choicesKod[idx]="0";
+                                            listValasz.Add("0");
+                                        }
+                                    }
+                                    itemQ.choicesKod = (listValasz);
+                                }
+                            }
+                            Constans.aktQuestion = responseObject.questions.ElementAt(0);
+                            Constans.aktSurvey = responseObject;
+                            Constans.pageNumber = 1;
+                            var visszay = adatBazis.GetCogDataKerdiv();
+                            Debug.WriteLine(visszay.Count());
+                            foreach(Cogkerdiv itemy in visszay)
+                            {
+                                Debug.WriteLine(itemy.id);
+                            }
+                            
+                            var visszax = adatBazis.GetCogDataKerdivAsSern(itemT.Item4) ;
+                            Debug.WriteLine(visszax.Count());
+                            foreach (Cogkerdiv itemx in visszax)
+                            {
+                                Constans.kerdivId = Convert.ToString(itemx.projid);
+                                Constans.kerdivVer = itemx.kerdiv1ver;
+                                Constans.kerdivAlid = kerdivAlidKeres(itemx.projid);
+                                Constans.kerdivTip = Convert.ToString(itemx.kerdivtip);
+                            }
+                            
+
+                            Navigation.PushModalAsync(new FPage());
+                            break;
+
+                        }
+                    }
+                };
+
+                Constans.myParam.Add(Convert.ToString(buttonM.Id), zipFileName);
+                Constans.myParam2.Add(Tuple.Create(Convert.ToString(buttonM.Id), zipFileName, item.kerdiv1nev, item.id));
+
+                listOfButtons.Add(buttonM);
+
+            }
+            stack.Children.Add(regForm2);
+            
+        }
+
+        private int kerdivAlidKeres(int projid)
+        {
+            int visszaTero = 1;
+            UsersDataAccess adatBazis = new UsersDataAccess();
+            var kerdivek = adatBazis.GetCogDataAsProjid(projid);
+            foreach (var item in kerdivek)
+            {
+                if (item.alid> visszaTero)
+                {
+                    visszaTero = item.alid;
+                }
+            }
+            return visszaTero+1;
         }
 
         private void ButtonM_Clicked(Button sender, EventArgs e)

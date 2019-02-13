@@ -79,7 +79,7 @@ namespace CognativeSurveyX.Fregments
                     if (kinyilo.IsChecked)
                     {
                         item.Item2.IsVisible = true;
-                        Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(item.Item1) + "=" + Convert.ToString(item.Item1) + ";" ;
+                        //Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(item.Item1) + "=" + Convert.ToString(item.Item1) + ";" ;
                     }
                     else
                     {
@@ -112,7 +112,9 @@ namespace CognativeSurveyX.Fregments
                     {
                         otherDuma = Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(item.Item1) + "other=" + Convert.ToString(Constans.kipofoz(item.Item2.TextOther)) + ";";
                     }
-                    Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(item.Item1) + "=" + Convert.ToString(item.Item1) + ";" + otherDuma;
+                    //Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" +  Convert.ToString(item.Item1) + "=" + Convert.ToString(item.Item1) + ";" + otherDuma;
+                    Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + 
+                        Convert.ToString(Constans.aktQuestion.choicesKod[Convert.ToInt32(item.Item1)]) + "=" + Convert.ToString(Constans.aktQuestion.choicesKod[Convert.ToInt32(item.Item1)]) + ";" + otherDuma;
                 }
             }
             Constans.valaszok = Constans.valaszok.Substring(0, Constans.valaszok.Length);
