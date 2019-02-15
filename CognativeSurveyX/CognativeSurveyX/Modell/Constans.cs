@@ -186,21 +186,25 @@ namespace CognativeSurveyX.Modell
             var darabol = valasz.Split(Convert.ToChar(";"));
             foreach(var item in darabol)
             {
-                var darabol2 = item.Split(Convert.ToChar("="));
-                var idd2 = adatBazis.SaveCogData(new Cogdata
+                if (item.Length>0)
                 {
-                    kerdes = darabol2[0],
-                    valasz = darabol2[1],
-                    kerdivdate = DateTime.Now,
-                    egyedi2 =kerdivPlatformGep,
-                    egyedi3 =kerdivPlatformSoftver,
-                    kerdivver =kerdivVer,
-                    kerdivtip =Convert.ToInt16( kerdivTip),
-                    projid =Convert.ToInt16(kerdivId),
-                    alid =kerdivAlid,
-                    egyedi1 =Convert.ToString(kerdivGPSLongitude) + ";" + Convert.ToString(kerdivGPSLatitude)
+                    var darabol2 = item.Split(Convert.ToChar("="));
+                    var idd2 = adatBazis.SaveCogData(new Cogdata
+                    {
+                        kerdes = darabol2[0],
+                        valasz = darabol2[1],
+                        kerdivdate = DateTime.Now,
+                        egyedi2 = kerdivPlatformGep,
+                        egyedi3 = kerdivPlatformSoftver,
+                        kerdivver = kerdivVer,
+                        kerdivtip = Convert.ToInt16(kerdivTip),
+                        projid = Convert.ToInt16(kerdivId),
+                        alid = kerdivAlid,
+                        egyedi1 = Convert.ToString(kerdivGPSLongitude) + ";" + Convert.ToString(kerdivGPSLatitude)
 
-                });
+                    });
+                }
+                
             }
         }
 

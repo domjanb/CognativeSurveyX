@@ -16,7 +16,7 @@ namespace CognativeSurveyX.Fregments
 	public partial class FSzurCheckbox2 : ContentPage
 	{
         List<Checkbox> listCheckbox = new List<Checkbox>();
-        public static List<Tuple<string, Checkbox>> myCheckbox = new List<Tuple<string, Checkbox>>();
+        public static List<Tuple<string, string,Checkbox>> myCheckbox = new List<Tuple<string, string,Checkbox>>();
         public FSzurCheckbox2 ()
 		{
 			InitializeComponent ();
@@ -32,9 +32,11 @@ namespace CognativeSurveyX.Fregments
             kerdes.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
             myStack.Children.Add(kerdes);
 
+            int idx = 0;
             string csoport = "";
             foreach (var item in Constans.aktQuestion.choices)
             {
+                idx++;
                 var kotojelPos = item.IndexOf("-");
                 if (csoportositoE(item))
                 {
@@ -53,10 +55,10 @@ namespace CognativeSurveyX.Fregments
                     button.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
                     button.BackgroundColor = Color.Transparent;
 
-
+                    string kod = Constans.aktQuestion.choicesKod[idx - 1];
                     listCheckbox.Add(button);
                     //myCheckbox.Add(csoport, button);
-                    myCheckbox.Add(Tuple.Create(csoport, button));
+                    myCheckbox.Add(Tuple.Create(csoport, kod,button));
 
                     //button.Opacity = 1;
                     button.CheckedChange += Button_CheckedChange;
@@ -78,12 +80,12 @@ namespace CognativeSurveyX.Fregments
                 {
                     if (kinyilo.IsChecked)
                     {
-                        item.Item2.IsVisible = true;
+                        item.Item3.IsVisible = true;
                         //Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(item.Item1) + "=" + Convert.ToString(item.Item1) + ";" ;
                     }
                     else
                     {
-                        item.Item2.IsVisible = false;
+                        item.Item3.IsVisible = false;
                     }
                 }
 
@@ -105,16 +107,16 @@ namespace CognativeSurveyX.Fregments
             foreach (var item in myCheckbox)
             {
 
-                if (item.Item2.IsChecked)
+                if (item.Item3.IsChecked)
                 {
                     string otherDuma = "";
-                    if (item.Item2.KellEOther)
+                    if (item.Item3.KellEOther)
                     {
-                        otherDuma = Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(item.Item1) + "other=" + Convert.ToString(Constans.kipofoz(item.Item2.TextOther)) + ";";
+                        otherDuma = Constans.aktQuestion.kerdeskod + "_" + item.Item2 + "other=" + Convert.ToString(Constans.kipofoz(item.Item3.TextOther)) + ";";
                     }
                     //Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" +  Convert.ToString(item.Item1) + "=" + Convert.ToString(item.Item1) + ";" + otherDuma;
                     Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + 
-                        Convert.ToString(Constans.aktQuestion.choicesKod[Convert.ToInt32(item.Item1)]) + "=" + Convert.ToString(Constans.aktQuestion.choicesKod[Convert.ToInt32(item.Item1)]) + ";" + otherDuma;
+                        item.Item2 + "=" + item.Item2 + ";" + otherDuma;
                 }
             }
             Constans.valaszok = Constans.valaszok.Substring(0, Constans.valaszok.Length);
