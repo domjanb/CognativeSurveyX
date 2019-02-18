@@ -49,6 +49,30 @@ namespace CognativeSurveyX.Data
             return response;
 
         }
+        public async Task<RestApiModell> kerdesUpload(Cogdata cogdata)
+        {
+            var postData = new List<KeyValuePair<string, string>>();
+            postData.Add(new KeyValuePair<string, string>("vFelhszn", Constans.kerdivUser));
+            postData.Add(new KeyValuePair<string, string>("str_vKerdivid", Convert.ToString(cogdata.projid)));
+            postData.Add(new KeyValuePair<string, string>("str_vKerdivalid", Convert.ToString(cogdata.alid)));
+            postData.Add(new KeyValuePair<string, string>("str_vKerdivtip", Convert.ToString(cogdata.kerdivtip)));
+            postData.Add(new KeyValuePair<string, string>("str_vKerdivver", cogdata.kerdivver));
+            postData.Add(new KeyValuePair<string, string>("str_vKisid", "1"));
+            postData.Add(new KeyValuePair<string, string>("str_vKerdes", cogdata.kerdes));
+            postData.Add(new KeyValuePair<string, string>("str_vValasz", cogdata.valasz));
+            postData.Add(new KeyValuePair<string, string>("str_vEgyedi1", cogdata.egyedi1));
+            postData.Add(new KeyValuePair<string, string>("str_vEgyedi2", cogdata.egyedi2));
+            postData.Add(new KeyValuePair<string, string>("str_vEgyedi3", cogdata.egyedi3));
+            postData.Add(new KeyValuePair<string, string>("str_vEgyedi4", cogdata.egyedi4));
+            postData.Add(new KeyValuePair<string, string>("str_vDate", Convert.ToString(cogdata.kerdivdate)));
+
+            var content = new FormUrlEncodedContent(postData);
+            var uri = Constans.webUrlfeltolt;
+            //Debug.WriteLine("egynek jo");
+            var response = await PostResponseReggi<Token>(uri, content);
+            return response;
+
+        }
         public  Task<RestApiModell> Reggi2(User user)
         {
             var postData = new List<KeyValuePair<string, string>>();

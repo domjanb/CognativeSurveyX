@@ -208,6 +208,14 @@ namespace CognativeSurveyX
                 return query.AsEnumerable();
             }
         }
+        public IEnumerable<Cogdata> GetCogDataFeltoltveE(bool fele)
+        {
+            lock (collisionLock)
+            {
+                var query = from adat in database.Table<Cogdata>() where adat.feltoltve == fele select adat;
+                return query.AsEnumerable();
+            }
+        }
         public IEnumerable<Cogdata> GetCogData()
         {
             lock (collisionLock)
@@ -216,6 +224,17 @@ namespace CognativeSurveyX
 
             }
         }
+        public int UpdateCogData(Cogdata CogDataAdat)
+        {
+            lock (collisionLock)
+            {
+                database.Update(CogDataAdat);
+                return CogDataAdat.id;
+            }
+
+
+        }
+
         public int SaveCogData(Cogdata CogDataAdat)
         {
             lock (collisionLock)

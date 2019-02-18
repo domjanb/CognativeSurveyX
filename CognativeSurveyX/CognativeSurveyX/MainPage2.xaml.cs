@@ -40,8 +40,8 @@ namespace CognativeSurveyX
         //String[] vs;
 
         Button reggomb;
-        private RestApiModell vissza;
-        private RestApiModell vissza2;
+        private RestApiModell visszaRestApi;
+        //private RestApiModell vissza2;
 
         ScrollView scroll = new ScrollView();
         
@@ -77,8 +77,13 @@ namespace CognativeSurveyX
                 " at " + e.OldStartingIndex
 
                 );
-            Constans.kerdivPlatformGep = myPlatform.GetModell();
-            Constans.kerdivPlatformSoftver = myPlatform.GetVersion();
+            if (myPlatform != null)
+            {
+                Constans.kerdivPlatformGep = myPlatform.GetModell();
+                Constans.kerdivPlatformSoftver = myPlatform.GetVersion();
+            }
+            
+            
 
 
             //Debug.WriteLine(Constans.myZipPath);
@@ -194,9 +199,9 @@ namespace CognativeSurveyX
                         user.user_emil = valaszok[4].Text;
                         var rs = new Data.RestService();
                         Debug.WriteLine(user);
-                        vissza = await rs.Reggi(user);
-                        Debug.WriteLine("visszastring:" + Convert.ToString(vissza));
-                        if (vissza.error)
+                        visszaRestApi = await rs.Reggi(user);
+                        Debug.WriteLine("visszastring:" + Convert.ToString(visszaRestApi));
+                        if (visszaRestApi.error)
                         {
                             var idd2 = adatBazis.SaveCogAzon(new Cogazon
                             {
@@ -235,35 +240,35 @@ namespace CognativeSurveyX
                             regForm2.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
                             regForm2.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
 
-                            for (int i = 0; i < vissza.darab; i++)
+                            for (int i = 0; i < visszaRestApi.darab; i++)
                             {
                                 var ReferenceDate = new DateTime(1970, 1, 1);
-                                DateTime CacheUtcTime = ReferenceDate.AddSeconds(Convert.ToInt64(vissza.kerdivadat[i].kerdiv2_le));
+                                DateTime CacheUtcTime = ReferenceDate.AddSeconds(Convert.ToInt64(visszaRestApi.kerdivadat[i].kerdiv2_le));
 
                                 //adatBazis.DeleteCogAzonAll();
                                 var idd = adatBazis.SaveCogDataKerdiv(new Cogkerdiv
                                 {
-                                    kerdiv1nev = vissza.kerdivadat[i].kerdiv1_nev,
-                                    kerdiv1ver = vissza.kerdivadat[i].kerdiv1_ver,
-                                    kerdivtitle = vissza.kerdivadat[i].kerdiv1_title,
-                                    kerdivtip = Convert.ToInt16(vissza.kerdivadat[i].kerdivtip),
-                                    projid = Convert.ToInt16(vissza.kerdivadat[i].proj_id),
-                                    fuggv_par = Convert.ToInt16(vissza.kerdivadat[i].fugg_par),
-                                    fuggv_par_ertek = Convert.ToInt16(vissza.kerdivadat[i].fugg_par_ertek),
-                                    fuggv_poj = Convert.ToInt16(vissza.kerdivadat[i].fugg_proj),
+                                    kerdiv1nev = visszaRestApi.kerdivadat[i].kerdiv1_nev,
+                                    kerdiv1ver = visszaRestApi.kerdivadat[i].kerdiv1_ver,
+                                    kerdivtitle = visszaRestApi.kerdivadat[i].kerdiv1_title,
+                                    kerdivtip = Convert.ToInt16(visszaRestApi.kerdivadat[i].kerdivtip),
+                                    projid = Convert.ToInt16(visszaRestApi.kerdivadat[i].proj_id),
+                                    fuggv_par = Convert.ToInt16(visszaRestApi.kerdivadat[i].fugg_par),
+                                    fuggv_par_ertek = Convert.ToInt16(visszaRestApi.kerdivadat[i].fugg_par_ertek),
+                                    fuggv_poj = Convert.ToInt16(visszaRestApi.kerdivadat[i].fugg_proj),
                                     kerdivdate = CacheUtcTime
 
 
                                 });
 
-                                var zipFileName = "kerdiv_" + vissza.kerdivadat[i].proj_id + "_" + vissza.kerdivadat[i].kerdiv1_ver;
+                                var zipFileName = "kerdiv_" + visszaRestApi.kerdivadat[i].proj_id + "_" + visszaRestApi.kerdivadat[i].kerdiv1_ver;
 
                                 var buttonM = new Button();
-                                buttonM.Text = vissza.kerdivadat[i].kerdiv1_title;
+                                buttonM.Text = visszaRestApi.kerdivadat[i].kerdiv1_title;
                                 regForm2.RowDefinitions.Add(new RowDefinition { Height = new GridLength(1, GridUnitType.Star) });
                                 regForm2.Children.Add(buttonM, 1, i);
                                 buttonM.IsVisible = false;
-                                if (File.Exists(Constans.myZipPath + "/cognative/" + zipFileName + "/" + vissza.kerdivadat[i].kerdiv1_nev + ".json"))
+                                if (File.Exists(Constans.myZipPath + "/cognative/" + zipFileName + "/" + visszaRestApi.kerdivadat[i].kerdiv1_nev + ".json"))
                                 {
                                     buttonM.IsVisible = true;
                                 }
@@ -316,7 +321,7 @@ namespace CognativeSurveyX
 
                                 //Debug.WriteLine("button_id:" + buttonM.Id);
                                 Constans.myParam.Add(Convert.ToString(buttonM.Id), zipFileName);
-                                Constans.myParam2.Add(Tuple.Create(Convert.ToString(buttonM.Id), zipFileName, vissza.kerdivadat[i].kerdiv1_nev, idd));
+                                Constans.myParam2.Add(Tuple.Create(Convert.ToString(buttonM.Id), zipFileName, visszaRestApi.kerdivadat[i].kerdiv1_nev, idd));
 
                                 listOfButtons.Add(buttonM);
 
@@ -370,10 +375,10 @@ namespace CognativeSurveyX
                         }
                         //var aa = vissza.getError();
                         //var bb = vissza.getMessage();
-                        var cc = vissza.message;
+                        var cc = visszaRestApi.message;
 
                         //var visszatrue= vissza.Rootobject.error;
-                        Debug.WriteLine("vlasz " + Convert.ToString(vissza));
+                        Debug.WriteLine("vlasz " + Convert.ToString(visszaRestApi));
                     };
                     reggomb = regButton;
 

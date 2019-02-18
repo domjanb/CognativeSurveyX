@@ -7,6 +7,9 @@ using Xamarin.Forms;
 using System.IO;
 using CognativeSurveyX.Fregments;
 using CognativeSurveyX.Controls;
+using Plugin.Connectivity;
+using System.Linq;
+using CognativeSurveyX.Data;
 
 namespace CognativeSurveyX.Modell
 {
@@ -107,6 +110,7 @@ namespace CognativeSurveyX.Modell
         public static Dictionary<string, string> myParam = new Dictionary<string, string>();
         public static List<Tuple<string, string, string,int>> myParam2 = new List<Tuple<string, string,string,int>>();
 
+        public static int paramNetkapcsolat = 1;
         public static string csekbox_false = "☐";
         public static string csekbox_true = "☒";
 
@@ -118,6 +122,7 @@ namespace CognativeSurveyX.Modell
         public static Color BackgroundColor = Color.FromRgb(58, 153, 212);
         public static Color MainTextColor = Color.White;
         public static string webUrl = "http://qnr.cognative.hu/cogsurv/regist_ios2.php";
+        public static string webUrlfeltolt = "http://qnr.cognative.hu/cogsurv/feltolt_xam.php";
         public static string downUrl = "http://qnr.cognative.hu/cogsurv/";
         public static string myZipPath = "";
         public static string myFilePath = "";
@@ -189,25 +194,64 @@ namespace CognativeSurveyX.Modell
                 if (item.Length>0)
                 {
                     var darabol2 = item.Split(Convert.ToChar("="));
+                    //long mostDate1 = TimeS(DateTime.Now);
+
                     var idd2 = adatBazis.SaveCogData(new Cogdata
                     {
                         kerdes = darabol2[0],
                         valasz = darabol2[1],
-                        kerdivdate = DateTime.Now,
+                        kerdivdate = TimeS(DateTime.Now),
                         egyedi2 = kerdivPlatformGep,
                         egyedi3 = kerdivPlatformSoftver,
                         kerdivver = kerdivVer,
                         kerdivtip = Convert.ToInt16(kerdivTip),
                         projid = Convert.ToInt16(kerdivId),
                         alid = kerdivAlid,
-                        egyedi1 = Convert.ToString(kerdivGPSLongitude) + ";" + Convert.ToString(kerdivGPSLatitude)
-
+                        egyedi1 = Convert.ToString(kerdivGPSLongitude) + ";" + Convert.ToString(kerdivGPSLatitude),
+                        feltoltve = false
                     });
                 }
                 
             }
-        }
+            
+            if (milyenANet() == paramNetkapcsolat)
+            {
+                feltoltAdat();
+            }
 
+        }
+        public static long TimeS(DateTime date)
+        {
+            DateTime baseDate = new DateTime(1970, 1, 1, 0, 0, 0, DateTimeKind.Utc);
+            return (long)(date.ToUniversalTime() - baseDate).TotalMilliseconds;
+        }
+        private async static void feltoltAdat()
+        {
+            UsersDataAccess adatBazis = new UsersDataAccess();
+            var rs = new Data.RestService();
+            var allData = adatBazis.GetCogDataFeltoltveE(false);
+            var A = 1;
+            //if (allData.Count() > 0)
+            {
+                foreach (var item in allData)
+                {
+                    if (milyenANet() == paramNetkapcsolat)
+                    {
+                        Cogdata cogdata = (Cogdata)item;
+                        RestApiModell visszaUpload = await rs.kerdesUpload(cogdata);
+                        if (visszaUpload.message == "OK")
+                        {
+                            cogdata.feltoltve = true;
+                            adatBazis.UpdateCogData(cogdata);
+                        }
+                    }
+
+                }
+            }
+
+
+
+        }
         public static string kipofoz(string duma)
         {
             string vissza = "";
@@ -228,6 +272,38 @@ namespace CognativeSurveyX.Modell
             }
 
             return vissza;
+        }
+        public static int milyenANet()
+        {
+            int vissza = 0;
+            if (CrossConnectivity.Current.IsConnected)
+            {
+                var wifi = Plugin.Connectivity.Abstractions.ConnectionType.WiFi;
+                var mobilnet = Plugin.Connectivity.Abstractions.ConnectionType.Cellular;
+                var connectionTypes = CrossConnectivity.Current.ConnectionTypes;
+                if (connectionTypes.Contains(wifi) && connectionTypes.Contains(mobilnet))
+                {
+                    vissza = 1;
+                }
+                else if (connectionTypes.Contains(wifi))
+                {
+                    vissza = 2;
+                }
+                else if (connectionTypes.Contains(mobilnet))
+                {
+                    vissza = 3;
+                }
+                else
+                {
+                    vissza = 4;
+                }
+            }
+            if (vissza != 0)
+            {
+                paramNetkapcsolat = vissza;
+            }
+            return vissza;
+
         }
     }
 

@@ -139,15 +139,26 @@ namespace CognativeSurveyX
             }
         }
 
-        private DateTime _kerdivdate;
+        private long _kerdivdate;
         [NotNull]
-        public DateTime kerdivdate
+        public long kerdivdate
         {
             get { return _kerdivdate; }
             set
             {
                 this._kerdivdate = value;
                 OnProperityChange(nameof(kerdivdate));
+            }
+        }
+        private bool _feltoltve;
+        [NotNull]
+        public bool feltoltve
+        {
+            get { return _feltoltve; }
+            set
+            {
+                this._feltoltve = value;
+                OnProperityChange(nameof(_feltoltve));
             }
         }
 
