@@ -20,15 +20,27 @@ namespace CognativeSurveyX.Modell
         public string FeltetelVizsgalo()
         {
             var vissza_string = _Feltetel;
-            while (_Feltetel.Contains("("))
+            if (_Feltetel.ToLower() == "(true)")
             {
-                vissza_string = zarojelKeres(vissza_string);
-                if (!vissza_string.Contains("("))
-                {
-                    _Feltetel = vissza_string;
-                }
-
+                vissza_string = "true";
             }
+            else if (_Feltetel.ToLower() == "(false)")
+            {
+                vissza_string = "false";
+            }
+            else
+            {
+                while (_Feltetel.Contains("("))
+                {
+                    vissza_string = zarojelKeres(vissza_string);
+                    if (!vissza_string.Contains("("))
+                    {
+                        _Feltetel = vissza_string;
+                    }
+
+                }
+            }
+            
 
 
             return vissza_string;
@@ -41,13 +53,13 @@ namespace CognativeSurveyX.Modell
             string v2 = "";
             int uccso_nyito = 0;
             int uccso_zaro = 0;
-            uccso_nyito = feltetel.LastIndexOf(Convert.ToChar("("));
+            uccso_nyito = feltetel.LastIndexOf("(");
             if (uccso_nyito > -1)
             {
-                uccso_zaro = feltetel.IndexOf(Convert.ToChar(")"), uccso_nyito);
-                v1 = feltetel.Substring(0, uccso_nyito - 1);
-                vissza_string = feltetel.Substring(uccso_nyito + 1, uccso_zaro - 1);
-                v2 = feltetel.Substring(uccso_zaro + 1, feltetel.Length+ 1);
+                uccso_zaro = feltetel.IndexOf(")", uccso_nyito);
+                v1 = feltetel.Substring(0, uccso_nyito+1 );
+                vissza_string = feltetel.Substring(uccso_nyito+1 , uccso_zaro-1 );
+                v2 = feltetel.Substring(uccso_zaro , feltetel.Length-uccso_zaro);
             }
             else
             {
@@ -110,7 +122,7 @@ namespace CognativeSurveyX.Modell
                     relacio = 1;
 
                     int kezd0 = feltetel.ToLower().IndexOf(">");
-                    bal_oldal = feltetel.Substring(0, kezd0 - 1).Trim();
+                    bal_oldal = feltetel.Substring(0, kezd0 ).Trim();
                     origString = bal_oldal;
                     bal_oldal = balSpacenalVissza(origString);
                     balbal_oldal = "";
@@ -136,7 +148,7 @@ namespace CognativeSurveyX.Modell
                     if ((csereRange2 == 0))
                     {
                         csereRange2 = feltetel.Length;
-                        jobb_oldal = feltetel.Substring(kezd0 + 1, csereRange2).Trim();
+                        jobb_oldal = feltetel.Substring(kezd0 + 1, feltetel.Length- csereRange2+1).Trim();
                     }
                     origString = jobb_oldal;
                     jobb_oldal = jobbSpacenalVissza(origString);
@@ -153,7 +165,7 @@ namespace CognativeSurveyX.Modell
                 {
                     relacio = 3;
                     int kezd0= feltetel.ToLower().IndexOf("=");
-                    origString = feltetel.Substring(0, kezd0 - 1).Trim();
+                    origString = feltetel.Substring(0, kezd0 ).Trim();
                     bal_oldal = balSpacenalVissza(origString);
                     balbal_oldal = "";
                     if (bal_oldal != origString)
@@ -178,7 +190,7 @@ namespace CognativeSurveyX.Modell
                 {
                     relacio = 4;
                     int kezd0= feltetel.ToLower().IndexOf("<");
-                    bal_oldal = feltetel.Substring(0, kezd0 - 1).Trim();
+                    bal_oldal = feltetel.Substring(0, kezd0).Trim();
                     origString = bal_oldal;
                     bal_oldal = balSpacenalVissza(origString);
                     balbal_oldal = "";
@@ -227,7 +239,7 @@ namespace CognativeSurveyX.Modell
                 {
                     relacio = 2;
                     int kezd0= feltetel.ToLower().IndexOf(">=");
-                    bal_oldal = feltetel.Substring(0, kezd0 - 1).Trim();
+                    bal_oldal = feltetel.Substring(0, kezd0).Trim();
                     origString = bal_oldal;
                     bal_oldal = balSpacenalVissza(origString);
                     balbal_oldal = "";
@@ -305,7 +317,7 @@ namespace CognativeSurveyX.Modell
                 {
                     relacio = 6;
                     int kezd0= feltetel.ToLower().IndexOf("<>");
-                    bal_oldal = feltetel.Substring(0, kezd0 - 1).Trim();
+                    bal_oldal = feltetel.Substring(0, kezd0 ).Trim();
                     origString = bal_oldal;
                     bal_oldal = balSpacenalVissza(origString);
                     balbal_oldal = "";
@@ -330,7 +342,7 @@ namespace CognativeSurveyX.Modell
                     if ((csereRange2 == 0))
                     {
                         csereRange2 = feltetel.Length;
-                        jobb_oldal = feltetel.Substring(kezd0 + 2, csereRange2).Trim();
+                        jobb_oldal = feltetel.Substring(kezd0 + 2, feltetel.Length-csereRange2+1).Trim();
                     }
                     origString = jobb_oldal;
                     jobb_oldal = jobbSpacenalVissza(origString);
@@ -689,73 +701,83 @@ namespace CognativeSurveyX.Modell
         }
         private string KeresErtek(string valtozo)
         {
+            UsersDataAccess adatBazis = new UsersDataAccess();
             string vissza_string= "";
-            /*
-             
-        //Log.e("elszallo ertek:", valtozo);
-        if (valtozo.equals(".")) {
-            vissza_string = "";
-        } else if (valtozo.substring(0,2).toLowerCase().equals("pt")){
-            var ptIndex:String = valtozo.substring(2);
-            
-            let alapAdatokParam = coredataOperations.fetchDataCogParamWhereSern(sern: Int16(_vKerdivalid), projAzon: _vKerdivid, ver: _vKerdivver) as [CogParam]
-            
-            if (alapAdatokParam.count > 0) {
-                for alapAdat in alapAdatokParam{
-                    if (alapAdat.kerdes == valtozo) {
-                        vissza_string = alapAdat.valasz!
-                        //vissza = true;
-                        break
-                    }
-                    
-                }
+            if (valtozo.Equals("."))
+            {
+                vissza_string = "";
             }
-            
-        } else {
-            var vartipus:Int=2;
-            //0 normal
-            //1 param
-            //2 multi
-            if (valtozo.substring(0,1).trim().toLowerCase().equals("pt")) {
-                vartipus=1;
-            } else {
-                for mQuestionKereso in (_mSurveyPojo?.getQuestions())! {
-                    if (mQuestionKereso.getQuestionType() == valtozo) {
-                        vartipus = 0;
-                    }
-                }
-                
-            }
-            let adatValaszok = coredataOperations.fetchDataCogDataWhereSern(sern: Int16(_vKerdivalid), projAzon: _vKerdivid, ver: _vKerdivver)
-            var vissza:Bool = false
-            if (adatValaszok.count) > 0 {
-                for adatValasz in adatValaszok {
-                    if (vartipus<2) {
-                        if (adatValasz.kerdes?.equals(valtozo))! {
-                            vissza_string = (adatValasz.valasz?.trim())!
-                            vissza=true;
-                        }
-                    } else {
-                        let  kezd:Int = valtozo.indexOf("_");
-                        let v1:String =  valtozo.substring(0,kezd-1);
-                        let v2:String = valtozo.substring(kezd+1);
-                        if ((adatValasz.kerdes?.trim().equals(v1))! &&
-                            String(adatValasz.kisid) == v2   ) {
-                            vissza_string = (adatValasz.valasz?.trim())!
-                            vissza=true;
-                        }
-                    }
-                }
-                
-            }
-            
-        }
-        
-        
+            else if (valtozo.Substring(0, 2).ToLower().Equals("pt"))
+            {
+                string ptIndex= valtozo.Substring(2);
 
-        
-             */
-            return vissza_string;
+                var alapAdatokParam = adatBazis.GetCogparamAsProjidVer(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer);
+                //let alapAdatokParam = 
+                //coredataOperations.fetchDataCogParamWhereSern(
+                //  sern: Int16(_vKerdivalid), projAzon: _vKerdivid, ver: _vKerdivver) as [CogParam]
+                foreach(var alapAdat in alapAdatokParam)
+                {
+                    if (alapAdat.kerdes == valtozo)
+                    {
+                        vissza_string = alapAdat.valasz;
+                        break;
+                    }
+                }
+            }
+
+            else
+            {
+                int vartipus = 2;
+                //0 normal
+                //1 param
+                //2 multi
+                if (valtozo.Substring(0, 1).Trim().ToLower().Equals("pt"))
+                {
+                    vartipus = 1;
+                }
+                else
+                {
+                    foreach(var kerdes in Constans.aktSurvey.questions)
+                    {
+                        if (kerdes.question_type == valtozo)
+                        {
+                            vartipus = 0;
+                        }
+
+                    }
+                }
+
+
+                var adatValaszok=adatBazis.GetCogDataAsProjidVer(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer);
+                bool vissza = false;
+                foreach (var adatValasz in adatValaszok)
+                {
+                    if (vartipus < 2)
+                    {
+                        if (adatValasz.kerdes.Equals(valtozo))
+                        {
+                            vissza_string = (adatValasz.valasz.Trim());
+                            vissza = true;
+                        }
+                    }
+                    else
+                    {
+                        int kezd = valtozo.IndexOf("_");
+                        string v1 = valtozo.Substring(0, kezd - 1);
+                        string v2 = valtozo.Substring(kezd + 1);
+                        if ((adatValasz.kerdes.Trim().Equals(v1))
+                            //&&  String(adatValasz.kisid) == v2  
+                            )
+                        {
+                            vissza_string = (adatValasz.valasz.Trim());
+                            vissza = true;
+                        }
+                    }
+                }
+
+            }
+              
+                return vissza_string;
         }
         private string balSpacenalVissza(string duma)
         {
@@ -1064,7 +1086,12 @@ namespace CognativeSurveyX.Modell
 
         private bool isValidFloat(string duma)
         {
-            return double.IsNaN(Convert.ToDouble(duma));
+            bool visszaBool = true;
+            double doubleResult;
+            var vissza= double.TryParse(duma, out doubleResult);
+            if (doubleResult == 0) { visszaBool = false; }
+            return visszaBool;
+            //return double.IsNaN(Convert.ToDouble(duma));
         }
 
     }

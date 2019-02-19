@@ -16,6 +16,7 @@ namespace CognativeSurveyX
         public ObservableCollection<Cogazon> CogUser { get; set; }
         public ObservableCollection<Cogkerdiv> CogDataKerdiv { get; set; }
         public ObservableCollection<Cogdata> CogData { get; set; }
+        public ObservableCollection<Cogparam> CogParam { get; set; }
 
         public UsersDataAccess()
         {
@@ -24,6 +25,7 @@ namespace CognativeSurveyX
             database.CreateTable<Cogazon>();
             database.CreateTable<Cogkerdiv>();
             database.CreateTable<Cogdata>();
+            database.CreateTable<Cogparam>();
 
 
             this.CogUser = new ObservableCollection<Cogazon>(database.Table<Cogazon>());
@@ -208,6 +210,14 @@ namespace CognativeSurveyX
                 return query.AsEnumerable();
             }
         }
+        public IEnumerable<Cogdata> GetCogDataAsProjidVer(int projid, string kerdivver)
+        {
+            lock (collisionLock)
+            {
+                var query = from adat in database.Table<Cogdata>() where (adat.projid == projid && adat.kerdivver==kerdivver) select adat;
+                return query.AsEnumerable();
+            }
+        }
         public IEnumerable<Cogdata> GetCogDataFeltoltveE(bool fele)
         {
             lock (collisionLock)
@@ -270,6 +280,86 @@ namespace CognativeSurveyX
             lock (collisionLock)
             {
                 database.DeleteAll<Cogdata>();
+            }
+
+
+
+        }
+
+
+
+
+        public IEnumerable<Cogparam> GetCogparamAsProjid(int projid)
+        {
+            lock (collisionLock)
+            {
+                var query = from adat in database.Table<Cogparam>() where adat.projid == projid select adat;
+                return query.AsEnumerable();
+            }
+        }
+        public IEnumerable<Cogparam> GetCogparamAsProjidVer(int projid, string kerdivver)
+        {
+            lock (collisionLock)
+            {
+                var query = from adat in database.Table<Cogparam>() where (adat.projid == projid && adat.kerdivver== kerdivver) select adat;
+                return query.AsEnumerable();
+            }
+        }
+
+        public IEnumerable<Cogparam> GetCogparam()
+        {
+            lock (collisionLock)
+            {
+                return database.Query<Cogparam>("Select * from Cogparam").AsEnumerable();
+
+            }
+        }
+        public int UpdateCogparam(Cogparam CogparamAdat)
+        {
+            lock (collisionLock)
+            {
+                database.Update(CogparamAdat);
+                return CogparamAdat.id;
+            }
+
+
+        }
+
+        public int SaveCogparam(Cogparam CogparamAdat)
+        {
+            lock (collisionLock)
+            {
+                if (CogparamAdat.id != 0)
+                {
+                    database.Update(CogparamAdat);
+                    return CogparamAdat.id;
+                }
+                else
+                {
+                    database.Insert(CogparamAdat);
+                    return CogparamAdat.id;
+                }
+            }
+        }
+        public int DeleteCogparam(Cogparam CogparamAdat)
+        {
+            var id = CogparamAdat.id;
+            if (id != 0)
+            {
+                lock (collisionLock)
+                {
+                    database.Delete<Cogparam>(id);
+                }
+
+            }
+            this.CogParam.Remove(CogparamAdat);
+            return id;
+        }
+        public void DeleteCogparamAll()
+        {
+            lock (collisionLock)
+            {
+                database.DeleteAll<Cogparam>();
             }
 
 

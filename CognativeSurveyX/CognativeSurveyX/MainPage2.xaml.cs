@@ -641,6 +641,33 @@ namespace CognativeSurveyX
                                     itemQ.choicesKod = (listValasz);
                                 }
                             }
+                            foreach (Questions.Question itemQ in responseObject.questions)
+                            {
+                                List<bool> listLatszik = new List<bool>();
+                                if (itemQ.choices!=null)
+                                {
+                                    foreach (var itemQV in itemQ.choices)
+                                    {
+                                        listLatszik.Add(true);
+                                    }
+                                    itemQ.choicesVisible = (listLatszik);
+                                }
+                                
+                            }
+                            foreach (Questions.Question itemQ in responseObject.questions)
+                            {
+                                List<bool> listLatszik = new List<bool>();
+                                if (itemQ.items != null)
+                                {
+                                    foreach (var itemQV in itemQ.items)
+                                    {
+                                        listLatszik.Add(true);
+                                    }
+                                    itemQ.itemVisible = (listLatszik);
+                                }
+                                    
+                                
+                            }
                             Constans.aktQuestion = responseObject.questions.ElementAt(0);
                             Constans.aktSurvey = responseObject;
                             Constans.pageNumber = 1;

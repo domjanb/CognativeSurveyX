@@ -154,7 +154,35 @@ namespace CognativeSurveyX.Modell
         public static  void nextPage()
         {
             ValaszokKiiratasa(valaszok);
-            Constans.pageNumber++;
+            bool ruleTovabb=ruleTombVizsgal();
+            if (ruleTovabb)
+            {
+                bool keresem = true;
+                while (keresem)
+                {
+
+                    Constans.pageNumber++;
+                    if (pageNumber <= aktSurvey.questions.Count + 1)
+                    {
+                        int idxa = 0;
+                        foreach (var item in aktSurvey.questions)
+                        {
+                            idxa++;
+                            if (idxa == pageNumber)
+                            {
+                                if (item.visible) { keresem = false; break; }
+                            }
+
+                        }
+                    }
+                    else
+                    {
+                        keresem = false;
+                    }
+                    
+                }
+            }
+            //Constans.pageNumber++;
             int idx = 0;
             //aktQuestion = "";
             foreach (var item in aktSurvey.questions)
@@ -183,6 +211,354 @@ namespace CognativeSurveyX.Modell
                 //Navigation.PushModalAsync(new Radioboxes());
                 
             }
+        }
+
+        private static bool ruleTombVizsgal()
+        {
+            bool vissza = true;
+            UsersDataAccess adatBazis = new UsersDataAccess();
+            if (aktQuestion.rules != null)
+            {
+                foreach (var aktrule in aktQuestion.rules)
+                {
+                    var rulesTomb = aktrule.Split(Convert.ToChar(" "));
+                    string rulesTomb0 = rulesTomb[0];
+                    if (rulesTomb0.ToLower().Equals("if"))
+                    {
+                        string feltetel = aktrule.Substring(3).Trim();
+                        if (feltetel.IndexOf("(") >= 0)
+                        {
+                            string feltetelTorzs = feltetelTorzsKeres(feltetel);
+                            string feltetelFeladat = feltetel.Substring(feltetelTorzs.Length).Trim();
+                            var feltetelElemzo = new FeltetelElemzo();
+                            feltetelElemzo.Feltetel = feltetelTorzs;
+                            string feltetel_vissza = (feltetelElemzo.FeltetelVizsgalo().ToLower().Trim());
+                            if (feltetel_vissza.ToLower().Equals("true"))
+                            {
+                                if (feltetelFeladat.Substring(0, "nogo(".Length - 1).Equals("NoGO("))
+                                {
+                                    vissza = false;
+                                    //string hibajegy = feltetelFeladat.Substring(6, feltetelFeladat.Length - 1);
+                                    break;
+                                }
+                                else if (feltetelFeladat.Substring(0, "PTE(".Length - 1).Equals("PTE("))
+                                {
+                                    string paramKod = feltetelFeladat.Substring(4, feltetelFeladat.IndexOf(";") - 1);
+                                    string paramErtek = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - 2);
+                                    Cogparam cogparam = new Cogparam
+                                    {
+                                        alid = kerdivAlid,
+                                        egyedi1 = "",
+                                        egyedi2 = "",
+                                        egyedi3 = "",
+                                        egyedi4 = "",
+                                        kerdes = "PT" + paramKod,
+                                        valasz = paramErtek,
+                                        kerdivtip = Convert.ToInt16(kerdivTip),
+                                        kerdivver = kerdivVer,
+                                        projid = Convert.ToInt16(kerdivId),
+                                        kerdivdate = TimeS(DateTime.Now)
+                                    };
+                                    adatBazis.SaveCogparam(cogparam);
+                                    //kirakParamRecord(vKerdivid, vKerdivalid, vKerdivtip, vKerdivver, 0, "PT" + paramKod, paramErtek, "", "", "", "", vDate);
+                                }
+                                else if (feltetelFeladat.Substring(0, "VQ(".Length - 1).Equals("VQ("))
+                                {
+                                    string varOut = feltetelFeladat.Substring("VQ(".Length, feltetelFeladat.IndexOf(";") - 1);
+                                    string paramErtek = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - 2);
+                                    foreach (var kerdes in aktSurvey.questions)
+                                    {
+                                        if (kerdes.kerdeskod.Equals(varOut))
+                                        {
+                                            kerdes.visible = Convert.ToBoolean(paramErtek);
+                                        }
+                                    }
+                                }
+                                else if (feltetelFeladat.Substring(0, "VA(".Length - 1).Equals("VA("))
+                                {
+                                    string varOut = feltetelFeladat.Substring("VA(".Length, feltetelFeladat.IndexOf(",") - 1);
+                                    feltetelFeladat = feltetelFeladat.Substring(varOut.Length + "VA(".Length + 1);
+                                    string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";") - 1);
+                                    string varVisible = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - 2);
+                                    visibleChoiceBeallit(varOut, Convert.ToInt16(varOutErtek), Convert.ToBoolean(varVisible.ToLower()));
+
+                                }
+                                else if (feltetelFeladat.Substring(0, "VI(".Length - 1).Equals("VI("))
+                                {
+                                    string varOut = feltetelFeladat.Substring("VI(".Length, feltetelFeladat.IndexOf(",") - 1);
+                                    feltetelFeladat = feltetelFeladat.Substring(varOut.Length + "VI(".Length + 1);
+                                    string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";") - 1);
+                                    string varVisible = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - 2);
+                                    visibleItemBeallit(varOut, Convert.ToInt16(varOutErtek), Convert.ToBoolean(varVisible.ToLower()));
+
+                                }
+                                else if (feltetelFeladat.Substring(0, "QLIE(".Length - 1).Equals("QLIE("))
+                                {
+                                    string varOut = feltetelFeladat.Substring("QLIE(".Length, feltetelFeladat.IndexOf(",") - 1);
+                                    feltetelFeladat = feltetelFeladat.Substring(varOut.Length + "QLIE(".Length + 1);
+                                    string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";") - 1);
+                                    string varIn = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - 2);
+                                    string varInErtek = keresErtek(varIn);
+                                    if (varOut.ToLower().Equals("pt"))
+                                    {
+                                        Cogparam cogparam = new Cogparam
+                                        {
+                                            alid = kerdivAlid,
+                                            egyedi1 = "",
+                                            egyedi2 = "",
+                                            egyedi3 = "",
+                                            egyedi4 = "",
+                                            kerdes = "PT" + varOutErtek,
+                                            valasz = varInErtek,
+                                            kerdivtip = Convert.ToInt16(kerdivTip),
+                                            kerdivver = kerdivVer,
+                                            projid = Convert.ToInt16(kerdivId),
+                                            kerdivdate = TimeS(DateTime.Now)
+                                        };
+                                        adatBazis.SaveCogparam(cogparam);
+                                        //kirakParamRecord(vKerdivid, vKerdivalid, vKerdivtip, vKerdivver, 0, "PT" + varOutErtek, varInErtek, "", "", "", "", vDate);
+                                    }
+                                    else
+                                    {
+                                        foreach (var kerdes in aktSurvey.questions)
+                                        {
+                                            if (kerdes.kerdeskod.Equals(varOut))
+                                            {
+                                                kerdes.items[Convert.ToInt16(varOutErtek) - 1] = varInErtek;
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                }
+                                else if (feltetelFeladat.Substring(0, "QLE(".Length - 1).Equals("QLE("))
+                                {
+                                    string varOut = feltetelFeladat.Substring(4, feltetelFeladat.IndexOf(",") - 1);
+                                    feltetelFeladat = feltetelFeladat.Substring(varOut.Length + "QLE(".Length + 1);
+                                    string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";") - 1);
+                                    string varIn = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - 2);
+                                    string varInErtek = keresErtek(varIn);
+
+                                    if (varOut.ToLower().Equals("pt"))
+                                    {
+                                        Cogparam cogparam = new Cogparam
+                                        {
+                                            alid = kerdivAlid,
+                                            egyedi1 = "",
+                                            egyedi2 = "",
+                                            egyedi3 = "",
+                                            egyedi4 = "",
+                                            kerdes = "PT" + varOutErtek,
+                                            valasz = varInErtek,
+                                            kerdivtip = Convert.ToInt16(kerdivTip),
+                                            kerdivver = kerdivVer,
+                                            projid = Convert.ToInt16(kerdivId),
+                                            kerdivdate = TimeS(DateTime.Now)
+                                        };
+                                        adatBazis.SaveCogparam(cogparam);
+                                        //kirakParamRecord(vKerdivid, vKerdivalid, vKerdivtip, vKerdivver, 0, "PT" + varOutErtek, varInErtek, "", "", "", "", vDate);
+                                    }
+                                    else
+                                    {
+                                        foreach (var kerdes in aktSurvey.questions)
+                                        {
+                                            if (kerdes.kerdeskod.Equals(varOut))
+                                            {
+                                                kerdes.choices[Convert.ToInt16(varOutErtek) - 1] = varInErtek;
+                                                break;
+                                            }
+                                        }
+                                    }
+
+                                }
+                            }
+                        }
+                    }
+
+                }
+            }
+            
+            return vissza;
+        }
+
+        private static string keresErtek(string valtozo)
+        {
+            UsersDataAccess adatBazis = new UsersDataAccess();
+            string vissza_string = "";
+            if (valtozo.Equals("."))
+            {
+                vissza_string = "";
+            }
+            else if (valtozo.Substring(0, 2).ToLower().Equals("pt"))
+            {
+                string ptIndex = valtozo.Substring(2);
+
+                var alapAdatokParam = adatBazis.GetCogparamAsProjidVer(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer);
+                //let alapAdatokParam = 
+                //coredataOperations.fetchDataCogParamWhereSern(
+                //  sern: Int16(_vKerdivalid), projAzon: _vKerdivid, ver: _vKerdivver) as [CogParam]
+                foreach (var alapAdat in alapAdatokParam)
+                {
+                    if (alapAdat.kerdes == valtozo)
+                    {
+                        vissza_string = alapAdat.valasz;
+                        break;
+                    }
+                }
+            }
+
+            else
+            {
+                int vartipus = 2;
+                //0 normal
+                //1 param
+                //2 multi
+                if (valtozo.Substring(0, 1).Trim().ToLower().Equals("pt"))
+                {
+                    vartipus = 1;
+                }
+                else
+                {
+                    foreach (var kerdes in Constans.aktSurvey.questions)
+                    {
+                        if (kerdes.question_type == valtozo)
+                        {
+                            vartipus = 0;
+                        }
+
+                    }
+                }
+
+
+                var adatValaszok = adatBazis.GetCogDataAsProjidVer(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer);
+                bool vissza = false;
+                foreach (var adatValasz in adatValaszok)
+                {
+                    if (vartipus < 2)
+                    {
+                        if (adatValasz.kerdes.Equals(valtozo))
+                        {
+                            vissza_string = (adatValasz.valasz.Trim());
+                            vissza = true;
+                        }
+                    }
+                    else
+                    {
+                        int kezd = valtozo.IndexOf("_");
+                        string v1 = valtozo.Substring(0, kezd - 1);
+                        string v2 = valtozo.Substring(kezd + 1);
+                        if ((adatValasz.kerdes.Trim().Equals(v1))
+                            //&&  String(adatValasz.kisid) == v2  
+                            )
+                        {
+                            vissza_string = (adatValasz.valasz.Trim());
+                            vissza = true;
+                        }
+                    }
+                }
+
+            }
+
+            return vissza_string;
+        }
+
+        private static void visibleItemBeallit(string varOut, int varOutErtek, bool trueFalse)
+        {
+            foreach (var kerdes in aktSurvey.questions)
+            {
+                if (kerdes.kerdeskod.Equals(varOut))
+                {
+                    kerdes.itemVisible[varOutErtek - 1] = trueFalse;
+                    break;
+                }
+            }
+
+            bool kellE = false;
+            foreach (var kerdes in aktSurvey.questions)
+            {
+                if (kerdes.kerdeskod.Equals(varOut))
+                {
+                    foreach (var csojszVi in kerdes.itemVisible)
+                    {
+                        if (csojszVi)
+                        {
+                            kellE = true;
+                            break;
+                        }
+                    }
+                }
+            }
+
+            if (!kellE)
+            {
+                foreach (var kerdes in aktSurvey.questions)
+                {
+                    kerdes.visible = false;
+                }
+            }
+        }
+
+        private static void visibleChoiceBeallit(string varOut, int varOutErtek, bool trueFalse)
+        {
+            foreach(var kerdes in aktSurvey.questions)
+            {
+                if (kerdes.kerdeskod.Equals(varOut))
+                {
+                    kerdes.choicesVisible[varOutErtek - 1] = trueFalse;
+                    break;
+                 }
+            }
+
+            bool kellE = false;
+            foreach (var kerdes in aktSurvey.questions)
+            {
+                if (kerdes.kerdeskod.Equals(varOut))
+                {
+                    foreach(var csojszVi in kerdes.choicesVisible)
+                    {
+                        if (csojszVi )
+                        {
+                            kellE = true;
+                            break;
+                        }
+                    }
+                }
+            }
+                
+            if (!kellE)
+            {
+                foreach (var kerdes in aktSurvey.questions)
+                {
+                    kerdes.visible = false;
+                }
+            }
+        }
+
+        private static string feltetelTorzsKeres(string feltetel)
+        {
+            string visszaS = feltetel;
+            int nyitDb = 0;
+            int zarDb = 0;
+            int idx = 0;
+            foreach(var betu in feltetel.ToCharArray())
+            {
+                if (betu == Convert.ToChar("("))
+                {
+                    nyitDb += 1;
+                }
+                if (betu == Convert.ToChar(")"))
+                {
+                    zarDb += 1;
+                }
+                if (nyitDb > 0 && nyitDb == zarDb)
+                {
+                    visszaS = feltetel.Substring(0, idx+1);
+                    break;
+                }
+                idx += 1;
+            }
+            return visszaS;
+
         }
 
         private static void ValaszokKiiratasa(string valasz)
