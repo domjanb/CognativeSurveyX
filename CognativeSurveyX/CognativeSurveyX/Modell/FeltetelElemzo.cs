@@ -174,7 +174,7 @@ namespace CognativeSurveyX.Modell
                     };
                     //androidos
                     //jobb_oldal=feltetel.substring(balbal_oldal.length()+bal_oldal.length()+1);
-                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 1, feltetel.Length);
+                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 1, feltetel.Length-(balbal_oldal.Length + bal_oldal.Length + 1));
 
                     origString = jobb_oldal;
                     jobb_oldal = jobbSpacenalVissza(origString);
@@ -263,7 +263,7 @@ namespace CognativeSurveyX.Modell
                     if ((csereRange2 == 0))
                     {
                         csereRange2 = feltetel.Length;
-                        jobb_oldal = feltetel.Substring(kezd0 + 2, csereRange2).Trim();
+                        jobb_oldal = feltetel.Substring(kezd0 + 3, feltetel.Length-csereRange2).Trim();
                     }
                     origString = jobb_oldal;
                     jobb_oldal = jobbSpacenalVissza(origString);
@@ -748,11 +748,11 @@ namespace CognativeSurveyX.Modell
                 }
 
 
-                var adatValaszok=adatBazis.GetCogDataAsProjidVer(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer);
+                var adatValaszok=adatBazis.GetCogDataAsProjidVer(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer,Constans.kerdivAlid);
                 bool vissza = false;
                 foreach (var adatValasz in adatValaszok)
                 {
-                    if (vartipus < 2)
+                    if (vartipus < 3)
                     {
                         if (adatValasz.kerdes.Equals(valtozo))
                         {

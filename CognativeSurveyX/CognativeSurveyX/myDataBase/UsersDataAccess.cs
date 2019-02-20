@@ -31,6 +31,7 @@ namespace CognativeSurveyX
             this.CogUser = new ObservableCollection<Cogazon>(database.Table<Cogazon>());
             this.CogDataKerdiv = new ObservableCollection<Cogkerdiv>(database.Table<Cogkerdiv>());
             this.CogData = new ObservableCollection<Cogdata>(database.Table<Cogdata>());
+            this.CogParam = new ObservableCollection<Cogparam>(database.Table<Cogparam>());
 
             if (!database.Table<Cogazon>().Any())
             {
@@ -210,11 +211,11 @@ namespace CognativeSurveyX
                 return query.AsEnumerable();
             }
         }
-        public IEnumerable<Cogdata> GetCogDataAsProjidVer(int projid, string kerdivver)
+        public IEnumerable<Cogdata> GetCogDataAsProjidVer(int projid, string kerdivver,int kerdivalid)
         {
             lock (collisionLock)
             {
-                var query = from adat in database.Table<Cogdata>() where (adat.projid == projid && adat.kerdivver==kerdivver) select adat;
+                var query = from adat in database.Table<Cogdata>() where (adat.projid == projid && adat.kerdivver==kerdivver && adat.alid==kerdivalid) select adat;
                 return query.AsEnumerable();
             }
         }

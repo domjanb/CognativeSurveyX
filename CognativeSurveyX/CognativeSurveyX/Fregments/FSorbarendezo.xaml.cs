@@ -67,6 +67,7 @@ namespace CognativeSurveyX.Fregments
             
             Sorbarendezo mostNyomi = (Sorbarendezo)sender;
             Debug.WriteLine(mostNyomi.TextOther);
+            Constans.valaszok = "";
             if (mostNyomi.TextOther.Length > 0)
             {
                 if (!mostNyomi.myIschecked)
@@ -103,7 +104,22 @@ namespace CognativeSurveyX.Fregments
                     }
                 }*/
             }
-           
+            int idxi = 0;
+            foreach (Sorbarendezo item in listButtons)
+            {
+                idxi++;
+                if (item.myIschecked)
+                {
+                    string otherDuma = "";
+                    if (item.KellEOther)
+                    {
+                        otherDuma = Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(idxi) + "other=" + Convert.ToString(Constans.kipofoz(item.TextOther)) + ";";
+                    }
+
+                    Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(idxi) + "=" + Convert.ToString(item.SorszamText) + ";" + otherDuma; ;
+                }
+            }
+
         }
 
         private void Button_CheckedChange(object sender, bool e)
@@ -133,13 +149,7 @@ namespace CognativeSurveyX.Fregments
                             item.SorszamText = Convert.ToString(Convert.ToInt16(aktsorszam) - 1);
                             //item.myIschecked = false;
                         }
-                        string otherDuma = "";
-                        if (item.KellEOther)
-                        {
-                            otherDuma =  Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(idx) + "other=" + Convert.ToString(Constans.kipofoz(item.TextOther)) + ";";
-                        }
                         
-                        Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(idx) + "=" + Convert.ToString(item.SorszamText) + ";" + otherDuma; ;
 
                     }
                     
@@ -170,7 +180,23 @@ namespace CognativeSurveyX.Fregments
                     }
                 }
             }
-            
+            int idxi = 0;
+            foreach (Sorbarendezo item in listButtons)
+            {
+                idxi++;
+                if (item.myIschecked)
+                {
+                    string otherDuma = "";
+                    if (item.KellEOther)
+                    {
+                        otherDuma = Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(idxi) + "other=" + Convert.ToString(Constans.kipofoz(item.TextOther)) + ";";
+                    }
+
+                    Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(idxi) + "=" + Convert.ToString(item.SorszamText) + ";" + otherDuma; ;
+                }
+            }
+
+
 
         }
         private void _Continue_Clicked(object sender, EventArgs e)

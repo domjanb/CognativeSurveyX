@@ -68,7 +68,6 @@ namespace CognativeSurveyX
 
 
         private string _kerdes;
-        [NotNull]
         public string kerdes
         {
             get { return _kerdes; }
@@ -80,7 +79,6 @@ namespace CognativeSurveyX
         }
 
         private string _valasz;
-        [NotNull]
         public string valasz
         {
             get { return _valasz; }
@@ -92,7 +90,6 @@ namespace CognativeSurveyX
         }
 
         private string _kerdivver;
-        [NotNull]
         public string kerdivver
         {
             get { return _kerdivver; }
@@ -104,7 +101,6 @@ namespace CognativeSurveyX
         }
 
         private int _alid;
-        [NotNull]
         public int alid
         {
             get { return _alid; }
@@ -116,7 +112,6 @@ namespace CognativeSurveyX
         }
 
         private int _projid;
-        [NotNull]
         public int projid
         {
             get { return _projid; }
@@ -128,7 +123,6 @@ namespace CognativeSurveyX
         }
 
         private int _kerdivtip;
-        [NotNull]
         public int kerdivtip
         {
             get { return _kerdivtip; }
@@ -140,7 +134,6 @@ namespace CognativeSurveyX
         }
 
         private long _kerdivdate;
-        [NotNull]
         public long kerdivdate
         {
             get { return _kerdivdate; }
@@ -154,7 +147,7 @@ namespace CognativeSurveyX
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnProperityChange(string propertyName)
         {
-            this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            //this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
 
     }

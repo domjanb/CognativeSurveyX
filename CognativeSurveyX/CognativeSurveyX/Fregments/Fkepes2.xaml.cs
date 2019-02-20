@@ -42,11 +42,11 @@ namespace CognativeSurveyX.Fregments
                 Constans.myLayout.Add("neve" + Convert.ToString(i),
                     new StackLayout { Orientation = StackOrientation.Horizontal,
                         VerticalOptions  = LayoutOptions.FillAndExpand,
-                        HorizontalOptions = LayoutOptions.FillAndExpand
-                        
-                        
+                        HorizontalOptions = LayoutOptions.FillAndExpand,
+                        Margin= new Thickness(1, 1, 1, 1)
 
-                    });
+
+            });
             }
 
             int sor = -1;
@@ -85,12 +85,13 @@ namespace CognativeSurveyX.Fregments
                 button.Source = ImageSource.FromFile(ffile);
                 int padding = Convert.ToInt16(Constans.ScreenWidth / 7/2);
                 button.Padding = new Thickness(0, 10, 0, 10);
+                button.Margin = new Thickness(1, 1, 1, 1);
                 button.BorderWidth = 0;
                 button.BorderColor = Color.Gray;
 
                 button.VerticalOptions = LayoutOptions.FillAndExpand;
                 button.HorizontalOptions = LayoutOptions.FillAndExpand;
-                button.Aspect = Aspect.AspectFill;
+                button.Aspect = Aspect.AspectFit;
                 listButtons.Add(button);
                 myTomb.Add(Tuple.Create(idx, button) );
 

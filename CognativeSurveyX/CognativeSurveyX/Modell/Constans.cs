@@ -235,16 +235,19 @@ namespace CognativeSurveyX.Modell
                             string feltetel_vissza = (feltetelElemzo.FeltetelVizsgalo().ToLower().Trim());
                             if (feltetel_vissza.ToLower().Equals("true"))
                             {
-                                if (feltetelFeladat.Substring(0, "nogo(".Length - 1).Equals("NoGO("))
+                                if (feltetelFeladat.Substring(0, "nogo(".Length ).Equals("NoGO("))
                                 {
                                     vissza = false;
                                     //string hibajegy = feltetelFeladat.Substring(6, feltetelFeladat.Length - 1);
                                     break;
                                 }
-                                else if (feltetelFeladat.Substring(0, "PTE(".Length - 1).Equals("PTE("))
+                                else if (feltetelFeladat.Substring(0, "PTE(".Length ).Equals("PTE("))
                                 {
-                                    string paramKod = feltetelFeladat.Substring(4, feltetelFeladat.IndexOf(";") - 1);
-                                    string paramErtek = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - 2);
+                                    var al1 = feltetelFeladat.Length;
+                                    var al2 = feltetelFeladat.IndexOf(";");
+
+                                    string paramKod = feltetelFeladat.Substring(4, feltetelFeladat.IndexOf(";") - 4);
+                                    string paramErtek = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length- feltetelFeladat.IndexOf(";") - 2);
                                     Cogparam cogparam = new Cogparam
                                     {
                                         alid = kerdivAlid,
@@ -262,10 +265,10 @@ namespace CognativeSurveyX.Modell
                                     adatBazis.SaveCogparam(cogparam);
                                     //kirakParamRecord(vKerdivid, vKerdivalid, vKerdivtip, vKerdivver, 0, "PT" + paramKod, paramErtek, "", "", "", "", vDate);
                                 }
-                                else if (feltetelFeladat.Substring(0, "VQ(".Length - 1).Equals("VQ("))
+                                else if (feltetelFeladat.Substring(0, "VQ(".Length ).Equals("VQ("))
                                 {
-                                    string varOut = feltetelFeladat.Substring("VQ(".Length, feltetelFeladat.IndexOf(";") - 1);
-                                    string paramErtek = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - 2);
+                                    string varOut = feltetelFeladat.Substring("VQ(".Length, feltetelFeladat.IndexOf(";") - "VQ(".Length);
+                                    string paramErtek = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - feltetelFeladat.IndexOf(";") - 2);
                                     foreach (var kerdes in aktSurvey.questions)
                                     {
                                         if (kerdes.kerdeskod.Equals(varOut))
@@ -274,31 +277,34 @@ namespace CognativeSurveyX.Modell
                                         }
                                     }
                                 }
-                                else if (feltetelFeladat.Substring(0, "VA(".Length - 1).Equals("VA("))
+                                else if (feltetelFeladat.Substring(0, "VA(".Length).Equals("VA("))
                                 {
-                                    string varOut = feltetelFeladat.Substring("VA(".Length, feltetelFeladat.IndexOf(",") - 1);
+                                    string varOut = feltetelFeladat.Substring("VA(".Length, feltetelFeladat.IndexOf(",") - "VA(".Length);
                                     feltetelFeladat = feltetelFeladat.Substring(varOut.Length + "VA(".Length + 1);
-                                    string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";") - 1);
-                                    string varVisible = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - 2);
+                                    string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";") );
+                                    string varVisible = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - feltetelFeladat.IndexOf(";") - 2);
                                     visibleChoiceBeallit(varOut, Convert.ToInt16(varOutErtek), Convert.ToBoolean(varVisible.ToLower()));
 
                                 }
-                                else if (feltetelFeladat.Substring(0, "VI(".Length - 1).Equals("VI("))
+                                else if (feltetelFeladat.Substring(0, "VI(".Length ).Equals("VI("))
                                 {
-                                    string varOut = feltetelFeladat.Substring("VI(".Length, feltetelFeladat.IndexOf(",") - 1);
+                                    string varOut = feltetelFeladat.Substring("VI(".Length, feltetelFeladat.IndexOf(",") - "VI(".Length);
                                     feltetelFeladat = feltetelFeladat.Substring(varOut.Length + "VI(".Length + 1);
-                                    string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";") - 1);
-                                    string varVisible = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - 2);
+                                    string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";") );
+                                    string varVisible = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - feltetelFeladat.IndexOf(";") - 2);
                                     visibleItemBeallit(varOut, Convert.ToInt16(varOutErtek), Convert.ToBoolean(varVisible.ToLower()));
 
                                 }
-                                else if (feltetelFeladat.Substring(0, "QLIE(".Length - 1).Equals("QLIE("))
+                                else if (feltetelFeladat.Substring(0, "QLIE(".Length).Equals("QLIE("))
                                 {
-                                    string varOut = feltetelFeladat.Substring("QLIE(".Length, feltetelFeladat.IndexOf(",") - 1);
+                                    string varOut = feltetelFeladat.Substring("QLIE(".Length, feltetelFeladat.IndexOf(",") - "QLIE(".Length);
                                     feltetelFeladat = feltetelFeladat.Substring(varOut.Length + "QLIE(".Length + 1);
-                                    string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";") - 1);
-                                    string varIn = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - 2);
+                                    string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";") );
+                                    string varIn = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length- feltetelFeladat.IndexOf(";") - 2);
                                     string varInErtek = keresErtek(varIn);
+
+                                   
+                                    
                                     if (varOut.ToLower().Equals("pt"))
                                     {
                                         Cogparam cogparam = new Cogparam
@@ -331,12 +337,12 @@ namespace CognativeSurveyX.Modell
                                     }
 
                                 }
-                                else if (feltetelFeladat.Substring(0, "QLE(".Length - 1).Equals("QLE("))
+                                else if (feltetelFeladat.Substring(0, "QLE(".Length ).Equals("QLE("))
                                 {
-                                    string varOut = feltetelFeladat.Substring(4, feltetelFeladat.IndexOf(",") - 1);
+                                    string varOut = feltetelFeladat.Substring(4, feltetelFeladat.IndexOf(",") - 4);
                                     feltetelFeladat = feltetelFeladat.Substring(varOut.Length + "QLE(".Length + 1);
-                                    string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";") - 1);
-                                    string varIn = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - 2);
+                                    string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";") );
+                                    string varIn = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";")+1 , feltetelFeladat.Length - feltetelFeladat.IndexOf(";")-2 );
                                     string varInErtek = keresErtek(varIn);
 
                                     if (varOut.ToLower().Equals("pt"))
@@ -430,11 +436,11 @@ namespace CognativeSurveyX.Modell
                 }
 
 
-                var adatValaszok = adatBazis.GetCogDataAsProjidVer(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer);
+                var adatValaszok = adatBazis.GetCogDataAsProjidVer(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer,kerdivAlid);
                 bool vissza = false;
                 foreach (var adatValasz in adatValaszok)
                 {
-                    if (vartipus < 2)
+                    if (vartipus < 3)
                     {
                         if (adatValasz.kerdes.Equals(valtozo))
                         {
@@ -631,21 +637,25 @@ namespace CognativeSurveyX.Modell
         public static string kipofoz(string duma)
         {
             string vissza = "";
-            char sepa = Convert.ToChar(";");
-            var ujduma = duma.Split(sepa);
-            if (ujduma.Length == 1)
+            if (duma != null)
             {
-                vissza = duma;
-            }
-            else
-            {
-                vissza = "";
-                foreach (var item in ujduma)
+                char sepa = Convert.ToChar(";");
+                var ujduma = duma.Split(sepa);
+                if (ujduma.Length == 1)
                 {
-                    vissza = vissza + item + "\n";
+                    vissza = duma;
+                }
+                else
+                {
+                    vissza = "";
+                    foreach (var item in ujduma)
+                    {
+                        vissza = vissza + item + "\n";
 
+                    }
                 }
             }
+            
 
             return vissza;
         }
