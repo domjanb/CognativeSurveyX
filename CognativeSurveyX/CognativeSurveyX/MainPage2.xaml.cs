@@ -85,7 +85,7 @@ namespace CognativeSurveyX
             Detail = new NavigationPage((Page)Activator.CreateInstance(typeof(HomePage)));*/
 
             gpsBeallit();
-
+            Constans.webUrl = "http://qnr.cognative.hu/cogsurv/fresh_xam.php";
             Constans.myZipPath = mypt.MyPath;
             Constans.ScreenHeight = display.Height;
             Constans.ScreenWidth = display.Width;
@@ -488,7 +488,7 @@ namespace CognativeSurveyX
             var ma = DateTime.Now;
             var rs = new RestService();
             RestApiModell visszaMost = await rs.Reggi(user2);
-
+            Debug.WriteLine("vissza -"+visszaMost);
             UsersDataAccess adatBazis = new UsersDataAccess();
 
             Debug.WriteLine(visszaMost.darab);
