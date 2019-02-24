@@ -53,6 +53,10 @@ namespace CognativeSurveyX.Fregments
                 button.Padding = new Thickness(1, -5, 1, -5);
                 myTomb.Add(Tuple.Create(idx, button));
 
+                if (!Constans.aktQuestion.choicesVisible[idx-1])
+                {
+                    button.IsVisible = false;
+                }
                 listCheckbox.Add(button);
                 //button.Opacity = 1;
                 button.CheckedChange += Button_CheckedChange;
@@ -87,7 +91,7 @@ namespace CognativeSurveyX.Fregments
                     if (item.Item2.KellEOther)
                     {
                         var akkod=Constans.aktQuestion.choicesKod[item.Item1-1];
-                        otherDuma = Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(item.Item1) + "other=" + Convert.ToString(Constans.kipofoz(item.Item2.TextOther)) + ";";
+                        otherDuma = Constans.aktQuestion.kerdeskod + "other_" + Convert.ToString(item.Item1) + "=" + Convert.ToString(Constans.kipofoz(item.Item2.TextOther)) + ";";
                     }
                     Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(item.Item1) + "=" + Convert.ToString(item.Item1) + ";" + otherDuma;
                 }

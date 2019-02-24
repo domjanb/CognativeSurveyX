@@ -30,7 +30,7 @@ namespace CognativeSurveyX.Fregments
                 }
                 else if (Constans.aktQuestion.question_type == "Kepes")
                 {
-                    Navigation.PushModalAsync(new Fkepes2());
+                    Navigation.PushModalAsync(new FKepes());
                 }
                 else if (Constans.aktQuestion.question_type == "Number")
                 {

@@ -44,6 +44,7 @@ namespace CognativeSurveyX.Fregments
             //button2.BackgroundColor = Color.Red;
             myStack.Children.Add(button2);
             var idx = 0;
+            var joszin = true;
             foreach (var item in Constans.aktQuestion.items)
             {
                 idx++;
@@ -54,7 +55,16 @@ namespace CognativeSurveyX.Fregments
 
                 //button.FontSize = "Large";
                 //button.BackgroundColor = Color.Transparent;
-                if (idx % 2 != 1)
+                if (!Constans.aktQuestion.itemVisible[idx - 1])
+                {
+                    button.IsVisible = false;
+                }
+                else
+                {
+                    joszin = !joszin;
+                }
+                //if (idx % 2 != 1)
+                if (joszin)
                 {
                     button.BackgroundColor = Color.AliceBlue;
                 }
@@ -64,6 +74,7 @@ namespace CognativeSurveyX.Fregments
                 }
 
                 //listCheckbox.Add(button);
+                
                 listTablesRadio.Add(button);
                 //button.Opacity = 1;
                 //button.CheckedChange += Button_CheckedChange;

@@ -64,7 +64,7 @@ namespace CognativeSurveyX.Fregments
                 }
                 string ffile= Path.Combine( Constans.myFilePath , duma.ToLower() + "_logo.png"  );
                 button.Source= ImageSource.FromFile(ffile);
-                button.Aspect = Aspect.AspectFill;
+                //button.Aspect = Aspect.AspectFill;
                 Image im = new Image();
                 im.Source = ImageSource.FromFile(ffile);
                 Debug.WriteLine(im.Width);

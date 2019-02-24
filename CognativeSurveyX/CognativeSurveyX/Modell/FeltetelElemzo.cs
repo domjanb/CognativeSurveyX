@@ -57,9 +57,9 @@ namespace CognativeSurveyX.Modell
             if (uccso_nyito > -1)
             {
                 uccso_zaro = feltetel.IndexOf(")", uccso_nyito);
-                v1 = feltetel.Substring(0, uccso_nyito+1 );
-                vissza_string = feltetel.Substring(uccso_nyito+1 , uccso_zaro-1 );
-                v2 = feltetel.Substring(uccso_zaro , feltetel.Length-uccso_zaro);
+                v1 = feltetel.Substring(0, uccso_nyito );
+                vissza_string = feltetel.Substring(uccso_nyito+1 , uccso_zaro-uccso_nyito-1 );
+                v2 = feltetel.Substring(uccso_zaro+1);
             }
             else
             {
@@ -85,7 +85,7 @@ namespace CognativeSurveyX.Modell
 
 
 
-            return vissza_string.Trim();
+            return vvisszaString.Trim();
         }
 
         
@@ -120,36 +120,16 @@ namespace CognativeSurveyX.Modell
                 if (kezd1 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, 6) == kezd2)
                 {
                     relacio = 1;
-
                     int kezd0 = feltetel.ToLower().IndexOf(">");
-                    bal_oldal = feltetel.Substring(0, kezd0 ).Trim();
-                    origString = bal_oldal;
+                    origString = feltetel.Substring(0, kezd0).Trim();
                     bal_oldal = balSpacenalVissza(origString);
                     balbal_oldal = "";
                     if (bal_oldal != origString)
                     {
-                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length - 1);
-                    }
-                    bool benne= false;
-                    //androidos
-                    for (int felt_i = kezd0+2; felt_i < feltetel.Length; felt_i++) {
-                    
-                        if (!feltetel.Substring(felt_i, felt_i + 1).Equals(" "))
-                        {
-                            benne = true;
-                        }
-                        if (feltetel.Substring(felt_i, felt_i + 1).Equals(" ") && benne)
-                        {
-                            jobb_oldal = feltetel.Substring(kezd0 + 2, felt_i + 1).Trim();
-                            csereRange2 = felt_i;
-                        }
+                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length);
+                    };
+                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 1);
 
-                    }
-                    if ((csereRange2 == 0))
-                    {
-                        csereRange2 = feltetel.Length;
-                        jobb_oldal = feltetel.Substring(kezd0 + 1, feltetel.Length- csereRange2+1).Trim();
-                    }
                     origString = jobb_oldal;
                     jobb_oldal = jobbSpacenalVissza(origString);
                     jobbjobb_oldal = "";
@@ -157,11 +137,12 @@ namespace CognativeSurveyX.Modell
                     {
                         //androidos
                         //jobbjobb_oldal = origString.substring(jobb_oldal.length()+1);
-                        jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1, origString.Length);
+                        jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1);
                     }
+
                 }
 
-                if (kezd3 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd3)
+                else if (kezd3 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd3)
                 {
                     relacio = 3;
                     int kezd0= feltetel.ToLower().IndexOf("=");
@@ -170,11 +151,12 @@ namespace CognativeSurveyX.Modell
                     balbal_oldal = "";
                     if (bal_oldal != origString)
                     {
-                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length - 1);
+                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length);
                     };
                     //androidos
                     //jobb_oldal=feltetel.substring(balbal_oldal.length()+bal_oldal.length()+1);
-                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 1, feltetel.Length-(balbal_oldal.Length + bal_oldal.Length + 1));
+                    //jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 2, feltetel.Length-(balbal_oldal.Length + bal_oldal.Length + 2));
+                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 1);
 
                     origString = jobb_oldal;
                     jobb_oldal = jobbSpacenalVissza(origString);
@@ -183,10 +165,10 @@ namespace CognativeSurveyX.Modell
                     {
                         //androidos
                         //jobbjobb_oldal = origString.substring(jobb_oldal.length()+1);
-                        jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1, origString.Length);
+                        jobbjobb_oldal = origString.Substring(jobb_oldal.Length+1 );
                     }
                 }
-                if (kezd4 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd4)
+                else if (kezd4 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd4)
                 {
                     relacio = 4;
                     int kezd0= feltetel.ToLower().IndexOf("<");
@@ -196,35 +178,9 @@ namespace CognativeSurveyX.Modell
                     balbal_oldal = "";
                     if (bal_oldal != origString)
                     {
-                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length - 1);
+                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length);
                     };
-                    bool benne= false;
-                    //androidos
-                    for (int felt_i = kezd0+2; felt_i < feltetel.Length; felt_i++) {
-                        if (!feltetel.Substring(felt_i, felt_i + 1).Equals(" "))
-                        {
-                            benne = true;
-                        }
-                        if (feltetel.Substring(felt_i, felt_i + 1).Equals(" ") && benne)
-                        {
-                            jobb_oldal = feltetel.Substring(kezd0 + 2, felt_i + 1).Trim();
-                            csereRange2 = felt_i;
-                        }
-                        origString = jobb_oldal;
-                        jobb_oldal = jobbSpacenalVissza(origString);
-                        jobbjobb_oldal = "";
-                        if (jobb_oldal != origString)
-                        {
-                            //androidos
-                            //jobbjobb_oldal = origString.substring(jobb_oldal.length()+1);
-                            jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1, origString.Length);
-                        };
-                    }
-                    if ((csereRange2 == 0))
-                    {
-                        csereRange2 = feltetel.Length;
-                        jobb_oldal = feltetel.Substring(kezd0 + 1, csereRange2).Trim();
-                    }
+                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 1);
                     origString = jobb_oldal;
                     jobb_oldal = jobbSpacenalVissza(origString);
                     jobbjobb_oldal = "";
@@ -232,123 +188,78 @@ namespace CognativeSurveyX.Modell
                     {
                         //androidos
                         //jobbjobb_oldal = origString.substring(jobb_oldal.length()+1);
-                        jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1, origString.Length);
+                        jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1);
                     }
                 }
-                if (kezd2 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd2)
+                else if (kezd2 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd2)
                 {
                     relacio = 2;
                     int kezd0= feltetel.ToLower().IndexOf(">=");
-                    bal_oldal = feltetel.Substring(0, kezd0).Trim();
-                    origString = bal_oldal;
+                    origString = feltetel.Substring(0, kezd0).Trim();
                     bal_oldal = balSpacenalVissza(origString);
                     balbal_oldal = "";
                     if (bal_oldal != origString)
                     {
-                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length - 1);
+                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length);
                     };
-                    bool benne= false;
-                    //androidos
-                    for (int felt_i = kezd0+3; felt_i < feltetel.Length; felt_i++) {
-                        if (!feltetel.Substring(felt_i, felt_i + 1).Equals(" "))
-                        {
-                            benne = true;
-                        }
-                        if (feltetel.Substring(felt_i, felt_i + 1).Equals(" ") && benne)
-                        {
-                            jobb_oldal = feltetel.Substring(kezd0 + 3, felt_i + 1).Trim();
-                            csereRange2 = felt_i;
-                        }
-                    }
-                    if ((csereRange2 == 0))
-                    {
-                        csereRange2 = feltetel.Length;
-                        jobb_oldal = feltetel.Substring(kezd0 + 3, feltetel.Length-csereRange2).Trim();
-                    }
+                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 2);
+
                     origString = jobb_oldal;
                     jobb_oldal = jobbSpacenalVissza(origString);
                     jobbjobb_oldal = "";
                     if (jobb_oldal != origString)
                     {
+                        //androidos
+                        //jobbjobb_oldal = origString.substring(jobb_oldal.length()+1);
                         jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1);
-                    };
+                    }
+
                 }
-                if (kezd5 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd5)
+                else if (kezd5 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd5)
                 {
                     relacio = 5;
                     int kezd0= feltetel.ToLower().IndexOf("<=");
-                    bal_oldal = feltetel.Substring(0, kezd0 - 1).Trim();
-                    origString = bal_oldal;
+                    origString = feltetel.Substring(0, kezd0).Trim();
                     bal_oldal = balSpacenalVissza(origString);
                     balbal_oldal = "";
                     if (bal_oldal != origString)
                     {
-                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length - 1);
+                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length);
                     };
-                    bool benne = false;
-                    //android
-                    for (int felt_i = kezd0+3; felt_i < feltetel.Length; felt_i++) {
-                        if (!feltetel.Substring(felt_i, felt_i + 1).Equals(" "))
-                        {
-                            benne = true;
-                        }
-                        if (feltetel.Substring(felt_i, felt_i + 1).Equals(" ") && benne)
-                        {
-                            jobb_oldal = feltetel.Substring(kezd0 + 3, felt_i + 1).Trim();
-                            csereRange2 = felt_i;
-                        }
-                    }
-                    if ((csereRange2 == 0))
-                    {
-                        csereRange2 = feltetel.Length;
-                        jobb_oldal = feltetel.Substring(kezd0 + 2, csereRange2).Trim();
-                    }
+                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 2);
+
                     origString = jobb_oldal;
                     jobb_oldal = jobbSpacenalVissza(origString);
                     jobbjobb_oldal = "";
                     if (jobb_oldal != origString)
                     {
+                        //androidos
+                        //jobbjobb_oldal = origString.substring(jobb_oldal.length()+1);
                         jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1);
                     }
                 }
 
 
-                if (kezd6 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd6)
+                else if (kezd6 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd6)
                 {
                     relacio = 6;
                     int kezd0= feltetel.ToLower().IndexOf("<>");
-                    bal_oldal = feltetel.Substring(0, kezd0 ).Trim();
-                    origString = bal_oldal;
+                    origString = feltetel.Substring(0, kezd0).Trim();
                     bal_oldal = balSpacenalVissza(origString);
                     balbal_oldal = "";
                     if (bal_oldal != origString)
                     {
-                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length - 1);
-                    }
+                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length);
+                    };
+                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 2);
 
-                    bool benne = false;
-                    //androidos
-                    for (int felt_i = kezd0+3; felt_i < feltetel.Length; felt_i++) {
-                        if (!feltetel.Substring(felt_i, felt_i + 1).Equals(" "))
-                        {
-                            benne = true;
-                        }
-                        if (feltetel.Substring(felt_i, felt_i + 1).Equals(" ") && benne)
-                        {
-                            jobb_oldal = feltetel.Substring(kezd0 + 3, felt_i + 1).Trim();
-                            csereRange2 = felt_i;
-                        }
-                    }
-                    if ((csereRange2 == 0))
-                    {
-                        csereRange2 = feltetel.Length;
-                        jobb_oldal = feltetel.Substring(kezd0 + 2, feltetel.Length-csereRange2+1).Trim();
-                    }
                     origString = jobb_oldal;
                     jobb_oldal = jobbSpacenalVissza(origString);
                     jobbjobb_oldal = "";
                     if (jobb_oldal != origString)
                     {
+                        //androidos
+                        //jobbjobb_oldal = origString.substring(jobb_oldal.length()+1);
                         jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1);
                     }
                 }
@@ -748,7 +659,7 @@ namespace CognativeSurveyX.Modell
                 }
 
 
-                var adatValaszok=adatBazis.GetCogDataAsProjidVer(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer,Constans.kerdivAlid);
+                var adatValaszok=adatBazis.GetCogDataAsProjidVerAlid(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer,Constans.kerdivAlid);
                 bool vissza = false;
                 foreach (var adatValasz in adatValaszok)
                 {
@@ -993,7 +904,9 @@ namespace CognativeSurveyX.Modell
                 }
                 //androidos
                 //jobb_oldal = feltetel.substring(kezd1+4).trim();
-                jobb_oldal = feltetel.Substring(kezd1 + 4, feltetel.Length).Trim();
+                //jobb_oldal = feltetel.Substring(kezd1 + 4, feltetel.Length).Trim();
+                jobb_oldal = feltetel.Substring(kezd1 + 4).Trim();
+
                 origString = jobb_oldal;
                 jobb_oldal = jobbSpacenalVissza(origString);
                 jobbjobb_oldal = "";
@@ -1001,7 +914,8 @@ namespace CognativeSurveyX.Modell
                 {
                     //androidos
                     //jobbjobb_oldal = origString.substring(jobb_oldal.length() + 1);
-                    jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1, origString.Length);
+                    //jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1, origString.Length);
+                    jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1);
                 }
                 bool bal_oldal_logika_e= logikaE(bal_oldal);
                 bool jobb_oldal_logika_e = logikaE(jobb_oldal);

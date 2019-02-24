@@ -63,6 +63,10 @@ namespace CognativeSurveyX.Fregments
                     //button.Opacity = 1;
                     button.CheckedChange += Button_CheckedChange;
                     button.IsVisible = false;
+                    if (!Constans.aktQuestion.choicesVisible[idx - 1])
+                    {
+                        button.IsVisible = false;
+                    }
                     myStack.Children.Add(button);
                 }
 

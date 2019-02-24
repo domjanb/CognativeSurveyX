@@ -53,6 +53,10 @@ namespace CognativeSurveyX.Fregments
                 //listCheckbox.Add(button);
                 //button.Opacity = 1;
                 //button.CheckedChange += Button_CheckedChange;
+                if (!Constans.aktQuestion.choicesVisible[idx - 1])
+                {
+                    button.IsVisible = false;
+                }
                 myStack.Children.Add(button);
             }
             myLayout.Children.Add(myScroll);

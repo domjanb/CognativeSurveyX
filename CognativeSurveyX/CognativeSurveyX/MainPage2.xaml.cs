@@ -49,6 +49,7 @@ namespace CognativeSurveyX
         //private Button[] buttons;
         List<Button> listOfButtons = new List<Button>();
 
+        //public List<MasterPageItem> menuList { get; set; }
 
         protected override bool OnBackButtonPressed()
         {
@@ -61,6 +62,27 @@ namespace CognativeSurveyX
             //var w = this.Width;
             //var w2 = this.WidthRequest;
             //Nyelv.AppResource.
+
+            /*menuList = new List<MasterPageItem>();
+            var page1 = new MasterPageItem() { id = 1, Title = "Home", Icon = "Home.png" };
+            var page2 = new MasterPageItem() { id = 2, Title = "About US", Icon = "About.png" };
+            var page3 = new MasterPageItem() { id = 3, Title = "Configuration", Icon = "Configuration.png" };
+            var page4 = new MasterPageItem() { id = 4, Title = "Profile", Icon = "ProfileSetting.png" };
+            var page5 = new MasterPageItem() { id = 5, Title = "Configuration", Icon = "Configuration.png" };
+            var page6 = new MasterPageItem() { id = 6, Title = "Profile Settings", Icon = "ProfileSetting.png" };
+
+            menuList.Add(page1);
+            menuList.Add(page2);
+            menuList.Add(page3);
+            menuList.Add(page4);
+            menuList.Add(page5);
+            menuList.Add(page6);
+
+
+            
+            navigationDrawerList.ItemsSource = menuList;
+
+            Detail = new NavigationPage((Page)Activator.CreateInstance(typeof(HomePage)));*/
 
             gpsBeallit();
 
@@ -349,12 +371,7 @@ namespace CognativeSurveyX
 
                                 }
                             }
-                            if (Constans.kellZip.Count > 0)
-                            {
-                                var aktUrl = Constans.kellZip.ElementAt(Constans.kellZipIndex);
-                                downloader.DownloadFile(aktUrl, "cognative");
-                                Constans.kellZipIndex++;
-                            }
+                            
 
 
                             /*string mostFile = "/kerdiv_1_1.zip";
@@ -372,6 +389,13 @@ namespace CognativeSurveyX
                             stack.Children.Add(regForm2);
                             myLayout.Children.Add(scroll);
 
+                        }
+                        if (Constans.kellZip.Count > 0)
+                        {
+                            //var aktUrl = Constans.kellZip.ElementAt(Constans.kellZipIndex);
+                            var aktUrl = Constans.kellZip.ElementAt(0);
+                            downloader.DownloadFile(aktUrl, "cognative");
+                            Constans.kellZipIndex++;
                         }
                         //var aa = vissza.getError();
                         //var bb = vissza.getMessage();
@@ -468,6 +492,13 @@ namespace CognativeSurveyX
             UsersDataAccess adatBazis = new UsersDataAccess();
 
             Debug.WriteLine(visszaMost.darab);
+            if (visszaMost.darab > 0)
+            {
+                foreach (var item in adatBazis.GetCogDataKerdiv())
+                {
+                    item.volte = false;
+                }
+            }
             for (int i = 0; i < visszaMost.darab; i++)
             {
                 DateTime CacheUtcTime = ReferenceDate.AddSeconds(Convert.ToInt64(visszaMost.kerdivadat[i].kerdiv2_le));
@@ -487,12 +518,31 @@ namespace CognativeSurveyX
                 }
                 else
                 {
-                    var zipFileName = "kerdiv_" + visszaMost.kerdivadat[i].proj_id + "_" + visszaMost.kerdivadat[i].kerdiv1_ver;
-                    if (!File.Exists(Constans.myZipPath + "/cognative/" + zipFileName + "/" + visszaMost.kerdivadat[i].kerdiv1_nev + ".json"))
+
+                    var kerdivAdatok = adatBazis.GetCogDataKerdivAsProjid(Convert.ToInt16(visszaMost.kerdivadat[i].proj_id));
+                    foreach (var item in kerdivAdatok)
                     {
-                        var Url = Constans.downUrl + zipFileName + ".zip";
-                        Constans.kellZip.Add(Url);
+                        if (item.kerdiv1nev== visszaMost.kerdivadat[i].kerdiv1_nev)
+                        {
+                            item.volte = true;
+                            if (item.kerdiv1ver == visszaMost.kerdivadat[i].kerdiv1_ver)
+                            {
+                                var zipFileName = "kerdiv_" + visszaMost.kerdivadat[i].proj_id + "_" + visszaMost.kerdivadat[i].kerdiv1_ver;
+                                if (!File.Exists(Constans.myZipPath + "/cognative/" + zipFileName + "/" + visszaMost.kerdivadat[i].kerdiv1_nev + ".json"))
+                                {
+                                    //Debug.WriteLine("zipes:" + zipFileName);
+                                    var Url = Constans.downUrl + zipFileName + ".zip";
+                                    Constans.kellZip.Add(Url);
+                                }
+                            }
+                            else
+                            {
+                                var kerdivAdatokFeltoltveE = adatBazis.GetCogDataAsProjidVer(Convert.ToInt16(visszaMost.kerdivadat[i].proj_id), item.kerdiv1ver);
+                                //var idd = kerdivAdatokAdatbazisba(visszaMost);
+                            }
+                        }
                     }
+                    
 
 
                     //ide majd sorban kell a tipizálás
@@ -507,6 +557,13 @@ namespace CognativeSurveyX
 
 
             }
+            if (Constans.kellZip.Count > 0)
+            {
+                //var aktUrl = Constans.kellZip.ElementAt(Constans.kellZipIndex);
+                var aktUrl = Constans.kellZip.ElementAt(0);
+                downloader.DownloadFile(aktUrl, "cognative");
+                Constans.kellZipIndex++;
+            }
             if (kellgomb)
             {
                 gombokKipakol();
@@ -516,6 +573,8 @@ namespace CognativeSurveyX
 
             return visszaMost;
         }
+
+
 
         private void gombokKipakol()
         {
@@ -954,29 +1013,9 @@ namespace CognativeSurveyX
             if (e.FileSaved)
             {
                 //DisplayAlert("XF Downloader", "File Saved Successfully", "Close");
+                Debug.WriteLine("mentett zip:" + e.ZipFileMentett);
                 ExtractZipFile(Constans.myZipPath + "/cognative/" + e.ZipFileMentett, null, Constans.myZipPath + "/cognative/");
-                for (var zipIndex = 0; zipIndex < Constans.kellZip.Count; zipIndex++)
-                {
-                    if (Constans.downUrl + e.ZipFileMentett == Constans.kellZip.ElementAt(zipIndex))
-                    {
-                        Constans.kellZip.Remove(Constans.downUrl + e.ZipFileMentett);
-                        Constans.kellZipIndex--;
-                        break;
-                    }
-                }
 
-
-            }
-            else
-            {
-                DisplayAlert("XF Downloader", "Error while saving the file", "Close");
-            }
-            if (Constans.kellZip.Count > 0 && Constans.kellZipIndex <= Constans.kellZip.Count)
-            {
-                var aktUrl = Constans.kellZip.ElementAt(Constans.kellZipIndex);
-                downloader.DownloadFile(aktUrl, "cognative");
-                ExtractZipFile(Constans.myZipPath + "/cognative/" + e.ZipFileMentett, null, Constans.myZipPath + "/cognative/");
-                Constans.kellZipIndex++;
                 foreach (var itemT in Constans.myParam2)
                 {
                     if ((itemT.Item2 + ".zip") == e.ZipFileMentett)
@@ -994,15 +1033,40 @@ namespace CognativeSurveyX
                     }
 
                 }
+                for (var zipIndex = 0; zipIndex < Constans.kellZip.Count; zipIndex++)
+                {
+                    if (Constans.downUrl + e.ZipFileMentett == Constans.kellZip.ElementAt(zipIndex))
+                    {
+                        Constans.kellZip.Remove(Constans.downUrl + e.ZipFileMentett);
+                        Constans.kellZipIndex--;
+                        break;
+                    }
+                }
+                if (Constans.kellZip.Count > 0 && Constans.kellZipIndex <= Constans.kellZip.Count)
+                {
+                    var aktUrl = Constans.kellZip.ElementAt(Constans.kellZipIndex);
+                    downloader.DownloadFile(aktUrl, "cognative");
+                    //ExtractZipFile(Constans.myZipPath + "/cognative/" + e.ZipFileMentett, null, Constans.myZipPath + "/cognative/");
+                    Constans.kellZipIndex++;
+                    
+                }
+
             }
+            else
+            {
+                DisplayAlert("XF Downloader", "Error while saving the file", "Close");
+            }
+            
         }
 
         public void ExtractZipFile(string archiveFilenameIn, string password, string outFolder)
         {
             int zipDarab = 0;
             ZipFile zf = null;
+            Debug.WriteLine("kicsomagolás jon:"+ archiveFilenameIn);
             try
             {
+                
                 FileStream fs = File.OpenRead(archiveFilenameIn);
                 zf = new ZipFile(fs);
                 if (!String.IsNullOrEmpty(password))

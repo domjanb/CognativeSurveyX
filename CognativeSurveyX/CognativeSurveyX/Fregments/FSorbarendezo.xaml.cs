@@ -34,9 +34,10 @@ namespace CognativeSurveyX.Fregments
             kerdes.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
             myStack.Children.Add(kerdes);
 
+            int idx = -1;
             foreach (var item in Constans.aktQuestion.choices)
             {
-                
+                idx++;
                 Sorbarendezo button = new Sorbarendezo();
                 string buttonDuma = item;
                 if (item.Substring(item.Length - 2, 2) == ";O")
@@ -49,11 +50,12 @@ namespace CognativeSurveyX.Fregments
                 //button.FontSize = "Large";
                 button.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
                 button.BackgroundColor = Color.Transparent;
+                if (!Constans.aktQuestion.choicesVisible[idx])
+                {
+                    button.IsVisible = false;
+                }
                 listButtons.Add(button);
-                //Debug.WriteLine(item.Substring(pos, 2));
-                
 
-                
                 //button.Opacity = 1;
                 button.CheckedChange += Button_CheckedChange;
                 button.EntryChange += Button_EntryChange;
@@ -113,7 +115,7 @@ namespace CognativeSurveyX.Fregments
                     string otherDuma = "";
                     if (item.KellEOther)
                     {
-                        otherDuma = Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(idxi) + "other=" + Convert.ToString(Constans.kipofoz(item.TextOther)) + ";";
+                        otherDuma = Constans.aktQuestion.kerdeskod + "other_" + Convert.ToString(idxi) + "=" + Convert.ToString(Constans.kipofoz(item.TextOther)) + ";";
                     }
 
                     Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(idxi) + "=" + Convert.ToString(item.SorszamText) + ";" + otherDuma; ;
@@ -189,7 +191,7 @@ namespace CognativeSurveyX.Fregments
                     string otherDuma = "";
                     if (item.KellEOther)
                     {
-                        otherDuma = Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(idxi) + "other=" + Convert.ToString(Constans.kipofoz(item.TextOther)) + ";";
+                        otherDuma = Constans.aktQuestion.kerdeskod + "other_" + Convert.ToString(idxi) + "=" + Convert.ToString(Constans.kipofoz(item.TextOther)) + ";";
                     }
 
                     Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod + "_" + Convert.ToString(idxi) + "=" + Convert.ToString(item.SorszamText) + ";" + otherDuma; ;

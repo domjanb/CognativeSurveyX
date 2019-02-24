@@ -51,6 +51,10 @@ namespace CognativeSurveyX.Fregments
                 button.BackgroundColor = Color.Transparent;
                 int padding = Convert.ToInt16(Constans.ScreenWidth / 7);
                 button.Padding = new Thickness(padding, 0, padding, 0);
+                if (!Constans.aktQuestion.choicesVisible[idx - 1])
+                {
+                    button.IsVisible = false;
+                }
                 myTomb.Add(Tuple.Create(idx,button));
                 listCheckbox.Add(button);
                     //button.Opacity = 1;

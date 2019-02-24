@@ -13,7 +13,7 @@ namespace CognativeSurveyX
         {
             InitializeComponent();
             AppResource.Culture = CrossMultilingual.Current.DeviceCultureInfo;
-            MainPage = new MainPage2();
+            MainPage = new MainPage3();
         }
 
         protected override void OnStart()

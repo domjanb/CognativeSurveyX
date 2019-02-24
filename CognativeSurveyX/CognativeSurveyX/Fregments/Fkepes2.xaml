@@ -14,7 +14,7 @@
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand" />
                 </StackLayout>
-                <StackLayout x:Name="myLayout">
+                <StackLayout x:Name="myLayout" >
                     
                     <!-- Unified Design -->
 

@@ -84,8 +84,11 @@ namespace CognativeSurveyX.Fregments
                     }
                 };*/
 
-                
-                
+
+                if (!Constans.aktQuestion.choicesVisible[mostIndex-1])
+                {
+                    button.IsVisible = false;
+                }
                 myStack.Children.Add(button);
             }
 

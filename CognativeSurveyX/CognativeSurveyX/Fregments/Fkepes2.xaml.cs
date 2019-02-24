@@ -23,7 +23,10 @@ namespace CognativeSurveyX.Fregments
         public Fkepes2 ()
 		{
 			InitializeComponent ();
-            myLayout.Margin = new Thickness(10, 0, 10, 0);
+            //myLayout.Margin = new Thickness(10, 10, 10, 10);
+            //myLayout.Padding= new Thickness(10, 10, 10, 10);
+            //myLayout.HorizontalOptions = LayoutOptions.Fill;
+            //myLayout.BackgroundColor = Color.Red;
             var myScroll = new ScrollView();
             var myStack = new StackLayout();
             myScroll.Content = myStack;
@@ -41,9 +44,11 @@ namespace CognativeSurveyX.Fregments
             {
                 Constans.myLayout.Add("neve" + Convert.ToString(i),
                     new StackLayout { Orientation = StackOrientation.Horizontal,
-                        VerticalOptions  = LayoutOptions.FillAndExpand,
-                        HorizontalOptions = LayoutOptions.FillAndExpand,
-                        Margin= new Thickness(1, 1, 1, 1)
+                       VerticalOptions  = LayoutOptions.Fill,
+                        HorizontalOptions = LayoutOptions.Fill,
+                        Margin= new Thickness(1, 1, 1, 1),
+                        Padding = new Thickness(1, 1, 1, 1),
+                        BackgroundColor =Color.Gold
 
 
             });
@@ -75,7 +80,7 @@ namespace CognativeSurveyX.Fregments
                 }
 
                 var neve = "neve" + Convert.ToString(nevindex);
-                ImageButton button = new ImageButton();
+                /*ImageButton button = new ImageButton();
                 string duma = ((string)item).ToLower();
                 if (duma == "egyéb")
                 {
@@ -89,13 +94,25 @@ namespace CognativeSurveyX.Fregments
                 button.BorderWidth = 0;
                 button.BorderColor = Color.Gray;
 
-                button.VerticalOptions = LayoutOptions.FillAndExpand;
-                button.HorizontalOptions = LayoutOptions.FillAndExpand;
-                button.Aspect = Aspect.AspectFit;
-                listButtons.Add(button);
-                myTomb.Add(Tuple.Create(idx, button) );
+                //button.VerticalOptions = LayoutOptions.FillAndExpand;
+                //button.HorizontalOptions = LayoutOptions.FillAndExpand;
+                //button.Aspect = Aspect.Fill;
 
-                button.Clicked += button_Clicked;
+                //listButtons.Add(button);
+                //myTomb.Add(Tuple.Create(idx, button) );
+                */
+                Image button = new Image();
+                string duma = ((string)item).ToLower();
+                if (duma == "egyéb")
+                {
+                    duma = "other";
+                }
+                string ffile = Path.Combine(Constans.myFilePath, duma.ToLower() + "_logo.png");
+                button.Source= ImageSource.FromFile(ffile);
+                button.Aspect = Aspect.AspectFill;
+
+
+                //button.Clicked += button_Clicked;
                 foreach(var itemL in Constans.myLayout)
                 {
                     if (itemL.Key == neve)
@@ -105,7 +122,7 @@ namespace CognativeSurveyX.Fregments
                         Debug.WriteLine(sl.Height);
                         itemL.Value.Children.Add(button);
                         Debug.WriteLine(button.Height);
-                        sl.MinimumHeightRequest = button.Height;
+                        //sl.MinimumHeightRequest = button.Height;
                         
                         Debug.WriteLine(sl.Height);
 

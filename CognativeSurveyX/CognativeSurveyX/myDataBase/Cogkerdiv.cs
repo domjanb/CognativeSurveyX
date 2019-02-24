@@ -54,7 +54,6 @@ namespace CognativeSurveyX
             }
         }
         private int _kerdivtip;
-        [NotNull]
         public int kerdivtip
         {
             get { return _kerdivtip; }
@@ -65,7 +64,6 @@ namespace CognativeSurveyX
             }
         }
         private int _projid;
-        [NotNull]
         public int projid
         {
             get { return _projid; }
@@ -106,7 +104,6 @@ namespace CognativeSurveyX
             }
         }
         private DateTime _kerdivdate;
-        [NotNull]
         public DateTime kerdivdate
         {
             get { return _kerdivdate; }
@@ -116,11 +113,20 @@ namespace CognativeSurveyX
                 //OnProperityChange(nameof(kerdivdate));
             }
         }
-
+        private bool _volte;
+        public bool volte
+        {
+            get { return _volte; }
+            set
+            {
+                this._volte = value;
+                //OnProperityChange(nameof(kerdivdate));
+            }
+        }
         public event PropertyChangedEventHandler PropertyChanged;
         private void OnProperityChange(string propertyName)
         {
-            this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
+            //this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
         }
     }
 }

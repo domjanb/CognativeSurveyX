@@ -436,7 +436,7 @@ namespace CognativeSurveyX.Modell
                 }
 
 
-                var adatValaszok = adatBazis.GetCogDataAsProjidVer(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer,kerdivAlid);
+                var adatValaszok = adatBazis.GetCogDataAsProjidVerAlid(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer,kerdivAlid);
                 bool vissza = false;
                 foreach (var adatValasz in adatValaszok)
                 {

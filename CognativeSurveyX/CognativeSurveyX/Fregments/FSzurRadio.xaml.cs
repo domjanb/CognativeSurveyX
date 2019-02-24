@@ -49,8 +49,10 @@ namespace CognativeSurveyX.Fregments
 
             if (Constans.aktQuestion.choices.Count < 30)
             {
+                int idx = 0;
                 foreach (var item in Constans.aktQuestion.choices)
                 {
+                    idx++;
                     RadioButton button = new RadioButton();
                     button.Text = item;
                     //button.HorizontalOptions = LayoutOptions.Start;
@@ -59,6 +61,10 @@ namespace CognativeSurveyX.Fregments
                     button.BackgroundColor = Color.Transparent;
                     int padding = Convert.ToInt16(Constans.ScreenWidth / 7);
                     button.Padding = new Thickness(padding, 0, padding, 0);
+                    if (!Constans.aktQuestion.choicesVisible[idx - 1])
+                    {
+                        button.IsVisible = false;
+                    }
                     listCheckbox.Add(button);
                     button.IsVisible = false;
                     //button.Opacity = 1;
@@ -102,8 +108,10 @@ namespace CognativeSurveyX.Fregments
                 {
                     if (Constans.aktQuestion.choices.Count < 30)
                     {
+                        int idx = 0;
                         foreach (var item in listCheckbox)
                         {
+
                             string duma3 = item.Text;
                             string kisbetus3 = duma3.ToLower();
                             Debug.WriteLine(kisbetus3);
@@ -118,9 +126,10 @@ namespace CognativeSurveyX.Fregments
                     else
                     {
                         myStack2.Children.Clear();
-
+                        int idx = 0;
                         foreach (var item in Constans.aktQuestion.choices)
                         {
+                            idx++;
                             string kisbetus2 = item.ToLower();
                             //Debug.WriteLine(kisbetus2);
                             //Debug.WriteLine(kisbetus2.IndexOf(kisbetus));
@@ -134,6 +143,10 @@ namespace CognativeSurveyX.Fregments
                                 button.BackgroundColor = Color.Transparent;
                                 int padding = Convert.ToInt16(Constans.ScreenWidth / 7);
                                 button.Padding = new Thickness(padding, 0, padding, 0);
+                                if (!Constans.aktQuestion.choicesVisible[idx - 1])
+                                {
+                                    button.IsVisible = false;
+                                }
                                 listCheckbox.Add(button);
                                 //button.IsVisible = false;
                                 //button.Opacity = 1;

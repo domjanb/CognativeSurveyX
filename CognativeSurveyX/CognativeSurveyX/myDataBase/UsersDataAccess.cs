@@ -149,7 +149,15 @@ namespace CognativeSurveyX
                 return query.AsEnumerable();
             }
         }
-        
+        public IEnumerable<Cogkerdiv> GetCogDataKerdivAsProjid(int projId)
+        {
+            lock (collisionLock)
+            {
+                var query = from adat in database.Table<Cogkerdiv>() where adat.projid == projId select adat;
+                return query.AsEnumerable();
+            }
+        }
+
 
         public IEnumerable<Cogkerdiv> GetCogDataKerdiv()
         {
@@ -211,14 +219,40 @@ namespace CognativeSurveyX
                 return query.AsEnumerable();
             }
         }
-        public IEnumerable<Cogdata> GetCogDataAsProjidVer(int projid, string kerdivver,int kerdivalid)
+        public IEnumerable<Cogdata> GetCogDataAsProjidVerAlid(int projid, string kerdivver, int kerdivalid)
         {
             lock (collisionLock)
             {
-                var query = from adat in database.Table<Cogdata>() where (adat.projid == projid && adat.kerdivver==kerdivver && adat.alid==kerdivalid) select adat;
+                var query = from adat in database.Table<Cogdata>() where (adat.projid == projid && adat.kerdivver == kerdivver && adat.alid == kerdivalid) select adat;
                 return query.AsEnumerable();
             }
         }
+        public IEnumerable<Cogdata> GetCogDataAsProjidVer(int projid, string kerdivver)
+        {
+            lock (collisionLock)
+            {
+                var query = from adat in database.Table<Cogdata>() where (adat.projid == projid && adat.kerdivver==kerdivver ) select adat;
+                return query.AsEnumerable();
+            }
+        }
+        /*public IEnumerable<Cogdata> GetCogDataAsParam(int projid, string kerdivver, int alid, bool feltoltve)
+        {
+            lock (collisionLock)
+            {
+                string queri1 = "SELECT * FROM [Cogdata] ";
+                string queri2 = "WHERE ";
+                string queri3a = "";
+                string queri3b = "";
+                if (projid != null)
+                {
+                    queri3a=""
+                }
+
+                //return  database.QueryAsync<Cogdata>("SELECT * FROM [TodoItem] WHERE [Done] = 0");
+                var query = from adat in database.Table<Cogdata>() where (adat.projid == projid && adat.kerdivver == kerdivver  && adat.                          ) select adat;
+                //return query.AsEnumerable();
+            }
+        }*/
         public IEnumerable<Cogdata> GetCogDataFeltoltveE(bool fele)
         {
             lock (collisionLock)
