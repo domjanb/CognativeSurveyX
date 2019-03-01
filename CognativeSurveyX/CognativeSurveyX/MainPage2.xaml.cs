@@ -488,7 +488,7 @@ namespace CognativeSurveyX
             var ma = DateTime.Now;
             var rs = new RestService();
             RestApiModell visszaMost = await rs.Reggi(user2);
-            Debug.WriteLine("vissza -"+visszaMost);
+            Debug.WriteLine("vissza -"+visszaMost.error);
             UsersDataAccess adatBazis = new UsersDataAccess();
 
             Debug.WriteLine(visszaMost.darab);
