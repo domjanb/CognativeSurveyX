@@ -15,8 +15,21 @@ namespace CognativeSurveyX
         public MainPage3()
         {
             InitializeComponent();
-            this.Master = new MenuPage();
-            this.Detail = new NavigationPage(new MainPage2()); 
+            UsersDataAccess adatBazis = new UsersDataAccess();
+            int regisztrácioDarab = adatBazis.GetCogAzon().Count();
+            if (regisztrácioDarab == 1)
+            {
+                this.Master = new MenuPage();
+                this.Detail = new NavigationPage(new ProjectPage());
+            }
+            else
+            {
+                this.Master = new MenuPage();
+                //this.Detail = new NavigationPage(new MainPage2());
+                this.Detail = new NavigationPage(new ReggiPage());
+            }
+                
+            
         }
     }
 }

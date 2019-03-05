@@ -52,6 +52,18 @@ namespace CognativeSurveyX.Controls
                 propertyChanged: (bindable, oldValue, newValue) =>
                 {
                     ((Csillag)bindable).boxLabel.Text = (bool)newValue ? "⭐" : "☆";
+                    if ((bool)newValue)
+                    {
+                        if (((Csillag)bindable).FontMeret < Device.GetNamedSize(NamedSize.Large, typeof(Label)))
+                        {
+                            ((Csillag)bindable).boxLabel.FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label));
+                        }
+                        
+                    }
+                    else
+                    {
+                        ((Csillag)bindable).boxLabel.FontSize = ((Csillag)bindable).FontMeret;
+                    }
 
                     ((Csillag)bindable).CheckedChange?.Invoke(((Csillag)bindable), (bool)newValue);
                 }
@@ -69,6 +81,18 @@ namespace CognativeSurveyX.Controls
             {
                 this._myIschecked = value;
                 boxLabel.Text = (bool)_myIschecked ? "⭐" : "☆";
+                if ((bool)_myIschecked)
+                {
+                    if (FontMeret < Device.GetNamedSize(NamedSize.Large, typeof(Label)))
+                    {
+                        boxLabel.FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label));
+                    }
+                }
+                else
+                {
+                    boxLabel.FontSize = FontMeret;
+                    
+                }
                 //CheckedChange?.Invoke(this, (bool)_myIschecked);
 
                 //myFrame.BackgroundColor = _myIschecked ? Color.White : Color.Aqua;
@@ -91,6 +115,16 @@ namespace CognativeSurveyX.Controls
                 //myFrame.CornerRadius = _myIschecked ? 0 : 20;
             }
 
+        }
+        public double _FontMeret;
+        public double FontMeret
+        {
+            get { return _FontMeret; }
+            set
+            {
+                this._FontMeret = FontSize;
+                
+            }
         }
 
         public Csillag ()

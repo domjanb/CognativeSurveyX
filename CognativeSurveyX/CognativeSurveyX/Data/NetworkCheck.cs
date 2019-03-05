@@ -3,15 +3,18 @@ using System;
 using System.Collections.Generic;
 using System.Text;
 
+//[assembly: Xamarin.Forms.Dependency(typeof(NetworkCheck))]
 namespace CognativeSurveyX.Data
 {
     public class NetworkCheck
     {
+        
         public static bool IsInternet()
         {
             if (CrossConnectivity.Current.IsConnected)
             {
                 return true;
+                
             }
             else
             {

@@ -51,6 +51,16 @@ namespace CognativeSurveyX.Controls
             */
             myLayout.Children.Add(sor);
         }
+        public double _FontMeret;
+        public double FontMeret
+        {
+            get { return _FontMeret; }
+            set
+            {
+                this._FontMeret = Value;
+
+            }
+        }
         public void frameInit()
         {
             myLayout.Children.Remove(sor);
@@ -91,6 +101,7 @@ namespace CognativeSurveyX.Controls
                 //rb.BackgroundColor = Color.Peru;
                 rb.HorizontalOptions = LayoutOptions.Center;
                 rb.VerticalOptions = LayoutOptions.Center;
+                rb.FontSize = FontMeret;
                 listCheckbox.Add(rb);
                 rb.CheckedChange += rb_CheckedChange;
                 //sor.Children.Add(bwTop);

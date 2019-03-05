@@ -38,6 +38,7 @@ namespace CognativeSurveyX.Fregments
                 idx++;
                 CsillagSkala button = new CsillagSkala();
                 button.ValaszDB = 7;
+                button.FontMeret = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
                 button.CheckedChange += button_CheckedChange;
                 button.Text = item;
 

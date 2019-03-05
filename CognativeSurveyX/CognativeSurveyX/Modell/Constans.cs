@@ -691,6 +691,41 @@ namespace CognativeSurveyX.Modell
             return vissza;
 
         }
+        public static bool isValidFloat(string duma)
+        {
+            bool visszaBool = true;
+            double doubleResult;
+            var vissza = double.TryParse(duma, out doubleResult);
+            if (doubleResult == 0) { visszaBool = false; }
+            return visszaBool;
+            //return double.IsNaN(Convert.ToDouble(duma));
+        }
+
+        public static int Length(string v)
+        {
+            int vissza = 0;
+            if (v != null)
+            {
+                vissza = v.Length;
+            }
+
+            return vissza;
+        }
+        public static string BTrim(string text)
+        {
+            String vissza = text;
+            if (text != null)
+            {
+                if (text.Length > 0)
+                {
+                    var text2 = text.TrimEnd(' ');
+                    vissza = text2.TrimStart(' ');
+                }
+            }
+
+
+            return vissza;
+        }
     }
 
 }
