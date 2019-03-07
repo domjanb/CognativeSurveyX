@@ -247,7 +247,7 @@ namespace CognativeSurveyX
 
             var indexMost = -1;
             Debug.WriteLine( adatBazis.CogDataKerdiv.Count());
-            foreach (var item in adatBazis.CogDataKerdiv)
+            foreach (var item in adatBazis.GetCogDataKerdiv())
             {
                 indexMost++;
                 Gomb button = new Gomb
@@ -678,7 +678,7 @@ namespace CognativeSurveyX
                 {
                     if ((itemT.Item2 + ".zip") == e.ZipFileMentett)
                     {
-                        if (File.Exists(Constans.myZipPath + "cognative/" + itemT.Item2 + "/" + itemT.Item3 + ".json"))
+                        if (File.Exists(Constans.myZipPath + "/cognative/" + itemT.Item2 + "/" + itemT.Item3 + ".json"))
                         {
                             foreach (var button in listOfButtons)
                             {

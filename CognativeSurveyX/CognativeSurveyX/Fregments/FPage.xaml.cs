@@ -30,7 +30,8 @@ namespace CognativeSurveyX.Fregments
                 }
                 else if (Constans.aktQuestion.question_type == "Kepes")
                 {
-                    Navigation.PushModalAsync(new FKepes());
+                    //Navigation.PushModalAsync(new Fkepes2());
+                    Navigation.PushModalAsync(new FCarousel());
                 }
                 else if (Constans.aktQuestion.question_type == "Number")
                 {
@@ -78,12 +79,12 @@ namespace CognativeSurveyX.Fregments
                 }
                 else if (Constans.aktQuestion.question_type == "vege")
                 {
-                    Navigation.PushModalAsync(new MainPage2());
+                    Navigation.PushModalAsync(new ProjectPage());
                 }
             }
             else
             {
-                Navigation.PushModalAsync(new MainPage2());
+                Navigation.PushModalAsync(new ProjectPage());
             }
             
             //break;

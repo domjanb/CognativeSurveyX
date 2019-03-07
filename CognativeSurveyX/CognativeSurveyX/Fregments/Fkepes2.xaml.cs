@@ -27,20 +27,23 @@ namespace CognativeSurveyX.Fregments
             //myLayout.Padding= new Thickness(10, 10, 10, 10);
             //myLayout.HorizontalOptions = LayoutOptions.Fill;
             //myLayout.BackgroundColor = Color.Red;
-            var myScroll = new ScrollView();
+            //var myScroll = new ScrollView();
             var myStack = new StackLayout();
-            myScroll.Content = myStack;
-
+            //myScroll.Content = myStack;
+            //myScroll.HorizontalOptions = LayoutOptions.FillAndExpand;
+            //myScroll.VerticalOptions= LayoutOptions.FillAndExpand;
+            myStack.HorizontalOptions = LayoutOptions.FillAndExpand;
+            myStack.VerticalOptions = LayoutOptions.FillAndExpand;
 
             Label kerdes = new Label();
-            kerdes.Text = Constans.aktQuestion.question_title;
+            kerdes.Text = Constans.aktQuestion.question_title+ " "+ Constans.aktQuestion.question_title + " "+Constans.aktQuestion.question_title + " "+Constans.aktQuestion.question_title + " "+Constans.aktQuestion.question_title + " "+Constans.aktQuestion.question_title + " ";
             kerdes.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
             myStack.Children.Add(kerdes);
 
 
             int itemDb = Constans.aktQuestion.choices.Count;
 
-            for (var i = 0; i < itemDb / 2; i++)
+            /*for (var i = 0; i < itemDb / 2; i++)
             {
                 Constans.myLayout.Add("neve" + Convert.ToString(i),
                     new StackLayout { Orientation = StackOrientation.Horizontal,
@@ -52,16 +55,33 @@ namespace CognativeSurveyX.Fregments
 
 
             });
-            }
 
+            }*/
+            for (var i = 0; i < 1 ; i++)
+            {
+                Constans.myLayout.Add("neve" + Convert.ToString(i),
+                    new StackLayout
+                    {
+                        Orientation = StackOrientation.Horizontal,
+                        VerticalOptions = LayoutOptions.Fill,
+                        HorizontalOptions = LayoutOptions.Fill,
+                        Margin = new Thickness(1, 1, 1, 1),
+                        Padding = new Thickness(1, 1, 1, 1),
+                        BackgroundColor = Color.Gold
+
+
+                    });
+
+            }
             int sor = -1;
             int idx = 0;
             var oszlop = 0;
-            int nevindex = 1;
+            int nevindex = 0;
             
             
-            foreach (var item in Constans.aktQuestion.choices)
+            //foreach (var item in Constans.aktQuestion.choices)
             {
+                var item = Constans.aktQuestion.choices[0];
                 
                 oszlop = 1;
                 //if (idx % 2 != 1)
@@ -94,13 +114,17 @@ namespace CognativeSurveyX.Fregments
                 button.BorderWidth = 0;
                 button.BorderColor = Color.Gray;
 
-                //button.VerticalOptions = LayoutOptions.FillAndExpand;
-                //button.HorizontalOptions = LayoutOptions.FillAndExpand;
-                //button.Aspect = Aspect.Fill;
+                button.VerticalOptions = LayoutOptions.FillAndExpand;
+                button.HorizontalOptions = LayoutOptions.FillAndExpand;
+                button.Aspect = Aspect.AspectFill;*/
+                
+
+
+
 
                 //listButtons.Add(button);
                 //myTomb.Add(Tuple.Create(idx, button) );
-                */
+                
                 Image button = new Image();
                 string duma = ((string)item).ToLower();
                 if (duma == "egyéb")
@@ -109,11 +133,13 @@ namespace CognativeSurveyX.Fregments
                 }
                 string ffile = Path.Combine(Constans.myFilePath, duma.ToLower() + "_logo.png");
                 button.Source= ImageSource.FromFile(ffile);
-                button.Aspect = Aspect.AspectFill;
+                button.Aspect = Aspect.Fill;
+                button.VerticalOptions = LayoutOptions.FillAndExpand;
+                button.HorizontalOptions = LayoutOptions.FillAndExpand;
 
 
                 //button.Clicked += button_Clicked;
-                foreach(var itemL in Constans.myLayout)
+                foreach (var itemL in Constans.myLayout)
                 {
                     if (itemL.Key == neve)
                     {
@@ -136,7 +162,8 @@ namespace CognativeSurveyX.Fregments
 
                 
             }
-            myLayout.Children.Add(myScroll);
+            //myLayout.Children.Add(myScroll);
+            myLayout.Children.Add(myStack);
         }
         private void button_Clicked(object sender, EventArgs e)
         {

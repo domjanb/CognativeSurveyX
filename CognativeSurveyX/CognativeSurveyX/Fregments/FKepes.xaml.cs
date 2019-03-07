@@ -36,22 +36,29 @@ namespace CognativeSurveyX.Fregments
             //regForm2.HorizontalOptions = LayoutOptions.Center;
             //regForm2.VerticalOptions = LayoutOptions.FillAndExpand;
             regForm2.Padding = 15;
+            
             regForm2.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
-            regForm2.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
+            //regForm2.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             for (var i = 0; i < itemDb / 2; i++)
             {
                 //regForm2.RowDefinitions.Add(new RowDefinition { Height = new GridLength(i, GridUnitType.Star) });
                 regForm2.RowDefinitions.Add(new RowDefinition { Height =  GridLength.Auto });
             }
-
+            /*for (var i = 0; i < 1 ; i++)
+            {
+                //regForm2.RowDefinitions.Add(new RowDefinition { Height = new GridLength(i, GridUnitType.Star) });
+                //regForm2.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
+                regForm2.RowDefinitions.Add(new RowDefinition { Height = new GridLength(5, GridUnitType.Star) });
+            }*/
             int sor = -1;
             int idx = 0;
             var oszlop = 0;
             foreach (var item in Constans.aktQuestion.choices)
             {
+                
                 idx++;
                 oszlop = 1;
-                if (idx % 2 == 1)
+                //if (idx % 2 == 1)
                 {
                     sor++;
                     oszlop = 0;
@@ -63,18 +70,20 @@ namespace CognativeSurveyX.Fregments
                     duma = "other";
                 }
                 string ffile= Path.Combine( Constans.myFilePath , duma.ToLower() + "_logo.png"  );
+                button.HorizontalOptions = LayoutOptions.FillAndExpand;
                 button.Source= ImageSource.FromFile(ffile);
-                //button.Aspect = Aspect.AspectFill;
+                button.Aspect = Aspect.AspectFill;
                 Image im = new Image();
                 im.Source = ImageSource.FromFile(ffile);
+
                 Debug.WriteLine(im.Width);
                 Debug.WriteLine(im.Bounds.Width);
                 //button.
                 button.BackgroundColor = Color.Red;
-                button.BorderWidth = 4;
+                button.BorderWidth = 1;
                 button.BorderColor = Color.Black;
                 //button.Measure()
-                button.VerticalOptions = LayoutOptions.FillAndExpand;
+                //button.VerticalOptions = LayoutOptions.FillAndExpand;
                 //button.HorizontalOptions= LayoutOptions.FillAndExpand;
                 
                 //button.Text = Constans.bumbuc_false + "  " + item;
@@ -94,6 +103,9 @@ namespace CognativeSurveyX.Fregments
             myLayout.Children.Add(myScroll);
             
         }
+
+        
+
         private void button_Clicked(object sender, EventArgs e)
         {
             /*Button mostNyomi = (Button)sender;
