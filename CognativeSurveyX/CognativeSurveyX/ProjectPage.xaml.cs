@@ -42,6 +42,8 @@ namespace CognativeSurveyX
             Constans.ScreenHeight = display.Height;
             Constans.ScreenWidth = display.Width;
             downloader.OnFileDownloaded += OnFileDownloaded;
+            Debug.WriteLine("iiiiiiiiiitttttttttteeeeeeeeeennnnnn");
+            Debug.WriteLine(Constans.myZipPath);
             
             if (myPlatform != null)
             {

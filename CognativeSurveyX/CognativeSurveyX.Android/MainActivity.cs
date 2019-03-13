@@ -9,7 +9,9 @@ using Android.OS;
 using LabelHtml.Forms.Plugin.Droid;
 using CognativeSurveyX.Modell;
 using System.IO;
-
+using Plugin.Media;
+using Plugin.Permissions;
+using Plugin.CurrentActivity;
 
 namespace CognativeSurveyX.Droid
 {
@@ -22,13 +24,20 @@ namespace CognativeSurveyX.Droid
             ToolbarResource = Resource.Layout.Toolbar;
 
             base.OnCreate(savedInstanceState);
-
-	        //Constants.myZipPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal));
+            CrossMedia.Current.Initialize();
+            CrossCurrentActivity.Current.Init(this, savedInstanceState);
+            //Constants.myZipPath = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal));
             HtmlLabelRenderer.Initialize();
-
+            //FFImageLoading.Forms.Platform.CachedImageRenderer.Init(enableFastRenderer: true);
+            
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
         }
+        public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
+        {
+            PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
+        }
     }
+    
 }

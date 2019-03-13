@@ -6,6 +6,7 @@ using Foundation;
 using UIKit;
 using CognativeSurveyX.Modell;
 using LabelHtml.Forms.Plugin.iOS;
+using Plugin.FileUploader;
 
 namespace CognativeSurveyX.iOS
 {
@@ -33,6 +34,14 @@ namespace CognativeSurveyX.iOS
 
 
             return base.FinishedLaunching(app, options);
+        }
+        /**
+     * Save the completion-handler we get when the app opens from the background.
+     * This method informs iOS that the app has finished all internal processing and can sleep again.
+     */
+        public override void HandleEventsForBackgroundUrl(UIApplication application, string sessionIdentifier, Action completionHandler)
+        {
+            FileUploadManager.UrlSessionCompletion = completionHandler;
         }
     }
 }

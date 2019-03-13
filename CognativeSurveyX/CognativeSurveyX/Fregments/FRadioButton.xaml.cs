@@ -90,7 +90,7 @@ namespace CognativeSurveyX.Fregments
 
                 if (item.Item2.myIschecked)
                 {
-                    var akkod = Constans.aktQuestion.choicesKod[item.Item1];
+                    var akkod = Constans.aktQuestion.choicesKod[item.Item1-1];
                     Constans.valaszok = Constans.aktQuestion.kerdeskod + "=" + Convert.ToString(item.Item1);
                 }
             }

@@ -10,6 +10,9 @@ using CognativeSurveyX.Controls;
 using Plugin.Connectivity;
 using System.Linq;
 using CognativeSurveyX.Data;
+using System.Diagnostics;
+using Plugin.FileUploader;
+using Plugin.FileUploader.Abstractions;
 
 namespace CognativeSurveyX.Modell
 {
@@ -122,6 +125,7 @@ namespace CognativeSurveyX.Modell
         public static Color BackgroundColor = Color.FromRgb(58, 153, 212);
         public static Color MainTextColor = Color.White;
         public static string webUrl = "http://qnr.cognative.hu/cogsurv/regist_ios2.php";
+        public static string uploadUrl = "http://qnr.cognative.hu/cogsurv/file_upload_ios.php";
         public static string webUrlfeltolt = "http://qnr.cognative.hu/cogsurv/feltolt_xam.php";
         public static string downUrl = "http://qnr.cognative.hu/cogsurv/";
         public static string myZipPath = "";
@@ -599,6 +603,7 @@ namespace CognativeSurveyX.Modell
             if (milyenANet() == paramNetkapcsolat)
             {
                 feltoltAdat();
+                feltoltFile();
             }
 
         }
@@ -633,6 +638,63 @@ namespace CognativeSurveyX.Modell
 
 
 
+        }
+        private async static void feltoltFile()
+        {
+            CrossFileUploader.Current.FileUploadCompleted += Current_FileUploadCompleted;
+            
+            CrossFileUploader.Current.FileUploadError += Current_FileUploadError;
+            string pt1 = Path.Combine(Constans.myZipPath, "photo");
+            if (Directory.Exists(pt1))
+            {
+                foreach(var item in Directory.GetFiles(pt1))
+                {
+                    string fileneve = Path.GetFileName(item);
+                    string dirneve = Path.GetDirectoryName(item);
+                    Debug.WriteLine(fileneve);
+                    CrossFileUploader.Current.UploadFileAsync(
+                        Constans.uploadUrl, 
+                        new FilePathItem("uploadedfile", item), new Dictionary<string, string>()
+                    {
+                        /*<HEADERS HERE>*/
+                    });
+
+                    var a = 2;
+                }
+                
+            }
+            
+
+
+
+        }
+
+        
+
+        private static void Current_FileUploadError(object sender, FileUploadResponse e)
+        {
+            //isBusy = false;
+            System.Diagnostics.Debug.WriteLine($"{e.StatusCode} - {e.Message}");
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                //await DisplayAlert("File Upload", "Upload Failed", "Ok");
+                Debug.WriteLine("File Upload", "Upload Failed", "Ok");
+                //progress.IsVisible = false;
+                //progress.Progress = 0.0f;
+            });
+        }
+
+        private static void Current_FileUploadCompleted(object sender, FileUploadResponse e)
+        {
+            //isBusy = false;
+            System.Diagnostics.Debug.WriteLine($"{e.StatusCode} - {e.Message}");
+            Device.BeginInvokeOnMainThread(async () =>
+            {
+                //await DisplayAlert("File Upload", "Upload Completed", "Ok");
+                Debug.WriteLine("File Upload", "Upload Completed", "Ok");
+                //progress.IsVisible = false;
+                //progress.Progress = 0.0f;
+            });
         }
         public static string kipofoz(string duma)
         {

@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-
+using System.Windows.Input;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
@@ -13,9 +13,12 @@ namespace CognativeSurveyX.Fregments
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class FPage : ContentPage
 	{
-		public FPage ()
+        
+        public FPage ()
 		{
-			InitializeComponent ();
+            
+            InitializeComponent ();
+            
 
             //Constans.nextPage();
             if (Constans.pageNumber <= Constans.aktSurvey.questions.Count()+1)
@@ -31,7 +34,7 @@ namespace CognativeSurveyX.Fregments
                 else if (Constans.aktQuestion.question_type == "Kepes")
                 {
                     //Navigation.PushModalAsync(new Fkepes2());
-                    Navigation.PushModalAsync(new FCarousel());
+                    Navigation.PushModalAsync(new FCarouselString());
                 }
                 else if (Constans.aktQuestion.question_type == "Number")
                 {
@@ -77,6 +80,10 @@ namespace CognativeSurveyX.Fregments
                 {
                     Navigation.PushModalAsync(new FVegeIntro());
                 }
+                else if (Constans.aktQuestion.question_type == "Photo")
+                {
+                    Navigation.PushModalAsync(new FPhoto());
+                }
                 else if (Constans.aktQuestion.question_type == "vege")
                 {
                     Navigation.PushModalAsync(new ProjectPage());
@@ -89,5 +96,6 @@ namespace CognativeSurveyX.Fregments
             
             //break;
         }
+        
     }
 }
