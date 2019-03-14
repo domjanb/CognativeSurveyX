@@ -20,27 +20,43 @@ namespace CognativeSurveyX.Fregments
         List<ContentPage> cpj = new List<ContentPage>();
         List<string> isour = new List<string>();
         List<StackLayout> slTomb = new List<StackLayout>();
+        public static List<Tuple<int, string>> myTomb = new List<Tuple<int, string>>();
+        public static Dictionary<int, string>  myParam= new Dictionary<int, string>();
         public FCarousel ()
 		{
 			InitializeComponent ();
             Constans.valaszok = "";
-            /*BindingContext = _vm = new CarouselViewModell();
-            List<string> isour = new List<string>();
+            int index = 0;
             foreach (var item in Constans.aktQuestion.choices)
             {
-                string duma = ((string)item).ToLower();
-                string ffile = Path.Combine(Constans.myFilePath, duma.ToLower() + "_logo.png");
-                isour.Add(ffile);
+                index = index + 1;
+                myTomb.Add(Tuple.Create(index, item));
+                myParam.Add(index, item);
             }
-            CarouselView cw = new CarouselView();
-            cw.ItemsSource = isour;
-            
-            myLayout.Children.Add(cw);*/
-            /*CarouselPage carouselPage = new CarouselPage();
-            carouselPage.Children.Add(new FCarouselL());
-            carouselPage.Children.Add(new FCarouselC());
-            carouselPage.Children.Add(new FCarouselR());*/
-            //Navigation.PushModalAsync(carouselPage);
+            if (Constans.aktQuestion.random_choices == true)
+            {
+                var rand = new Random();
+                for (var i = 1; i <= index; i++)
+                {
+
+                    int random1 = rand.Next(0, index);
+                    int random2 = rand.Next(0, index);
+                    Debug.WriteLine("randomok:" + random1 + " - " + random2);
+                    if (random1 != random2 && random1<index && random2>index)
+                    {
+                        var tmp = myTomb[random1];
+                        myTomb[random1] = myTomb[random2];
+                        myTomb[random2] = tmp;
+                    }
+                    
+                    //var ertek1 = myTomb.ContainsKey(random1);
+                    //var ertek2 = myTomb.ContainsKey(random2);
+                    
+                    //myTomb.ContainsKey(random1)
+
+                }
+                var a = 2;
+            }
 
 
             foreach (var item in Constans.aktQuestion.choices)

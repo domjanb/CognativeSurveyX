@@ -1,0 +1,23 @@
+﻿<?xml version="1.0" encoding="UTF-8"?>
+<ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="CognativeSurveyX.Controls.MaxDiff">
+    <Grid  HorizontalOptions="FillAndExpand">
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="1*"/>
+            <ColumnDefinition Width="9*"/>
+            <ColumnDefinition Width="1*"/>
+        </Grid.ColumnDefinitions>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="*" />
+        </Grid.RowDefinitions>
+
+        <Label x:Name="boxLabelBal" Text="⚪" />
+        <Label x:Name="textLabel" Grid.Column="1" HorizontalOptions="Center"/>
+        <Label x:Name="boxLabelJobb" Text="⚪" Grid.Column="2"/>
+
+    </Grid>
+
+
+    
+</ContentView>

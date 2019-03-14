@@ -28,13 +28,15 @@ namespace CognativeSurveyX.Fregments
                     //Navigation.PushModalAsync(new Radioboxes());
                     //Navigation.PushModalAsync(new FCheckBox());
                     Navigation.PushModalAsync(new FRadioButton());
+                    Navigation.PushModalAsync(new FMaxDiff());
 
 
                 }
                 else if (Constans.aktQuestion.question_type == "Kepes")
                 {
                     //Navigation.PushModalAsync(new Fkepes2());
-                    Navigation.PushModalAsync(new FCarouselString());
+                    Navigation.PushModalAsync(new FCarousel());
+                    //Navigation.PushModalAsync(new FCarouselString());
                 }
                 else if (Constans.aktQuestion.question_type == "Number")
                 {
