@@ -17,6 +17,7 @@ namespace CognativeSurveyX.Fregments
 	{
         List<Checkbox> listCheckbox = new List<Checkbox>();
         public static List<Tuple<int, Checkbox>> myTomb = new List<Tuple<int, Checkbox>>();
+        
         public FCheckBox ()
 		{
 			InitializeComponent ();

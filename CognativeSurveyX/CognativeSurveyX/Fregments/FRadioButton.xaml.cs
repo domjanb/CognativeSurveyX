@@ -17,10 +17,55 @@ namespace CognativeSurveyX.Fregments
 	public partial class FRadioButton : ContentPage
 	{
         List<RadioButton> listCheckbox = new List<RadioButton>();
+        public static List<Tuple<int, string>> mySortTomb = new List<Tuple<int, string>>();
         public static List<Tuple<int, RadioButton>> myTomb = new List<Tuple<int, RadioButton>>();
         public FRadioButton ()
 		{
 			InitializeComponent ();
+            Constans.valaszok = "";
+            int index = -1;
+            foreach (var item in Constans.aktQuestion.choices)
+            {
+                index = index + 1;
+                mySortTomb.Add(Tuple.Create(Convert.ToInt32(Constans.aktQuestion.choicesKod[index]), item));
+            }
+            mySortTomb.Add(Tuple.Create(100, "OK"));
+
+
+            if (Constans.aktQuestion.random_choices == true)
+            {
+                var rand = new Random();
+                for (var i = 1; i < index; i++)
+                {
+
+                    int random1 = rand.Next(0, index + 1);
+                    int random2 = rand.Next(0, index + 1);
+                    Debug.WriteLine("randomok:" + random1 + " - " + random2);
+                    if (random1 != random2 && random1 < index && random2 < index)
+                    {
+                        bool kell = true;
+                        if (mySortTomb[random1].Item2.Length > 3)
+                        {
+                            if (mySortTomb[random1].Item2.ToLower().Substring(mySortTomb[random1].Item2.Length - 2, 2) == "-r") { kell = false; }
+                        }
+                        if (mySortTomb[random2].Item2.Length > 3)
+                        {
+                            if (mySortTomb[random2].Item2.ToLower().Substring(mySortTomb[random2].Item2.Length - 2, 2) == "-r") { kell = false; }
+                        }
+                        if (kell)
+                        {
+                            var tmp = mySortTomb[random1];
+                            mySortTomb[random1] = mySortTomb[random2];
+                            mySortTomb[random2] = tmp;
+                        }
+
+                    }
+
+                }
+                var a = 2;
+            }
+
+
             myLayout.Margin = new Thickness(10, 0, 10, 0);
             var myScroll = new ScrollView();
             var myStack = new StackLayout();
@@ -32,8 +77,11 @@ namespace CognativeSurveyX.Fregments
             myStack.Children.Add(kerdes);
 
             int idx = 0;
-            foreach (var item in Constans.aktQuestion.choices)
+            //foreach (var item in Constans.aktQuestion.choices)
+            //{
+            foreach (var itemTomb in mySortTomb)
             {
+                var item = itemTomb.Item2;
                 idx++;
                 RadioButton button = new RadioButton();
                 string buttonDuma = item;
