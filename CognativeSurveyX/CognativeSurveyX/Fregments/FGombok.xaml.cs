@@ -15,10 +15,66 @@ namespace CognativeSurveyX.Fregments
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class FGombok : ContentPage
 	{
-        List<Gomb> listButtons = new List<Gomb>();
+        public static List<Tuple<int, string, Gomb>> mySortTomb = new List<Tuple<int, string, Gomb>>();
+        //List<Gomb> listButtons = new List<Gomb>();
         public FGombok ()
 		{
 			InitializeComponent ();
+            mySortTomb.Clear();
+
+            Constans.valaszok = "";
+            int index = -1;
+            foreach (var item in Constans.aktQuestion.choices)
+            {
+                index = index + 1;
+                mySortTomb.Add(Tuple.Create(Convert.ToInt32(Constans.aktQuestion.choicesKod[index]), item, new Gomb
+                {
+                    Text = "",
+                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
+                    BackgroundColor = Color.Transparent
+                }));
+            }
+
+            if (Constans.aktQuestion.random_choices == true)
+            {
+                var rand = new Random();
+                for (var i = 1; i < index; i++)
+                {
+
+                    int random1 = rand.Next(0, index + 1);
+                    int random2 = rand.Next(0, index + 1);
+                    if (!Constans.KellERotalni(Constans.ValaszParameter(mySortTomb[random1].Item2)))
+                    {
+                        random1 = index + 1000;
+                    }
+                    else if (!Constans.KellERotalni(Constans.ValaszParameter(mySortTomb[random2].Item2)))
+                    {
+                        random2 = index + 1000;
+                    }
+                    if (random1 != random2 && random1 < index && random2 < index)
+                    {
+                        bool kell = true;
+                        if (mySortTomb[random1].Item2.Length > 3)
+                        {
+
+                            if (mySortTomb[random1].Item2.ToLower().Substring(mySortTomb[random1].Item2.Length - 2, 2) == "-r") { kell = false; }
+                        }
+                        if (mySortTomb[random2].Item2.Length > 3)
+                        {
+                            if (mySortTomb[random2].Item2.ToLower().Substring(mySortTomb[random2].Item2.Length - 2, 2) == "-r") { kell = false; }
+                        }
+                        if (kell)
+                        {
+                            var tmp = mySortTomb[random1];
+                            mySortTomb[random1] = mySortTomb[random2];
+                            mySortTomb[random2] = tmp;
+                        }
+
+                    }
+
+                }
+            }
+
             myLayout.Margin = new Thickness(10, 0, 10, 0);
             var myScroll = new ScrollView();
             var myStack = new StackLayout();
@@ -26,27 +82,26 @@ namespace CognativeSurveyX.Fregments
             myStack.HorizontalOptions = LayoutOptions.FillAndExpand;
             myScroll.Content = myStack;
 
-            //myLayout.Children.Add(myScroll);
 
             Label kerdes = new Label();
             kerdes.Text = Constans.aktQuestion.question_title;
             kerdes.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
             myStack.Children.Add(kerdes);
-            //myLayout.Children.Add(kerdes);
+
 
             int mostIndex = 0;
-            foreach (var item in Constans.aktQuestion.choices)
+            //foreach (var item in Constans.aktQuestion.choices)
+            //{
+            foreach (var itemTomb in mySortTomb)
             {
+                var item = Constans.ValaszParameterNelkul(itemTomb.Item2);
+                //RadioButton button = itemTomb.Item3;
                 mostIndex++;
-                Gomb button = new Gomb
-                {
-                    Text = item,
-                    FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
-                    BackgroundColor = Color.Transparent
-                };
+                Gomb button = itemTomb.Item3;
+                button.Text = item;
+
                 int padding = Convert.ToInt16(Constans.ScreenWidth / 7);
                 button.Padding = new Thickness(padding, 0, padding, 0);
-                listButtons.Add(button);
                 if (mostIndex == Constans.aktQuestion.choices.Count)
                 {
                    
@@ -57,32 +112,8 @@ namespace CognativeSurveyX.Fregments
                     
                     button.Isuccso = false;
                 }
-                
-                //button.CheckedChange += Button_CheckedChange1;
                 button.CheckedChange += button_CheckedChange;
-                //button.CheckedChange += button_Clicked;
-                /*Thickness margin = new Thickness();
-                margin.Bottom = -10;
-                margin.Top = -0;
-                margin.Left= 0;
-                margin.Right = 0;
-                Frame fr = new Frame
-                {
-                    OutlineColor = Color.Black,
-                    BackgroundColor = Color.Aqua,
-                    HorizontalOptions = LayoutOptions.Center,
-                    VerticalOptions = LayoutOptions.Center,
-                    CornerRadius = 10,
-                    Margin = margin,
-                    Content = button,
-                    Content = new Label
-                    {
-                        Text = "I've been framed!",
-                        FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label)),
-                        FontAttributes = FontAttributes.Italic,
-                        TextColor = Color.Blue
-                    }
-                };*/
+                
 
 
                 if (!Constans.aktQuestion.choicesVisible[mostIndex-1])
@@ -96,57 +127,29 @@ namespace CognativeSurveyX.Fregments
             myLayout.Children.Add(myScroll);
         }
 
-        private void Button_CheckedChange1(object sender, bool e)
-        {
-            
-            Debug.WriteLine("nyomi");
-        }
-
         private void button_CheckedChange(object sender, bool e)
         {
             Debug.WriteLine("nyomi");
             Gomb mostNyomi = (Gomb)sender;
             int idx = 0;
-            foreach (Gomb button in listButtons)
+            foreach (var item in mySortTomb)
             {
                 idx++;
-                if (button.Id == mostNyomi.Id)
+                if (item.Item3.Id == mostNyomi.Id)
                 {
-                    button.myIschecked = true;
+                    item.Item3.myIschecked = true;
                     Constans.valaszok = Constans.aktQuestion.kerdeskod + "=" + Convert.ToString(idx);
                 }
                 else
                 {
-                    button.myIschecked= false;
+                    item.Item3.myIschecked= false;
                 }
             }
             
 
         }
 
-        private void button_Clicked(object sender, EventArgs e)
-        {
-            /*Button mostNyomi = (Button)sender;
-            foreach (Button button in listButtons)
-            {
-                string eleje = button.Text;
-                string eleje2 = Convert.ToString(eleje.ElementAt(0));
-                string vege = eleje.Substring(1, eleje.Length - 1);
-                if (button.Id == mostNyomi.Id)
-                {
-                    button.Text = Constans.bumbuc_true + vege;
-                }
-                else
-                {
-                    button.Text = Constans.bumbuc_false + vege;
-                }
-            }*/
-
-
-            Debug.WriteLine("nyomi");
-
-
-        }
+        
         private void _Continue_Clicked(object sender, EventArgs e)
         {
 

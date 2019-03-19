@@ -26,6 +26,15 @@ namespace CognativeSurveyX.Fregments
         public FCarousel ()
 		{
 			InitializeComponent ();
+
+            cpj.Clear();
+            cpb.Clear();
+            isour.Clear();
+            slTomb.Clear();
+            mySortTomb.Clear();
+            ContetntPageTomb.Clear();
+            myParam.Clear();
+
             Constans.valaszok = "";
             int index = -1;
             foreach (var item in Constans.aktQuestion.choices)
@@ -45,6 +54,14 @@ namespace CognativeSurveyX.Fregments
 
                     int random1 = rand.Next(0, index+1);
                     int random2 = rand.Next(0, index+1);
+                    if (!Constans.KellERotalni(Constans.ValaszParameter(mySortTomb[random1].Item2)))
+                    {
+                        random1 = index + 1000;
+                    }
+                    else if (!Constans.KellERotalni(Constans.ValaszParameter(mySortTomb[random2].Item2)))
+                    {
+                        random2 = index + 1000;
+                    }
                     Debug.WriteLine("randomok:" + random1 + " - " + random2);
                     if (random1 != random2 && random1<index && random2<index)
                     {
@@ -78,7 +95,7 @@ namespace CognativeSurveyX.Fregments
             foreach(var itemTomb in mySortTomb)
             //foreach (var item in Constans.aktQuestion.choices)
             {
-                var item = itemTomb.Item2;
+                var item =Constans.ValaszParameterNelkul(  itemTomb.Item2);
                 StackLayout slTeljes = new StackLayout();
                 var fejlecL = new StackLayout();
                 fejlecL.BackgroundColor = Color.Aqua;

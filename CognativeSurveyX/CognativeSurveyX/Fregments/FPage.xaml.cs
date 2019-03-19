@@ -28,7 +28,7 @@ namespace CognativeSurveyX.Fregments
                     //Navigation.PushModalAsync(new Radioboxes());
                     //Navigation.PushModalAsync(new FCheckBox());
                     Navigation.PushModalAsync(new FRadioButton());
-                    Navigation.PushModalAsync(new FMaxDiff());
+                    //Navigation.PushModalAsync(new FMaxDiff());
 
 
                 }

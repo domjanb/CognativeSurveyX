@@ -762,6 +762,15 @@ namespace CognativeSurveyX.Modell
             return visszaBool;
             //return double.IsNaN(Convert.ToDouble(duma));
         }
+        public static bool isValidInt(string duma)
+        {
+            bool visszaBool = true;
+            int intResult;
+            var vissza = int.TryParse(duma, out intResult);
+            if (intResult == 0) { visszaBool = false; }
+            return visszaBool;
+            //return double.IsNaN(Convert.ToDouble(duma));
+        }
 
         public static int Length(string v)
         {
@@ -786,6 +795,67 @@ namespace CognativeSurveyX.Modell
             }
 
 
+            return vissza;
+        }
+        public static string ValaszParameterNelkul(string text)
+        {
+            String vissza = text;
+            if (text != null)
+            {
+                if (text.Length > 0)
+                {
+                    var kezd = text.LastIndexOf(";");
+                    if (kezd > 0)
+                    {
+                        var vege = text.Substring(kezd + 1);
+                        if (isValidInt(vege))
+                        {
+                            vissza = text.Substring(0, kezd);
+                        }
+                    }
+                    
+                }
+            }
+            return vissza;
+        }
+
+        public static string ValaszParameter(string text)
+        {
+            String vissza = "";
+            if (text != null)
+            {
+                if (text.Length > 0)
+                {
+                    var kezd = text.LastIndexOf(";");
+                    if (kezd > 0)
+                    {
+                        var vege = text.Substring(kezd + 1);
+                        if (isValidInt(vege))
+                        {
+                            vissza = vege;
+                        }
+                    }
+                }
+            }
+            return vissza;
+        }
+        public static bool KellERotalni(string text)
+        {
+            bool vissza = true;
+
+            if (text=="2" || text =="3" || text == "6" || text == "7"){
+                vissza = false;
+            }
+            return vissza;
+        }
+        public static bool VanEOpen(string text)
+        {
+            bool vissza = false;
+
+            if (text == "1" || text == "3" || text == "5" || text == "7")
+            {
+                vissza = true;
+            }
             return vissza;
         }
     }

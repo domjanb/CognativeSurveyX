@@ -16,21 +16,19 @@ namespace CognativeSurveyX.Fregments
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class FRadioButton : ContentPage
 	{
-        List<RadioButton> listCheckbox = new List<RadioButton>();
-        public static List<Tuple<int, string>> mySortTomb = new List<Tuple<int, string>>();
-        public static List<Tuple<int, RadioButton>> myTomb = new List<Tuple<int, RadioButton>>();
+        public static List<Tuple<int, string,RadioButton>> mySortTomb = new List<Tuple<int, string, RadioButton>>();
         public FRadioButton ()
 		{
 			InitializeComponent ();
+            mySortTomb.Clear();
+
             Constans.valaszok = "";
             int index = -1;
             foreach (var item in Constans.aktQuestion.choices)
             {
                 index = index + 1;
-                mySortTomb.Add(Tuple.Create(Convert.ToInt32(Constans.aktQuestion.choicesKod[index]), item));
+                mySortTomb.Add(Tuple.Create(Convert.ToInt32(Constans.aktQuestion.choicesKod[index]), item,new RadioButton()));
             }
-            mySortTomb.Add(Tuple.Create(100, "OK"));
-
 
             if (Constans.aktQuestion.random_choices == true)
             {
@@ -40,12 +38,20 @@ namespace CognativeSurveyX.Fregments
 
                     int random1 = rand.Next(0, index + 1);
                     int random2 = rand.Next(0, index + 1);
-                    Debug.WriteLine("randomok:" + random1 + " - " + random2);
+                    if (!Constans.KellERotalni(Constans.ValaszParameter(mySortTomb[random1].Item2)))
+                    {
+                        random1 = index+1000;
+                    }
+                    else if (!Constans.KellERotalni(Constans.ValaszParameter(mySortTomb[random2].Item2)))
+                    {
+                        random2 = index + 1000;
+                    }
                     if (random1 != random2 && random1 < index && random2 < index)
                     {
                         bool kell = true;
                         if (mySortTomb[random1].Item2.Length > 3)
                         {
+                            
                             if (mySortTomb[random1].Item2.ToLower().Substring(mySortTomb[random1].Item2.Length - 2, 2) == "-r") { kell = false; }
                         }
                         if (mySortTomb[random2].Item2.Length > 3)
@@ -62,7 +68,6 @@ namespace CognativeSurveyX.Fregments
                     }
 
                 }
-                var a = 2;
             }
 
 
@@ -77,20 +82,17 @@ namespace CognativeSurveyX.Fregments
             myStack.Children.Add(kerdes);
 
             int idx = 0;
-            //foreach (var item in Constans.aktQuestion.choices)
-            //{
             foreach (var itemTomb in mySortTomb)
             {
-                var item = itemTomb.Item2;
+                var item = Constans.ValaszParameterNelkul( itemTomb.Item2);
                 idx++;
-                RadioButton button = new RadioButton();
+                RadioButton button = itemTomb.Item3;
                 string buttonDuma = item;
                 if (item.Length > 2)
                 {
-                    if (item.Substring(item.Length - 2, 2) == ";O")
+                    if (Constans.VanEOpen( Constans.ValaszParameter(itemTomb.Item2)))
                     {
                         button.KellEOther = true;
-                        buttonDuma = item.Substring(0, item.Length - 2 - 1);
                     }
                 }
                 
@@ -103,47 +105,58 @@ namespace CognativeSurveyX.Fregments
                 {
                     button.IsVisible = false;
                 }
-                myTomb.Add(Tuple.Create(idx,button));
-                listCheckbox.Add(button);
-                    //button.Opacity = 1;
-                    button.CheckedChange += Button_CheckedChange;
-                    myStack.Children.Add(button);
+                button.CheckedChange += Button_CheckedChange;
+                button.EntryChange += Button_EntryChange;
+                myStack.Children.Add(button);
                 }
-                //myLayout
                 myLayout.Children.Add(myScroll);
             }
-        private void Button_CheckedChange(object sender, bool e)
+
+        private void Button_EntryChange(object sender, TextChangedEventArgs e)
         {
-            //throw new NotImplementedException();
-            //Debug.WriteLine("volt nyomi");
-            Constans.valaszok = "";
-            ((RadioButton)sender).enModositok = true;
-            int idx = 0;
-            foreach (var item in listCheckbox)
+            RadioButton mostNyomi = (RadioButton)sender;
+            if (mostNyomi.TextOther.Length > 0)
             {
-                idx++;
-                if (item.Id == ((RadioButton)sender).Id)
+                if (!mostNyomi.IsChecked)
                 {
-                    item.myIschecked = true;
+                    mostNyomi.IsChecked = true;
                 }
                 else
                 {
-                    item.myIschecked = false;
+                    Button_CheckedChange(sender, true);
                 }
-                
+            }
+        }
+
+        private void Button_CheckedChange(object sender, bool e)
+        {
+
+
+            Constans.valaszok = "";
+            ((RadioButton)sender).enModositok = true;
+            foreach (var item in mySortTomb)
+            {
+                if (item.Item3.Id == ((RadioButton)sender).Id)
+                {
+                    var otherDuma = "";
+                    item.Item3.myIschecked = true;
+                    if (item.Item3.KellEOther)
+                    {
+                        var akkod = item.Item1;
+                        otherDuma = Constans.aktQuestion.kerdeskod + "other" +  "=" + Convert.ToString(Constans.kipofoz(item.Item3.TextOther)) + ";";
+                    }
+                    Constans.valaszok = Constans.valaszok + Constans.aktQuestion.kerdeskod +  "=" + Convert.ToString(item.Item1) + ";" + otherDuma;
+                    Constans.valaszok = Constans.valaszok.Substring(0, Constans.valaszok.Length);
+                }
+                else
+                {
+                    item.Item3.myIschecked = false;
+                }
             }
             ((RadioButton)sender).enModositok = false;
-            foreach (var item in myTomb)
-            {
 
-                if (item.Item2.myIschecked)
-                {
-                    var akkod = Constans.aktQuestion.choicesKod[item.Item1-1];
-                    Constans.valaszok = Constans.aktQuestion.kerdeskod + "=" + Convert.ToString(item.Item1);
-                }
-            }
 
-            Debug.WriteLine("Nyomi:" + ((RadioButton)sender).Text);
+            //Debug.WriteLine("Nyomi:" + ((RadioButton)sender).Text);
 
         }
         private void _Continue_Clicked(object sender, EventArgs e)

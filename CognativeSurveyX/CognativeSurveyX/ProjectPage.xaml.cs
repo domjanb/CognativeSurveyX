@@ -111,6 +111,19 @@ namespace CognativeSurveyX
                              && item.kerdiv1ver == visszaMost.kerdivadat[i].kerdiv1_ver)
                         {
                             adatBazis.DeleteCogDataKerdiv(item);
+                            var zipFileName = Path.Combine(Constans.myZipPath,"cognative", "kerdiv_" + visszaMost.kerdivadat[i].proj_id + "_" + visszaMost.kerdivadat[i].kerdiv1_ver+".zip");
+                            if (File.Exists(zipFileName))
+                            {
+                                File.Delete(zipFileName);
+                            }
+                            
+                            var konyvtarName = Path.Combine(Constans.myZipPath, "cognative", "kerdiv_" + visszaMost.kerdivadat[i].proj_id + "_" + visszaMost.kerdivadat[i].kerdiv1_ver );
+                            if (Directory.Exists(konyvtarName))
+                            {
+                                Directory.Delete(konyvtarName,true);
+
+                            }
+                            
                         }
                     }
                 }
