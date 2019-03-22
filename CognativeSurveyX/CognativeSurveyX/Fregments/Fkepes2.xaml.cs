@@ -1,5 +1,6 @@
 ﻿using CognativeSurveyX.Controls;
 using CognativeSurveyX.Modell;
+using LabelHtml.Forms.Plugin.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -26,20 +27,46 @@ namespace CognativeSurveyX.Fregments
             //myLayout.Margin = new Thickness(10, 10, 10, 10);
             //myLayout.Padding= new Thickness(10, 10, 10, 10);
             //myLayout.HorizontalOptions = LayoutOptions.Fill;
+            //myLayout.VerticalOptions = LayoutOptions.Fill;
             //myLayout.BackgroundColor = Color.Red;
             //var myScroll = new ScrollView();
+            myLayout.BackgroundColor = Color.Green;
             var myStack = new StackLayout();
             //myScroll.Content = myStack;
             //myScroll.HorizontalOptions = LayoutOptions.FillAndExpand;
             //myScroll.VerticalOptions= LayoutOptions.FillAndExpand;
-            myStack.HorizontalOptions = LayoutOptions.FillAndExpand;
-            myStack.VerticalOptions = LayoutOptions.FillAndExpand;
 
-            Label kerdes = new Label();
-            kerdes.Text = Constans.aktQuestion.question_title+ " "+ Constans.aktQuestion.question_title + " "+Constans.aktQuestion.question_title + " "+Constans.aktQuestion.question_title + " "+Constans.aktQuestion.question_title + " "+Constans.aktQuestion.question_title + " ";
+            //myStack.HorizontalOptions = LayoutOptions.FillAndExpand;
+            //myStack.VerticalOptions = LayoutOptions.FillAndExpand;
+            myStack.BackgroundColor = Color.Red;
+
+            Label sorszam = new Label();
+            sorszam.Margin = new Thickness(1, 1, 1, 1);
+            sorszam.Text = Constans.sorszamErtek();
+            sorszam.FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label));
+            myStack.Children.Add(sorszam);
+
+            HtmlLabel kerdes = new HtmlLabel();
+            kerdes.Text = Constans.ParamErtekeBeilleszt(Constans.aktQuestion.question_title);
             kerdes.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
             myStack.Children.Add(kerdes);
 
+            StackLayout slNeve = new StackLayout();
+            //slNeve.Padding = new Thickness(10, 10, 10, 10);
+            slNeve.HorizontalOptions = LayoutOptions.FillAndExpand;
+            slNeve.VerticalOptions = LayoutOptions.FillAndExpand;
+            slNeve.BackgroundColor = Color.Green;
+            var iNeve = Constans.aktQuestion.choices[0];
+            string dumaNeve = ((string)iNeve).ToLower();
+            string ffileNeve = Path.Combine(Constans.myFilePath, dumaNeve.ToLower() + "_logo.png");
+            Image buttonNeve = new Image();
+            buttonNeve.Source = ImageSource.FromFile(ffileNeve);
+            buttonNeve.Aspect = Aspect.AspectFit;
+            buttonNeve.VerticalOptions = LayoutOptions.Fill;
+            buttonNeve.HorizontalOptions = LayoutOptions.Fill;
+            buttonNeve.BackgroundColor = Color.GreenYellow;
+            slNeve.Children.Add(buttonNeve);
+            myStack.Children.Add(slNeve);
 
             int itemDb = Constans.aktQuestion.choices.Count;
 
@@ -63,8 +90,8 @@ namespace CognativeSurveyX.Fregments
                     new StackLayout
                     {
                         Orientation = StackOrientation.Horizontal,
-                        VerticalOptions = LayoutOptions.Fill,
-                        HorizontalOptions = LayoutOptions.Fill,
+                        VerticalOptions = LayoutOptions.FillAndExpand,
+                        HorizontalOptions = LayoutOptions.FillAndExpand,
                         Margin = new Thickness(1, 1, 1, 1),
                         Padding = new Thickness(1, 1, 1, 1),
                         BackgroundColor = Color.Gold
@@ -134,9 +161,9 @@ namespace CognativeSurveyX.Fregments
                 string ffile = Path.Combine(Constans.myFilePath, duma.ToLower() + "_logo.png");
                 button.Source= ImageSource.FromFile(ffile);
                 button.Aspect = Aspect.Fill;
-                button.VerticalOptions = LayoutOptions.FillAndExpand;
+                button.VerticalOptions = LayoutOptions.Fill;
                 button.HorizontalOptions = LayoutOptions.FillAndExpand;
-
+                
 
                 //button.Clicked += button_Clicked;
                 foreach (var itemL in Constans.myLayout)
@@ -146,7 +173,7 @@ namespace CognativeSurveyX.Fregments
                         Debug.WriteLine("sl.Height");
                         StackLayout sl = (StackLayout)(itemL.Value);
                         Debug.WriteLine(sl.Height);
-                        itemL.Value.Children.Add(button);
+                        //itemL.Value.Children.Add(button);
                         Debug.WriteLine(button.Height);
                         //sl.MinimumHeightRequest = button.Height;
                         

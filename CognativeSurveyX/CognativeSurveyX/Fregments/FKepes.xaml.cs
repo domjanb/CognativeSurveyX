@@ -1,4 +1,5 @@
 ﻿using CognativeSurveyX.Modell;
+using LabelHtml.Forms.Plugin.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -20,14 +21,23 @@ namespace CognativeSurveyX.Fregments
 		{
 			InitializeComponent ();
             myLayout.Margin = new Thickness(10, 0, 10, 0);
+            myLayout.HorizontalOptions = LayoutOptions.FillAndExpand;
+            myLayout.VerticalOptions = LayoutOptions.FillAndExpand;
             var myScroll = new ScrollView();
             var myStack = new StackLayout();
+            myStack.HorizontalOptions = LayoutOptions.FillAndExpand;
+            myStack.VerticalOptions= LayoutOptions.FillAndExpand;
             myScroll.Content = myStack;
 
             //myLayout.Children.Add(myScroll);
+            Label sorszam = new Label();
+            sorszam.Margin = new Thickness(1, 1, 1, 1);
+            sorszam.Text = Constans.sorszamErtek();
+            sorszam.FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label));
+            myStack.Children.Add(sorszam);
 
-            Label kerdes = new Label();
-            kerdes.Text = Constans.aktQuestion.question_title+ "beee";
+            HtmlLabel kerdes = new HtmlLabel();
+            kerdes.Text = Constans.ParamErtekeBeilleszt(Constans.aktQuestion.question_title);
             kerdes.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
             myStack.Children.Add(kerdes);
             
@@ -71,6 +81,7 @@ namespace CognativeSurveyX.Fregments
                 }
                 string ffile= Path.Combine( Constans.myFilePath , duma.ToLower() + "_logo.png"  );
                 button.HorizontalOptions = LayoutOptions.FillAndExpand;
+                button.VerticalOptions= LayoutOptions.FillAndExpand;
                 button.Source= ImageSource.FromFile(ffile);
                 button.Aspect = Aspect.AspectFill;
                 Image im = new Image();

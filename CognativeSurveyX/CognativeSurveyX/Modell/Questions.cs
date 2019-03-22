@@ -25,6 +25,7 @@ namespace CognativeSurveyX.Modell
             public string kerdeskod { get; set; }
             public bool visible { get; set; }
             public bool random_choices { get; set; }
+            public bool random_items { get; set; }
             public IList<string> choices { get; set; }
             public List<string> choicesKod { get; set; }
             public List<bool> choicesVisible { get; set; }

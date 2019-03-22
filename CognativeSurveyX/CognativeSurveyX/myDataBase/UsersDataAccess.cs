@@ -1,4 +1,5 @@
-﻿using SQLite;
+﻿using CognativeSurveyX.myDataBase;
+using SQLite;
 using System;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
@@ -17,6 +18,7 @@ namespace CognativeSurveyX
         public ObservableCollection<Cogkerdiv> CogDataKerdiv { get; set; }
         public ObservableCollection<Cogdata> CogData { get; set; }
         public ObservableCollection<Cogparam> CogParam { get; set; }
+        public ObservableCollection<MegszakadData> MegszakadData { get; set; }
 
         public UsersDataAccess()
         {
@@ -26,12 +28,14 @@ namespace CognativeSurveyX
             database.CreateTable<Cogkerdiv>();
             database.CreateTable<Cogdata>();
             database.CreateTable<Cogparam>();
+            database.CreateTable<MegszakadData>();
 
 
             this.CogUser = new ObservableCollection<Cogazon>(database.Table<Cogazon>());
             this.CogDataKerdiv = new ObservableCollection<Cogkerdiv>(database.Table<Cogkerdiv>());
             this.CogData = new ObservableCollection<Cogdata>(database.Table<Cogdata>());
             this.CogParam = new ObservableCollection<Cogparam>(database.Table<Cogparam>());
+            this.MegszakadData = new ObservableCollection<MegszakadData>(database.Table<MegszakadData>());
 
             if (!database.Table<Cogazon>().Any())
             {
@@ -131,6 +135,73 @@ namespace CognativeSurveyX
             
             
         }
+
+
+
+
+
+        //
+        public IEnumerable<MegszakadData> GetMegszakadDataAll()
+        {
+            lock (collisionLock)
+            {
+                return database.Query<MegszakadData>("Select * from MegszakadData").AsEnumerable();
+
+            }
+        }
+        public IEnumerable<MegszakadData> GetMegszakadDataK()
+        {
+            lock (collisionLock)
+            {
+                return database.Query<MegszakadData>("Select * from MegszakadData where bejegyzesTipus=1").AsEnumerable();
+
+            }
+        }
+        public IEnumerable<MegszakadData> GetMegszakadDataAsProjidVerAlid(int projid, string kerdivver, int kerdivalid, int bejegyzestipus)
+        {
+            lock (collisionLock)
+            {
+                var query = from adat in database.Table<MegszakadData>() where (adat.projid == projid && adat.kerdivver == kerdivver && adat.alid == kerdivalid && adat.bejegyzesTipus== bejegyzestipus) select adat;
+                return query.AsEnumerable();
+            }
+        }
+        public int SaveMegszakadData(MegszakadData MegszakadDataAdat)
+        {
+            lock (collisionLock)
+            {
+                if (MegszakadDataAdat.id != 0)
+                {
+                    database.Update(MegszakadDataAdat);
+                    return MegszakadDataAdat.id;
+                }
+                else
+                {
+                    database.Insert(MegszakadDataAdat);
+                    return MegszakadDataAdat.id;
+                }
+            }
+        }
+        public int DeleteMegszakadData(MegszakadData MegszakadDataAdat)
+        {
+            var id = MegszakadDataAdat.id;
+            if (id != 0)
+            {
+                lock (collisionLock)
+                {
+                    database.Delete<MegszakadData>(id);
+                }
+
+            }
+            this.MegszakadData.Remove(MegszakadDataAdat);
+            return id;
+        }
+        //
+
+
+
+
+
+
 
 
         public Object GetCogDataKerdivAsSernO(int Sern)

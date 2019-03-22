@@ -1,5 +1,6 @@
 ﻿using CognativeSurveyX.Controls;
 using CognativeSurveyX.Modell;
+using LabelHtml.Forms.Plugin.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -51,7 +52,7 @@ namespace CognativeSurveyX.Fregments
                     {
                         random2 = index + 1000;
                     }
-                    if (random1 != random2 && random1 < index && random2 < index)
+                    if (random1 != random2 && random1 <= index && random2 <= index)
                     {
                         bool kell = true;
                         if (mySortTomb[random1].Item2.Length > 3)
@@ -82,9 +83,14 @@ namespace CognativeSurveyX.Fregments
             myStack.HorizontalOptions = LayoutOptions.FillAndExpand;
             myScroll.Content = myStack;
 
+            Label sorszam = new Label();
+            sorszam.Margin = new Thickness(1, 1, 1, 1);
+            sorszam.Text = Constans.sorszamErtek();
+            sorszam.FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label));
+            myStack.Children.Add(sorszam);
 
-            Label kerdes = new Label();
-            kerdes.Text = Constans.aktQuestion.question_title;
+            HtmlLabel kerdes = new HtmlLabel();
+            kerdes.Text = Constans.ParamErtekeBeilleszt(Constans.aktQuestion.question_title);
             kerdes.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
             myStack.Children.Add(kerdes);
 

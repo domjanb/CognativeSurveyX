@@ -88,12 +88,12 @@ namespace CognativeSurveyX.Fregments
                 }
                 else if (Constans.aktQuestion.question_type == "vege")
                 {
-                    Navigation.PushModalAsync(new ProjectPage());
+                    Navigation.PushModalAsync(new MainPage3());
                 }
             }
             else
             {
-                Navigation.PushModalAsync(new ProjectPage());
+                Navigation.PushModalAsync(new MainPage3());
             }
             
             //break;

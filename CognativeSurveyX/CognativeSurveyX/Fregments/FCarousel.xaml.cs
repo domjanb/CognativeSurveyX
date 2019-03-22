@@ -1,4 +1,5 @@
 ﻿using CognativeSurveyX.Modell;
+using LabelHtml.Forms.Plugin.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -91,12 +92,13 @@ namespace CognativeSurveyX.Fregments
                 }
                 var a = 2;
             }
-
-            foreach(var itemTomb in mySortTomb)
+            
+            foreach (var itemTomb in mySortTomb)
             //foreach (var item in Constans.aktQuestion.choices)
             {
                 var item =Constans.ValaszParameterNelkul(  itemTomb.Item2);
                 StackLayout slTeljes = new StackLayout();
+                
                 var fejlecL = new StackLayout();
                 fejlecL.BackgroundColor = Color.Aqua;
                 fejlecL.HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -110,6 +112,17 @@ namespace CognativeSurveyX.Fregments
 
                 slTeljes.Children.Add(fejlecL);
 
+                Label sorszam = new Label();
+                sorszam.Margin = new Thickness(1, 1, 1, 1);
+                sorszam.Text = Constans.sorszamErtek();
+                sorszam.FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label));
+                slTeljes.Children.Add(sorszam);
+
+                HtmlLabel kerdes = new HtmlLabel();
+                kerdes.Margin = new Thickness(10, 0, 10, 0);
+                kerdes.Text = Constans.ParamErtekeBeilleszt(Constans.aktQuestion.question_title);
+                kerdes.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
+                slTeljes.Children.Add(kerdes);
 
                 string duma = ((string)item).ToLower();
                 string ffile = Path.Combine(Constans.myFilePath, duma.ToLower() + "_logo.png");
@@ -187,6 +200,7 @@ namespace CognativeSurveyX.Fregments
             {
                 var item = itemTomb.Item2;
                 StackLayout slTeljes = new StackLayout();
+                
                 var fejlecL = new StackLayout();
                 fejlecL.BackgroundColor = Color.Aqua;
                 fejlecL.HorizontalOptions = LayoutOptions.FillAndExpand;
@@ -200,6 +214,17 @@ namespace CognativeSurveyX.Fregments
 
                 slTeljes.Children.Add(fejlecL);
 
+                Label sorszam = new Label();
+                sorszam.Margin = new Thickness(1, 1, 1, 1);
+                sorszam.Text = Constans.sorszamErtek();
+                sorszam.FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label));
+                slTeljes.Children.Add(sorszam);
+
+                HtmlLabel kerdes = new HtmlLabel();
+                kerdes.Margin = new Thickness(10, 0, 10, 0);
+                kerdes.Text = Constans.ParamErtekeBeilleszt(Constans.aktQuestion.question_title);
+                kerdes.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
+                slTeljes.Children.Add(kerdes);
 
                 string duma = ((string)item).ToLower();
                 string ffile = Path.Combine(Constans.myFilePath, duma.ToLower() + "_logo.png");

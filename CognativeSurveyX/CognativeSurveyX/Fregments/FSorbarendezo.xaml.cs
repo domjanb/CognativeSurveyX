@@ -29,8 +29,14 @@ namespace CognativeSurveyX.Fregments
 
             //myLayout.Children.Add(myScroll);
 
+            Label sorszam = new Label();
+            sorszam.Margin = new Thickness(1, 1, 1, 1);
+            sorszam.Text = Constans.sorszamErtek();
+            sorszam.FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label));
+            myStack.Children.Add(sorszam);
+
             HtmlLabel kerdes = new HtmlLabel();
-            kerdes.Text = Constans.aktQuestion.question_title;
+            kerdes.Text = Constans.ParamErtekeBeilleszt(Constans.aktQuestion.question_title);
             kerdes.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
             myStack.Children.Add(kerdes);
 

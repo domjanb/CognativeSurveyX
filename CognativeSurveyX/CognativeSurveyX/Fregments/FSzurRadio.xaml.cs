@@ -1,5 +1,6 @@
 ﻿using CognativeSurveyX.Controls;
 using CognativeSurveyX.Modell;
+using LabelHtml.Forms.Plugin.Abstractions;
 using System;
 using System.Collections.Generic;
 using System.Diagnostics;
@@ -27,10 +28,14 @@ namespace CognativeSurveyX.Fregments
             myScroll.Content = myStack;
 
 
-            
+            Label sorszam = new Label();
+            sorszam.Margin = new Thickness(1, 1, 1, 1);
+            sorszam.Text = Constans.sorszamErtek();
+            sorszam.FontSize = Device.GetNamedSize(NamedSize.Small, typeof(Label));
+            myStack.Children.Add(sorszam);
 
-            Label kerdes = new Label();
-            kerdes.Text = Constans.aktQuestion.question_title;
+            HtmlLabel kerdes = new HtmlLabel();
+            kerdes.Text = Constans.ParamErtekeBeilleszt(Constans.aktQuestion.question_title);
             kerdes.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
             myStack.Children.Add(kerdes);
 

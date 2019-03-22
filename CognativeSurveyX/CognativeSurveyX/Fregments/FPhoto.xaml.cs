@@ -66,6 +66,7 @@ namespace CognativeSurveyX.Fregments
             //String fileNeve1 = vUser + "_" + vKerdivid + "_" + vKerdivalid + "_" + vKerdivtip + "_" + vKerdivver + "_" + q_data.getKerdeskod() + "_";
             var fotoIndex = 0;
             Boolean oki = false;
+
             while (!oki)
             {
                 fotoIndex = fotoIndex + 1;

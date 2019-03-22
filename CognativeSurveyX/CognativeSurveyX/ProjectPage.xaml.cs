@@ -150,6 +150,7 @@ namespace CognativeSurveyX
                             }
                             else
                             {
+                                megLett = true;
                                 //ha nem jó a verzió akkor udpdateljük az adatokat
                                 var idd = adatBazis.SaveCogDataKerdiv(new Cogkerdiv
                                 {
@@ -216,7 +217,20 @@ namespace CognativeSurveyX
                 Debug.WriteLine(item.volte);
                 if (!item.volte)
                 {
+                    //adatBazis.DeleteCogDataKerdiv(item);
                     adatBazis.DeleteCogDataKerdiv(item);
+                    var zipFileName = Path.Combine(Constans.myZipPath, "cognative", "kerdiv_" + item.projid + "_" + item.kerdiv1ver + ".zip");
+                    if (File.Exists(zipFileName))
+                    {
+                        File.Delete(zipFileName);
+                    }
+
+                    var konyvtarName = Path.Combine(Constans.myZipPath, "cognative", "kerdiv_" + item.projid + "_" + item.kerdiv1ver);
+                    if (Directory.Exists(konyvtarName))
+                    {
+                        Directory.Delete(konyvtarName, true);
+
+                    }
                 }
             }
             Debug.WriteLine("lassuk2");
@@ -254,10 +268,10 @@ namespace CognativeSurveyX
             myStack.VerticalOptions = LayoutOptions.FillAndExpand;
             myStack.HorizontalOptions = LayoutOptions.FillAndExpand;
             myScroll.Content = myStack;
-            Label kerdes = new Label();
+            /*Label kerdes = new Label();
             kerdes.Text = Constans.aktQuestion.question_title;
             kerdes.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
-            myStack.Children.Add(kerdes);
+            myStack.Children.Add(kerdes);*/
             //myLayout.Children.Add(kerdes);
 
             var indexMost = -1;

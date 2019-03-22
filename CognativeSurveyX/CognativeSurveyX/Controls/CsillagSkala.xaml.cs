@@ -64,6 +64,15 @@ namespace CognativeSurveyX.Controls
         public void frameInit()
         {
             myLayout.Children.Remove(sor);
+            /*myLayout.Children.Remove(lbl);
+            if (lbl.Text != null)
+            {
+                lbl.Text = Text;
+                //lbl.BackgroundColor = Color.Pink;
+                myLayout.Children.Add(lbl);
+            }*/
+
+
             sor.Margin = new Thickness(2, 2, 2, 2);
             BoxView bwTop = new BoxView();
             bwTop.WidthRequest = 1;
@@ -73,6 +82,7 @@ namespace CognativeSurveyX.Controls
             bwTop.Opacity = 0.01;
             //bw.VerticalOptions = LayoutOptions.Fill;
             sor.Children.Add(bwTop);
+            lbl.BackgroundColor = Color.Red;
 
             sor.HorizontalOptions = LayoutOptions.FillAndExpand;
             sor.RowDefinitions.Add(new RowDefinition { Height = GridLength.Auto });
@@ -80,7 +90,6 @@ namespace CognativeSurveyX.Controls
             {
                 sor.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(2, GridUnitType.Star) });
                 lbl.Text = Text;
-                //lbl.BackgroundColor = Color.Pink;
                 sor.Children.Add(lbl);
             }
             
@@ -208,7 +217,11 @@ namespace CognativeSurveyX.Controls
 
         public string Text
         {
-            set { SetValue(TextProprty, value); }
+            set
+            {
+                SetValue(TextProprty, value);
+                //frameInit();
+            }
             get { return (string)GetValue(TextProprty); }
         }
         public int ValaszDB
