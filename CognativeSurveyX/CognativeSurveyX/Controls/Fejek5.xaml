@@ -59,7 +59,7 @@
                 NumberOfTapsRequired="1"
              />
             </StackLayout.GestureRecognizers>
-            <Label x:Name="textFej4" Text="🙂"  FontSize="Large"  />
+            <Label x:Name="textFej4" Text="😊"  FontSize="Large"  />
             <Label Text="++" HorizontalTextAlignment="Center"/>
         </StackLayout>
         <StackLayout  x:Name="fej5"  Orientation="Vertical" HorizontalOptions="Center" Grid.Column="4" Grid.Row="1">

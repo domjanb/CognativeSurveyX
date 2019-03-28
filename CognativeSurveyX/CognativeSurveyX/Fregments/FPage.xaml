@@ -4,8 +4,8 @@
               xmlns:forms="clr-namespace:Lottie.Forms;assembly=Lottie.Forms" 
              x:Class="CognativeSurveyX.Fregments.FPage">
     <ContentPage.Content>
-        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" BackgroundColor="Red">
-            <Label Text="Betöltés....."/>
+        <StackLayout HorizontalOptions="CenterAndExpand" VerticalOptions="CenterAndExpand" >
+            <Label Text="Betöltés....." FontSize="Medium"/>
             
 
         </StackLayout>

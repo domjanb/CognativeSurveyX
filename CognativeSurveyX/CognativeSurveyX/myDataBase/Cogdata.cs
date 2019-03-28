@@ -17,7 +17,7 @@ namespace CognativeSurveyX
             set
             {
                 this._id = value;
-                OnProperityChange(nameof(id));
+                //OnProperityChange(nameof(id));
             }
 
         }
@@ -29,7 +29,7 @@ namespace CognativeSurveyX
             set
             {
                 this._egyedi1 = value;
-                OnProperityChange(nameof(egyedi1));
+                //OnProperityChange(nameof(egyedi1));
             }
         }
 
@@ -40,7 +40,7 @@ namespace CognativeSurveyX
             set
             {
                 this._egyedi2 = value;
-                OnProperityChange(nameof(egyedi2));
+                //OnProperityChange(nameof(egyedi2));
             }
         }
 
@@ -51,7 +51,7 @@ namespace CognativeSurveyX
             set
             {
                 this._egyedi3 = value;
-                OnProperityChange(nameof(egyedi3));
+                //OnProperityChange(nameof(egyedi3));
             }
         }
 
@@ -62,7 +62,7 @@ namespace CognativeSurveyX
             set
             {
                 this._egyedi4 = value;
-                OnProperityChange(nameof(egyedi4));
+                //OnProperityChange(nameof(egyedi4));
             }
         }
 
@@ -74,7 +74,7 @@ namespace CognativeSurveyX
             set
             {
                 this._kerdes = value;
-                OnProperityChange(nameof(kerdes));
+                //OnProperityChange(nameof(kerdes));
             }
         }
 
@@ -85,7 +85,7 @@ namespace CognativeSurveyX
             set
             {
                 this._valasz = value;
-                OnProperityChange(nameof(valasz));
+                //OnProperityChange(nameof(valasz));
             }
         }
 
@@ -96,7 +96,7 @@ namespace CognativeSurveyX
             set
             {
                 this._kerdivver = value;
-                OnProperityChange(nameof(kerdivver));
+                //OnProperityChange(nameof(kerdivver));
             }
         }
 
@@ -107,7 +107,7 @@ namespace CognativeSurveyX
             set
             {
                 this._alid = value;
-                OnProperityChange(nameof(alid));
+                //OnProperityChange(nameof(alid));
             }
         }
 
@@ -118,7 +118,7 @@ namespace CognativeSurveyX
             set
             {
                 this._projid = value;
-                OnProperityChange(nameof(projid));
+                //OnProperityChange(nameof(projid));
             }
         }
 
@@ -129,7 +129,7 @@ namespace CognativeSurveyX
             set
             {
                 this._kerdivtip = value;
-                OnProperityChange(nameof(kerdivtip));
+                //OnProperityChange(nameof(kerdivtip));
             }
         }
 
@@ -140,7 +140,7 @@ namespace CognativeSurveyX
             set
             {
                 this._kerdivdate = value;
-                OnProperityChange(nameof(kerdivdate));
+                //OnProperityChange(nameof(kerdivdate));
             }
         }
         private bool _feltoltve;
@@ -150,7 +150,7 @@ namespace CognativeSurveyX
             set
             {
                 this._feltoltve = value;
-                OnProperityChange(nameof(_feltoltve));
+                //OnProperityChange(nameof(_feltoltve));
             }
         }
 

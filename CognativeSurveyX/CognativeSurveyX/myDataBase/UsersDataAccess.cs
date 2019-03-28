@@ -298,6 +298,14 @@ namespace CognativeSurveyX
                 return query.AsEnumerable();
             }
         }
+        public IEnumerable<Cogdata> GetCogDataAsProjidVerAlidKErdes(int projid, string kerdivver, int kerdivalid,string kerdes)
+        {
+            lock (collisionLock)
+            {
+                var query = from adat in database.Table<Cogdata>() where (adat.projid == projid && adat.kerdivver == kerdivver && adat.alid == kerdivalid && adat.kerdes == kerdes) select adat;
+                return query.AsEnumerable();
+            }
+        }
         public IEnumerable<Cogdata> GetCogDataAsProjidVer(int projid, string kerdivver)
         {
             lock (collisionLock)
@@ -411,7 +419,14 @@ namespace CognativeSurveyX
                 return query.AsEnumerable();
             }
         }
-
+        public IEnumerable<Cogparam> GetCogparamAsProjidVerKerdes(int projid, string kerdivver,string kerdes)
+        {
+            lock (collisionLock)
+            {
+                var query = from adat in database.Table<Cogparam>() where (adat.projid == projid && adat.kerdivver == kerdivver && adat.kerdes == kerdes) select adat;
+                return query.AsEnumerable();
+            }
+        }
         public IEnumerable<Cogparam> GetCogparam()
         {
             lock (collisionLock)

@@ -6,6 +6,7 @@ namespace CognativeSurveyX.Modell
 {
     public class FeltetelElemzo
     {
+        UsersDataAccess adatBazis = new UsersDataAccess();
         private string _Feltetel;
         public string Feltetel
         {
@@ -612,7 +613,7 @@ namespace CognativeSurveyX.Modell
         }
         private string KeresErtek(string valtozo)
         {
-            UsersDataAccess adatBazis = new UsersDataAccess();
+//            UsersDataAccess adatBazis = new UsersDataAccess();
             string vissza_string= "";
             if (valtozo.Equals("."))
             {
@@ -622,7 +623,7 @@ namespace CognativeSurveyX.Modell
             {
                 string ptIndex= valtozo.Substring(2);
 
-                var alapAdatokParam = adatBazis.GetCogparamAsProjidVer(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer);
+                var alapAdatokParam = adatBazis.GetCogparamAsProjidVerKerdes(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer, valtozo);
                 //let alapAdatokParam = 
                 //coredataOperations.fetchDataCogParamWhereSern(
                 //  sern: Int16(_vKerdivalid), projAzon: _vKerdivid, ver: _vKerdivver) as [CogParam]
@@ -659,7 +660,7 @@ namespace CognativeSurveyX.Modell
                 }
 
 
-                var adatValaszok=adatBazis.GetCogDataAsProjidVerAlid(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer,Constans.kerdivAlid);
+                var adatValaszok=adatBazis.GetCogDataAsProjidVerAlidKErdes(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer,Constans.kerdivAlid, valtozo);
                 bool vissza = false;
                 foreach (var adatValasz in adatValaszok)
                 {

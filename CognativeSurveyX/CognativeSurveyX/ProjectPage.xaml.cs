@@ -22,6 +22,8 @@ namespace CognativeSurveyX
 	[XamlCompilation(XamlCompilationOptions.Compile)]
 	public partial class ProjectPage : ContentPage
 	{
+
+        ActivityIndicator ai = new ActivityIndicator();
         IDownloader downloader = DependencyService.Get<IDownloader>();
         IDisplay display = DependencyService.Get<IDisplay>();
         IPath mypt = DependencyService.Get<IPath>();
@@ -35,6 +37,9 @@ namespace CognativeSurveyX
         public ProjectPage ()
 		{
 			InitializeComponent ();
+            //this.InitializeComponent();
+            this.BindingContext = this;
+            this.IsBusy = false;
 
             gpsBeallit();
             Constans.webUrl = "http://qnr.cognative.hu/cogsurv/fresh_xam.php";
@@ -85,6 +90,8 @@ namespace CognativeSurveyX
             var rs = new RestService();
             RestApiModell visszaMost = await rs.Reggi(user2);
             Debug.WriteLine("vissza -" + visszaMost.error);
+            Debug.WriteLine("vissza2 -" + visszaMost.message);
+
             //UsersDataAccess adatBazis = new UsersDataAccess();
 
             Debug.WriteLine(visszaMost.darab);
@@ -100,6 +107,7 @@ namespace CognativeSurveyX
             {
                 bool megLett = false;
                 DateTime CacheUtcTime = ReferenceDate.AddSeconds(Convert.ToInt64(visszaMost.kerdivadat[i].kerdiv2_le));
+                Debug.WriteLine(visszaMost.kerdivadat[i].kerdiv1_title);
                 if (CacheUtcTime < ma)
                 {
                     //adatokat felpakolni
@@ -261,10 +269,19 @@ namespace CognativeSurveyX
         }
         private void gombokKipakol()
         {
-            
 
+            
             myLayout.Margin = new Thickness(10, 0, 10, 0);
             var myStack = new StackLayout();
+            ai.IsRunning = false;
+            ai.VerticalOptions = LayoutOptions.Center;
+            ai.HorizontalOptions = LayoutOptions.Center;
+            ai.Color = Color.Red;
+            //ai.BackgroundColor = Color.Green;
+            myStack.Children.Add(ai);
+
+
+
             myStack.VerticalOptions = LayoutOptions.FillAndExpand;
             myStack.HorizontalOptions = LayoutOptions.FillAndExpand;
             myScroll.Content = myStack;
@@ -284,9 +301,10 @@ namespace CognativeSurveyX
                     Text = item.kerdivtitle,
                     FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label)),
                     BackgroundColor = Color.Transparent
+
                 };
                 int padding = Convert.ToInt16(Constans.ScreenWidth / 7);
-                button.Padding = new Thickness(padding, 0, padding, 0);
+                button.Padding = new Thickness(padding, 1, padding, 1);
                 listOfButtons.Add(button);
                 button.CheckedChange += button_CheckedChange;
                 var zipFileName = "kerdiv_" + item.projid + "_" + item.kerdiv1ver;
@@ -302,16 +320,21 @@ namespace CognativeSurveyX
                 Constans.myParam2.Add(Tuple.Create(Convert.ToString(button.Id), zipFileName, item.kerdiv1nev, item.id));
                 myStack.Children.Add(button);
             }
+
             
 
-
             myLayout.Children.Add(myScroll);
+            
+            
+
 
         }
 
         private void button_CheckedChange(object sender, bool e)
         {
             Gomb button = (Gomb)sender;
+            //this.IsBusy = true;
+            ai.IsRunning = true;
             foreach (var itemT in Constans.myParam2)
             {
                 if (Convert.ToString(button.Id) == itemT.Item1)

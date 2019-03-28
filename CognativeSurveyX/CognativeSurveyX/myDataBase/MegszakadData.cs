@@ -73,7 +73,7 @@ namespace CognativeSurveyX.myDataBase
             set
             {
                 this._kerdivdate = value;
-                OnProperityChange(nameof(kerdivdate));
+                //OnProperityChange(nameof(kerdivdate));
             }
         }
     }

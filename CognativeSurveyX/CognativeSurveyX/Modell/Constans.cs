@@ -158,8 +158,9 @@ namespace CognativeSurveyX.Modell
 
         public static  void nextPage()
         {
-            ValaszokKiiratasa(valaszok);
-            bool ruleTovabb=ruleTombVizsgal();
+            //ValaszokKiiratasa(valaszok);
+            //bool ruleTovabb=ruleTombVizsgal();
+            bool ruleTovabb = true;
             if (ruleTovabb)
             {
                 bool keresem = true;

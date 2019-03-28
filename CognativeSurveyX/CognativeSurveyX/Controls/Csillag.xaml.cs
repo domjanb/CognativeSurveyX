@@ -51,18 +51,22 @@ namespace CognativeSurveyX.Controls
                 false,
                 propertyChanged: (bindable, oldValue, newValue) =>
                 {
+                    ((Csillag)bindable).BackgroundColor = Color.Gray.MultiplyAlpha(0.1);
                     ((Csillag)bindable).boxLabel.Text = (bool)newValue ? "⭐" : "☆";
                     if ((bool)newValue)
                     {
                         if (((Csillag)bindable).FontMeret < Device.GetNamedSize(NamedSize.Large, typeof(Label)))
                         {
                             ((Csillag)bindable).boxLabel.FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label));
+                            
                         }
-                        
+                        ((Csillag)bindable).BackgroundColor = Color.Yellow.MultiplyAlpha(0.1);
+
                     }
                     else
                     {
                         ((Csillag)bindable).boxLabel.FontSize = ((Csillag)bindable).FontMeret;
+                        
                     }
 
                     ((Csillag)bindable).CheckedChange?.Invoke(((Csillag)bindable), (bool)newValue);
@@ -87,11 +91,13 @@ namespace CognativeSurveyX.Controls
                     {
                         boxLabel.FontSize = Device.GetNamedSize(NamedSize.Large, typeof(Label));
                     }
+                    this.BackgroundColor = Color.Yellow.MultiplyAlpha(0.1);
                 }
                 else
                 {
                     boxLabel.FontSize = FontMeret;
-                    
+                    this.BackgroundColor = Color.Gray.MultiplyAlpha(0.1);
+
                 }
                 //CheckedChange?.Invoke(this, (bool)_myIschecked);
 

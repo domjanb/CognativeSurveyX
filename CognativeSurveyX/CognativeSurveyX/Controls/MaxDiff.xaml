@@ -12,9 +12,9 @@
             <RowDefinition Height="*" />
         </Grid.RowDefinitions>
 
-        <Label x:Name="boxLabelBal" Text="⚪" />
+        <Label x:Name="boxLabelBal" Text="⚪" FontSize="Large"/>
         <Label x:Name="textLabel" Grid.Column="1" HorizontalOptions="Center"/>
-        <Label x:Name="boxLabelJobb" Text="⚪" Grid.Column="2"/>
+        <Label x:Name="boxLabelJobb" Text="⚪" FontSize="Large" Grid.Column="2"/>
 
     </Grid>
 

@@ -6,7 +6,7 @@
     <StackLayout Margin="10,0,10,0">
     <Frame x:Name="myFrame"  BorderColor="Black" BackgroundColor="Aqua" CornerRadius="20" Margin="0,0,0,0" Padding="0,3,0,3">
         <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="Fill"  Margin="10,0,10,0">
-            <StackLayout Orientation="Horizontal"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"  Margin="0,0,0,0">
+            <StackLayout Orientation="Horizontal"  VerticalOptions="CenterAndExpand" HorizontalOptions="CenterAndExpand"  Margin="0,2,0,2">
 
 
                 <Label x:Name="boxLabel" Text="" IsVisible="False" />

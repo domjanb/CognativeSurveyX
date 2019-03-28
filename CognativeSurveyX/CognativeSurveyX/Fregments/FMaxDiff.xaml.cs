@@ -96,7 +96,7 @@ namespace CognativeSurveyX.Fregments
             {
                 var item = Constans.ValaszParameterNelkul(itemTomb.Item2);
                 idx++;
-                MaxDiff button = new MaxDiff();
+                MaxDiff button = itemTomb.Item3;
                 button.Text = item;
                 button.FontSize = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
                 button.BackgroundColor = Color.Transparent;
@@ -154,7 +154,7 @@ namespace CognativeSurveyX.Fregments
 
                 if (item.Item3.myIscheckedBal)
                 {
-                    var akkod = Constans.aktQuestion.choicesKod[item.Item1];
+                    var akkod = Constans.aktQuestion.choicesKod[item.Item1-1];
                     Constans.valaszok = Constans.aktQuestion.kerdeskod + "_a=" + Convert.ToString(item.Item1);
                 }
             }
@@ -184,7 +184,7 @@ namespace CognativeSurveyX.Fregments
 
                 if (item.Item3.myIscheckedJobb)
                 {
-                    var akkod = Constans.aktQuestion.choicesKod[item.Item1];
+                    var akkod = Constans.aktQuestion.choicesKod[item.Item1-1];
                     Constans.valaszok = Constans.aktQuestion.kerdeskod + "_b=" + Convert.ToString(item.Item1);
                 }
             }
@@ -194,7 +194,7 @@ namespace CognativeSurveyX.Fregments
 
         private void _Continue_Clicked(object sender, EventArgs e)
         {
-
+            this.IsBusy = true;
             Constans.nextPage();
             Navigation.PushModalAsync(new FPage());
         }

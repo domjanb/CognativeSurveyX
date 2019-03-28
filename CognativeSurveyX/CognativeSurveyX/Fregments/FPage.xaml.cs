@@ -32,10 +32,18 @@ namespace CognativeSurveyX.Fregments
 
 
                 }
+                else if (Constans.aktQuestion.question_type == "Maxdiff")
+                {
+                    Navigation.PushModalAsync(new FMaxDiff());
+                }
+                else if (Constans.aktQuestion.question_type == "Tilitoli")
+                {
+                    Navigation.PushModalAsync(new FCarousel());
+                }
                 else if (Constans.aktQuestion.question_type == "Kepes")
                 {
-                    //Navigation.PushModalAsync(new Fkepes2());
-                    Navigation.PushModalAsync(new FCarousel());
+                    Navigation.PushModalAsync(new FKepes());
+                    //Navigation.PushModalAsync(new FCarousel());
                     //Navigation.PushModalAsync(new FCarouselString());
                 }
                 else if (Constans.aktQuestion.question_type == "Number")
