@@ -517,7 +517,7 @@ namespace CognativeSurveyX.Fregments
 
             Constans.nextPage();
             Navigation.PopModalAsync();
-            Navigation.PushModalAsync(new FPage());
+            Navigation.PushModalAsync(new FPageStep());
         }
     }
 }

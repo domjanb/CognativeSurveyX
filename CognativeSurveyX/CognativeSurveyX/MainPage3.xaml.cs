@@ -1,5 +1,7 @@
-﻿using System;
+﻿using CognativeSurveyX.myDataBase;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
@@ -15,6 +17,21 @@ namespace CognativeSurveyX
         public MainPage3()
         {
             InitializeComponent();
+
+            UsersDataAccessAsync adatBazisAsync = new UsersDataAccessAsync();
+            
+
+            /*var regisztrácioK = adatBazisAsync.GetCogAzonAsync();
+            //regisztrácioK.Wait();
+            //var loaded = regisztrácioK.Result;
+
+            Debug.WriteLine(regisztrácioK.ToString());
+            foreach (var item in regisztrácioK)
+            {
+
+            }*/
+
+
             UsersDataAccess adatBazis = new UsersDataAccess();
             int regisztrácioDarab = adatBazis.GetCogAzon().Count();
             if (regisztrácioDarab == 1)

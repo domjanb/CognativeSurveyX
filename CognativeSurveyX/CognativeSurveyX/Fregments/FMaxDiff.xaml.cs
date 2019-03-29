@@ -196,7 +196,7 @@ namespace CognativeSurveyX.Fregments
         {
             this.IsBusy = true;
             Constans.nextPage();
-            Navigation.PushModalAsync(new FPage());
+            Navigation.PushModalAsync(new FPageStep());
         }
 
     }

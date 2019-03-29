@@ -93,6 +93,7 @@
       <DependentUpon>App.xaml</DependentUpon>
     </Compile>
     <Compile Include="DatabaseConnection_UWP.cs" />
+    <Compile Include="DatabaseConnection_UWPAsync.cs" />
     <Compile Include="Display.cs" />
     <Compile Include="MainPage.xaml.cs">
       <DependentUpon>MainPage.xaml</DependentUpon>

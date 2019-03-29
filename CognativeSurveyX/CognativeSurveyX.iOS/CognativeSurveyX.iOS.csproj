@@ -107,6 +107,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="DatabaseConnection_IOS.cs" />
+    <Compile Include="DatabaseConnection_IOSAsync.cs" />
     <Compile Include="Display.cs" />
     <Compile Include="IosDownloader.cs" />
     <Compile Include="IOSPath.cs" />
