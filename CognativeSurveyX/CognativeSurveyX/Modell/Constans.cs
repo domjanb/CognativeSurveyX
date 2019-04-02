@@ -158,7 +158,7 @@ namespace CognativeSurveyX.Modell
 
         public static  void nextPage()
         {
-            //ValaszokKiiratasa(valaszok);
+            ValaszokKiiratasa(valaszok);
             //bool ruleTovabb=ruleTombVizsgal();
             bool ruleTovabb = true;
             if (ruleTovabb)
@@ -806,16 +806,16 @@ namespace CognativeSurveyX.Modell
 
         private static void ValaszokKiiratasa(string valasz)
         {
-            UsersDataAccess adatBazis = new UsersDataAccess();
+            UsersDataAccessAsync adatBazis = new UsersDataAccessAsync();
 
             //utolso kiirt kérdés
             //van_e már ez a projekt
-            var megszakadtKerdivek = adatBazis.GetMegszakadDataAsProjidVerAlid(Convert.ToInt16(kerdivId), kerdivVer, kerdivAlid, 1);
+            /*var megszakadtKerdivek = adatBazis.GetMegszakadDataAsProjidVerAlid(Convert.ToInt16(kerdivId), kerdivVer, kerdivAlid, 1);
             foreach (var item in megszakadtKerdivek)
             {
                 item.szoveg = Constans.aktQuestion.kerdeskod;
                 adatBazis.SaveMegszakadData(item);
-            }
+            }*/
 
 
             var darabol = valasz.Split(Convert.ToChar(";"));
@@ -825,8 +825,9 @@ namespace CognativeSurveyX.Modell
                 {
                     var darabol2 = item.Split(Convert.ToChar("="));
                     //long mostDate1 = TimeS(DateTime.Now);
-
-                    var idd2 = adatBazis.SaveCogData(new Cogdata
+                    darabol2[0] = "bee";
+                    darabol2[1] = "111";
+                    var idd2 =  adatBazis.SaveCogDataAsync(new Cogdata
                     {
                         kerdes = darabol2[0],
                         valasz = darabol2[1],
@@ -839,7 +840,23 @@ namespace CognativeSurveyX.Modell
                         alid = kerdivAlid,
                         egyedi1 = Convert.ToString(kerdivGPSLongitude) + ";" + Convert.ToString(kerdivGPSLatitude),
                         feltoltve = false
-                    });
+                    }).Result;
+                    Debug.WriteLine("idd2=" + idd2);
+                    Debug.WriteLine("idd2=" + idd2);
+                    /*var idd2 = adatBazis.SaveCogData(new Cogdata
+                    {
+                        kerdes = darabol2[0],
+                        valasz = darabol2[1],
+                        kerdivdate = TimeS(DateTime.Now),
+                        egyedi2 = kerdivPlatformGep,
+                        egyedi3 = kerdivPlatformSoftver,
+                        kerdivver = kerdivVer,
+                        kerdivtip = Convert.ToInt16(kerdivTip),
+                        projid = Convert.ToInt16(kerdivId),
+                        alid = kerdivAlid,
+                        egyedi1 = Convert.ToString(kerdivGPSLongitude) + ";" + Convert.ToString(kerdivGPSLatitude),
+                        feltoltve = false
+                    });*/
                 }
                 
             }

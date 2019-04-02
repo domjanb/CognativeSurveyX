@@ -113,8 +113,10 @@ namespace CognativeSurveyX
                     //adatokat felpakolni
                     //adatokat törölni
                     //törölni a recordot ha van
-                    foreach (var item in adatBazis.CogDataKerdiv)
-                    {
+                    var alfa = adatBazis.GetCogDataKerdiv();
+                    //foreach (var item in adatBazis.CogDataKerdiv)
+                    foreach (var item in alfa)
+                        {
                         if (item.projid == Convert.ToInt16(visszaMost.kerdivadat[i].proj_id)
                              && item.kerdiv1ver == visszaMost.kerdivadat[i].kerdiv1_ver)
                         {

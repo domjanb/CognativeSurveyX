@@ -18,21 +18,26 @@ namespace CognativeSurveyX
         {
             InitializeComponent();
 
-            UsersDataAccessAsync adatBazisAsync = new UsersDataAccessAsync();
+            var x = reggi_e();
+            
+            Debug.WriteLine(x.ToString());
+            Debug.WriteLine(x.Result);
+            if (x.Result)
+            {
+                this.Master = new MenuPage();
+                this.Detail = new NavigationPage(new ProjectPage());
+            }
+            else
+            {
+                this.Master = new MenuPage();
+                //this.Detail = new NavigationPage(new MainPage2());
+                this.Detail = new NavigationPage(new ReggiPage());
+            }
+
+
             
 
-            /*var regisztrácioK = adatBazisAsync.GetCogAzonAsync();
-            //regisztrácioK.Wait();
-            //var loaded = regisztrácioK.Result;
-
-            Debug.WriteLine(regisztrácioK.ToString());
-            foreach (var item in regisztrácioK)
-            {
-
-            }*/
-
-
-            UsersDataAccess adatBazis = new UsersDataAccess();
+            /*UsersDataAccess adatBazis = new UsersDataAccess();
             int regisztrácioDarab = adatBazis.GetCogAzon().Count();
             if (regisztrácioDarab == 1)
             {
@@ -44,8 +49,23 @@ namespace CognativeSurveyX
                 this.Master = new MenuPage();
                 //this.Detail = new NavigationPage(new MainPage2());
                 this.Detail = new NavigationPage(new ReggiPage());
-            }
+            }*/
                 
+            
+        }
+        public async Task<bool> reggi_e()
+        {
+            UsersDataAccessAsync adatBazisAsync = new UsersDataAccessAsync();
+            var regisztrácioK = await adatBazisAsync.GetCogAzonAsync();
+            if (regisztrácioK.Count()==1)
+            {
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+
             
         }
     }
