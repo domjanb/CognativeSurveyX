@@ -21,6 +21,7 @@ namespace CognativeSurveyX.Fregments
         public FSorbarendezo ()
 		{
 			InitializeComponent ();
+            
             myLayout.Margin = new Thickness(10, 0, 10, 0);
             
             var myScroll = new ScrollView();
@@ -209,7 +210,9 @@ namespace CognativeSurveyX.Fregments
         }
         private void _Continue_Clicked(object sender, EventArgs e)
         {
-
+            ai.IsEnabled = true;
+            ai.IsVisible = true;
+            ai.IsRunning = true;
             Constans.nextPage();
             Navigation.PushModalAsync(new FPage());
         }

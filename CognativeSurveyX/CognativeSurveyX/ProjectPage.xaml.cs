@@ -465,6 +465,7 @@ namespace CognativeSurveyX
                     Constans.aktQuestion = responseObject.questions.ElementAt(0);
                     Constans.aktSurvey = responseObject;
                     Constans.pageNumber = 1;
+                    Constans.valaszOKtomb.Clear();
                     var visszaz = adatBazis.GetCogDataKerdivAsSern(itemT.Item4);
                     if (visszaz.Count() == 1)
                     {

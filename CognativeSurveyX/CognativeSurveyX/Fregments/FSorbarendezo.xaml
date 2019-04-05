@@ -4,6 +4,7 @@
              x:Class="CognativeSurveyX.Fregments.FSorbarendezo">
     <ContentPage.Content>
         <StackLayout  >
+            <Grid>
             <StackLayout VerticalOptions="StartAndExpand">
                 <StackLayout BackgroundColor="Aqua" HorizontalOptions="FillAndExpand" Padding="20">
                     <Label Text="Cognative TouchPoint"
@@ -19,7 +20,8 @@
 
                 </StackLayout>
             </StackLayout>
-
+                <ActivityIndicator x:Name="ai" IsRunning="{Binding isBusy}" IsEnabled="False" IsVisible="False" HorizontalOptions="Center" VerticalOptions="Center" Color="Blue"  />
+            </Grid>
             <StackLayout Orientation="Horizontal"
              VerticalOptions="EndAndExpand">
                 <Button x:Name="_Back" IsVisible="False" Text="Back"  HorizontalOptions="Center" Grid.Column="0" />

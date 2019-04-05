@@ -5,7 +5,16 @@
              xmlns:translate="clr-namespace:CognativeSurveyX.Helpers"
              >
     <ContentPage.Content>
+        
         <StackLayout  >
+            <Grid>
+                
+            
+                
+            
+
+
+
             <StackLayout VerticalOptions="StartAndExpand">
                 <StackLayout BackgroundColor="Aqua" HorizontalOptions="FillAndExpand" Padding="20">
                     <Label Text="Cognative TouchPoint"
@@ -14,25 +23,32 @@
                 HorizontalOptions="CenterAndExpand"
                 VerticalOptions="CenterAndExpand" />
                 </StackLayout>
+                
                 <StackLayout x:Name="myLayout">
                     <!-- Unified Design -->
-                    <ActivityIndicator x:Name="ai" IsRunning="{Binding isBusy}" HorizontalOptions="Center" VerticalOptions="Center" Color="Blue"/>
-
+                    
+                        
+                    
+                    
+                        
 
 
                 </StackLayout>
+                
             </StackLayout>
-
+                <ActivityIndicator x:Name="ai" IsRunning="{Binding isBusy}" IsEnabled="False" IsVisible="False" HorizontalOptions="Center" VerticalOptions="Center" Color="Blue"  />
+            </Grid>
             <StackLayout Orientation="Horizontal"
              VerticalOptions="EndAndExpand">
                 <Button x:Name="_Back" IsVisible="False" Text="Back"  HorizontalOptions="Center" Grid.Column="0" />
                 <Button x:Name="_Continue"  Text="{translate:Translate Continue}" HorizontalOptions="CenterAndExpand" Grid.Column="1" Clicked="_Continue_Clicked"/>
 
             </StackLayout>
+            
         </StackLayout>
 
 
         
     </ContentPage.Content>
-
+    
 </ContentPage>

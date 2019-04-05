@@ -47,6 +47,7 @@ namespace CognativeSurveyX.Fregments
             mySortTomb.Add(Tuple.Create(100, "OK"));
 
             
+
             if (Constans.aktQuestion.random_choices == true)
             {
                 var rand = new Random();

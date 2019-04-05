@@ -18,7 +18,7 @@ namespace CognativeSurveyX
         {
             InitializeComponent();
 
-            var x = reggi_e();
+            /*var x = reggi_e();
             
             Debug.WriteLine(x.ToString());
             Debug.WriteLine(x.Result);
@@ -32,12 +32,12 @@ namespace CognativeSurveyX
                 this.Master = new MenuPage();
                 //this.Detail = new NavigationPage(new MainPage2());
                 this.Detail = new NavigationPage(new ReggiPage());
-            }
+            }*/
 
 
             
 
-            /*UsersDataAccess adatBazis = new UsersDataAccess();
+            UsersDataAccess adatBazis = new UsersDataAccess();
             int regisztrácioDarab = adatBazis.GetCogAzon().Count();
             if (regisztrácioDarab == 1)
             {
@@ -49,14 +49,18 @@ namespace CognativeSurveyX
                 this.Master = new MenuPage();
                 //this.Detail = new NavigationPage(new MainPage2());
                 this.Detail = new NavigationPage(new ReggiPage());
-            }*/
+            }
                 
             
         }
-        public async Task<bool> reggi_e()
+        /*public async Task<bool> reggi_e()
         {
             UsersDataAccessAsync adatBazisAsync = new UsersDataAccessAsync();
             var regisztrácioK = await adatBazisAsync.GetCogAzonAsync();
+            foreach(var item in regisztrácioK)
+            {
+
+            }
             if (regisztrácioK.Count()==1)
             {
                 return true;
@@ -67,6 +71,6 @@ namespace CognativeSurveyX
             }
 
             
-        }
+        }*/
     }
 }

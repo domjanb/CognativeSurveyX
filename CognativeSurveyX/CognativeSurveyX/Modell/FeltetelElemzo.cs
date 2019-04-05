@@ -118,7 +118,8 @@ namespace CognativeSurveyX.Modell
                 int csereRange1= 1;
                 int csereRange2= 0;
                 int relacio = 0;
-                if (kezd1 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, 6) == kezd2)
+                var miniMegold = mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6);
+                if (kezd1 >= 0 && miniMegold == kezd1)
                 {
                     relacio = 1;
                     int kezd0 = feltetel.ToLower().IndexOf(">");
@@ -143,7 +144,7 @@ namespace CognativeSurveyX.Modell
 
                 }
 
-                else if (kezd3 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd3)
+                else if (kezd3 >= 0 && miniMegold == kezd3)
                 {
                     relacio = 3;
                     int kezd0= feltetel.ToLower().IndexOf("=");
@@ -169,7 +170,7 @@ namespace CognativeSurveyX.Modell
                         jobbjobb_oldal = origString.Substring(jobb_oldal.Length+1 );
                     }
                 }
-                else if (kezd4 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd4)
+                else if (kezd4 >= 0 && miniMegold == kezd4)
                 {
                     relacio = 4;
                     int kezd0= feltetel.ToLower().IndexOf("<");
@@ -192,7 +193,7 @@ namespace CognativeSurveyX.Modell
                         jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1);
                     }
                 }
-                else if (kezd2 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd2)
+                else if (kezd2 >= 0 && miniMegold == kezd2)
                 {
                     relacio = 2;
                     int kezd0= feltetel.ToLower().IndexOf(">=");
@@ -216,7 +217,7 @@ namespace CognativeSurveyX.Modell
                     }
 
                 }
-                else if (kezd5 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd5)
+                else if (kezd5 >= 0 && miniMegold == kezd5)
                 {
                     relacio = 5;
                     int kezd0= feltetel.ToLower().IndexOf("<=");
@@ -241,7 +242,7 @@ namespace CognativeSurveyX.Modell
                 }
 
 
-                else if (kezd6 >= 0 && mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6) == kezd6)
+                else if (kezd6 >= 0 && miniMegold == kezd6)
                 {
                     relacio = 6;
                     int kezd0= feltetel.ToLower().IndexOf("<>");
@@ -280,7 +281,7 @@ namespace CognativeSurveyX.Modell
                         {
                             if (!isValidFloat(bal_oldal))
                             {
-                                bal_oldal = KeresErtek(bal_oldal);
+                                bal_oldal = keresErtekNoSQL(bal_oldal);
                             }
                         }
                     }
@@ -301,7 +302,7 @@ namespace CognativeSurveyX.Modell
                         {
                             if (!isValidFloat(jobb_oldal))
                             {
-                                jobb_oldal = KeresErtek(jobb_oldal);
+                                jobb_oldal = keresErtekNoSQL(jobb_oldal);
                             }
                         }
                     }
@@ -426,8 +427,9 @@ namespace CognativeSurveyX.Modell
             int kezdm2= feltetel.ToLower().IndexOf("/");
             int matekJel= 0;
             int kezdJel = -1;
-            if (kezdm1 >= 0 && mini(kezdm1, kezdm2, -1, -1, -1, -1) == kezdm1) { matekJel = 1; kezdJel = kezdm1; }
-            if (kezdm2 >= 0 && mini(kezdm1, kezdm2, -1, -1, -1, -1) == kezdm2) { matekJel = 2; kezdJel = kezdm2; }
+            var miniMegold = mini(kezdm1, kezdm2, -1, -1, -1, -1);
+            if (kezdm1 >= 0 && miniMegold == kezdm1) { matekJel = 1; kezdJel = kezdm1; }
+            if (kezdm2 >= 0 && miniMegold == kezdm2) { matekJel = 2; kezdJel = kezdm2; }
             bal_oldal = feltetel.Substring(0, kezdJel).Trim();
             origString = bal_oldal;
             bal_oldal = balSpacenalMateknelVissza(origString);
@@ -460,7 +462,7 @@ namespace CognativeSurveyX.Modell
                 }
                 if (!isValidFloat(bal_oldal))
                 {
-                    vissza_string1 = KeresErtek(bal_oldal);
+                    vissza_string1 = keresErtekNoSQL(bal_oldal);
                 }
                 else
                 {
@@ -484,7 +486,7 @@ namespace CognativeSurveyX.Modell
                 }
                 if (!isValidFloat(jobb_oldal))
                 {
-                    vissza_string2 = KeresErtek(jobb_oldal);
+                    vissza_string2 = keresErtekNoSQL(jobb_oldal);
                 }
                 else
                 {
@@ -526,8 +528,9 @@ namespace CognativeSurveyX.Modell
             int kezdm2 = feltetel.ToLower().IndexOf("-");
             int matekJel = 0;
             int kezdJel = -1;
-            if (kezdm1 >= 0 && mini(kezdm1, kezdm2, -1, -1, -1, -1) == kezdm1) { matekJel = 1; kezdJel = kezdm1; }
-            if (kezdm2 >= 0 && mini(kezdm1, kezdm2, -1, -1, -1, -1) == kezdm2) { matekJel = 2; kezdJel = kezdm2; }
+            var miniMegold = mini(kezdm1, kezdm2, -1, -1, -1, -1);
+            if (kezdm1 >= 0 && miniMegold == kezdm1) { matekJel = 1; kezdJel = kezdm1; }
+            if (kezdm2 >= 0 && miniMegold == kezdm2) { matekJel = 2; kezdJel = kezdm2; }
             bal_oldal = feltetel.Substring(0, kezdJel).Trim();
             origString = bal_oldal;
             bal_oldal = balSpacenalMateknelVissza(origString);
@@ -560,7 +563,7 @@ namespace CognativeSurveyX.Modell
                 }
                 if (!isValidFloat(bal_oldal))
                 {
-                    vissza_string1 = KeresErtek(bal_oldal);
+                    vissza_string1 = keresErtekNoSQL(bal_oldal);
                 }
                 else
                 {
@@ -584,7 +587,7 @@ namespace CognativeSurveyX.Modell
                 }
                 if (!isValidFloat(jobb_oldal))
                 {
-                    vissza_string2 = KeresErtek(jobb_oldal);
+                    vissza_string2 = keresErtekNoSQL(jobb_oldal);
                 }
                 else
                 {
@@ -610,6 +613,103 @@ namespace CognativeSurveyX.Modell
             }
             string vvissza_string = (balbal_oldal + vissza_string + jobbjobb_oldal);
             return vvissza_string;
+        }
+        private static string keresErtekNoSQL(string valtozo)
+        {
+            //UsersDataAccess adatBazis = new UsersDataAccess();
+            string vissza_string = "";
+            if (valtozo.Equals("."))
+            {
+                vissza_string = "";
+            }
+            else if (valtozo.Substring(0, 2).ToLower().Equals("pt"))
+            {
+
+                foreach (var item in Constans.valaszOKtomb)
+                {
+                    if (item.Item4.Equals("1"))
+                    {
+                        if (item.Item1.ToLower().Equals("pt"))
+                        {
+                            if (item.Item2.Equals(valtozo))
+                            {
+                                vissza_string = item.Item3;
+                                break;
+                            }
+                        }
+                    }
+                }
+                string ptIndex = valtozo.Substring(2);
+            }
+
+            else
+            {
+                int vartipus = 2;
+                //0 normal
+                //1 param
+                //2 multi
+                if (valtozo.Substring(0, 1).Trim().ToLower().Equals("pt"))
+                {
+                    vartipus = 1;
+                }
+                else
+                {
+                    foreach (var kerdes in Constans.aktSurvey.questions)
+                    {
+                        if (kerdes.question_type == valtozo)
+                        {
+                            vartipus = 0;
+                        }
+
+                    }
+                }
+
+                foreach (var item in Constans.valaszOKtomb)
+                {
+                    if (item.Item4.Equals(1))
+                    {
+                        //if (item.Item1.ToLower().Equals("pt"))
+                        {
+                            if (item.Item2.Equals(valtozo))
+                            {
+                                vissza_string = item.Item3;
+                                break;
+                            }
+                        }
+                    }
+                }
+                /*var adatValaszok = adatBazis.GetCogDataAsProjidVerAlid(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer, kerdivAlid);
+                bool vissza = false;
+
+                
+                foreach (var adatValasz in adatValaszok)
+                {
+                    if (vartipus < 3)
+                    {
+                        if (adatValasz.kerdes.Equals(valtozo))
+                        {
+                            vissza_string = (adatValasz.valasz.Trim());
+                            vissza = true;
+                        }
+                    }
+                    else
+                    {
+                        int kezd = valtozo.IndexOf("_");
+                        string v1 = valtozo.Substring(0, kezd - 1);
+                        string v2 = valtozo.Substring(kezd + 1);
+                        if ((adatValasz.kerdes.Trim().Equals(v1))
+                            //&&  String(adatValasz.kisid) == v2  
+                            )
+                        {
+                            vissza_string = (adatValasz.valasz.Trim());
+                            vissza = true;
+                        }
+                    }
+                }*/
+
+            }
+
+            return vissza_string;
         }
         private string KeresErtek(string valtozo)
         {
@@ -807,38 +907,70 @@ namespace CognativeSurveyX.Modell
         {
             int vissza = 0;
 
-            int[] sortomb = new int[] { 0, 0, 0, 0, 0, 0 } ;
+            
+    
+            if (kezd1 == -1) { kezd1 = 15000; }
+            if (kezd2 == -1) { kezd2 = 15000; }
+            if (kezd3 == -1) { kezd3 = 15000; }
+            if (kezd4 == -1) { kezd4 = 15000; }
+            if (kezd5 == -1) { kezd5 = 15000; }
+            if (kezd6 == -1) { kezd6 = 15000; }
+
+            int[] sortomb2 = new int[] { kezd1, kezd2, kezd3, kezd4, kezd5, kezd6 };
+            int[] keys = new int[] { 1, 2, 3, 4, 5, 6};
+            Array.Sort(sortomb2);
+            //Array.Reverse(sortomb2);
+            if (kezd1 == sortomb2[0]) { vissza = kezd1; }
+            if (kezd2 == sortomb2[0]) { vissza = kezd2; }
+            if (kezd3 == sortomb2[0]) { vissza = kezd3; }
+            if (kezd4 == sortomb2[0]) { vissza = kezd4; }
+            if (kezd5 == sortomb2[0]) { vissza = kezd5; }
+            if (kezd6 == sortomb2[0]) { vissza = kezd6; }
+
+            return vissza;
+        }
+        private int miniold(int kezd1, int kezd2, int kezd3, int kezd4, int kezd5, int kezd6)
+        {
+            int vissza = 0;
+
+            int[] sortomb = new int[] { 0, 0, 0, 0, 0, 0 };
+
             int sortombindex = -1;
-            if (kezd1>=0) { sortombindex += 1;  sortomb[sortombindex] = kezd1;}
-            if (kezd2>=0) { sortombindex += 1;  sortomb[sortombindex] = kezd2;}
-            if (kezd3>=0) { sortombindex += 1;  sortomb[sortombindex] = kezd3;}
-            if (kezd4>=0) { sortombindex += 1;  sortomb[sortombindex] = kezd4;}
-            if (kezd5>=0) { sortombindex += 1;  sortomb[sortombindex] = kezd5;}
-            if (kezd6>=0) { sortombindex += 1;  sortomb[sortombindex] = kezd6;}
-        
+            if (kezd1 >= 0) { sortombindex += 1; sortomb[sortombindex] = kezd1; }
+            if (kezd2 >= 0) { sortombindex += 1; sortomb[sortombindex] = kezd2; }
+            if (kezd3 >= 0) { sortombindex += 1; sortomb[sortombindex] = kezd3; }
+            if (kezd4 >= 0) { sortombindex += 1; sortomb[sortombindex] = kezd4; }
+            if (kezd5 >= 0) { sortombindex += 1; sortomb[sortombindex] = kezd5; }
+            if (kezd6 >= 0) { sortombindex += 1; sortomb[sortombindex] = kezd6; }
+
             bool csere = true;
             while (csere)
             {
                 csere = false;
-                for (int i=0; i<sortombindex;i++)
+                for (int i = 0; i < sortombindex; i++)
                 {
                     if (sortomb[i] > sortomb[i + 1])
                     {
-                        int tmp= sortomb[i];
+                        int tmp = sortomb[i];
                         sortomb[i] = sortomb[i + 1];
                         sortomb[i + 1] = tmp;
                         csere = true;
                     }
                 }
             }
-    
-            if (kezd1==sortomb[0]) { vissza = kezd1; }
-            if (kezd2==sortomb[0]) {vissza=kezd2; }
-            if (kezd3==sortomb[0]) {vissza=kezd3; }
-            if (kezd4==sortomb[0]) {vissza=kezd4; }
-            if (kezd5==sortomb[0]) {vissza=kezd5; }
-            if (kezd6==sortomb[0]) {vissza=kezd6; }
-    
+
+            if (kezd1 == sortomb[0]) { vissza = kezd1; }
+            if (kezd2 == sortomb[0]) { vissza = kezd2; }
+            if (kezd3 == sortomb[0]) { vissza = kezd3; }
+            if (kezd4 == sortomb[0]) { vissza = kezd4; }
+            if (kezd5 == sortomb[0]) { vissza = kezd5; }
+            if (kezd6 == sortomb[0]) { vissza = kezd6; }
+
+            int[] sortomb2 = new int[] { kezd1, kezd2, kezd3, kezd4, kezd5, kezd6 };
+            int[] keys = new int[] { 1, 2, 3, 4, 5, 6 };
+            //Array.Sort(sortomb2);
+            Array.Reverse(sortomb2);
+
             return vissza;
         }
         private bool VanBenneRalacio(string feltetel)

@@ -103,7 +103,8 @@ namespace CognativeSurveyX.myDataBase
         public async Task<List<MegszakadData>> GetMegszakadDataKAsync()
         {
             {
-                return await database.QueryAsync<MegszakadData>("Select * from MegszakadData where bejegyzesTipus=1");
+                var vi= await database.QueryAsync<MegszakadData>("Select * from MegszakadData where bejegyzesTipus=1");
+                return vi;
 
 
             }
@@ -140,7 +141,6 @@ namespace CognativeSurveyX.myDataBase
             var id = MegszakadDataAdat.id;
             if (id != 0)
             {
-                lock (collisionLock)
                 {
                     database.DeleteAsync<MegszakadData>(id);
                 }
@@ -159,7 +159,307 @@ namespace CognativeSurveyX.myDataBase
 
 
 
+        public async Task<List<Cogkerdiv>> GetCogDataKerdivAsSernAsync(int Sern)
+        {
+            {
+                /*var query = from adat in database.Table<Cogkerdiv>() where adat.id == Sern select adat;
+                return query.AsEnumerable();*/
+                var queryy = $"Select * from Cogkerdiv where id={Sern} ";
+                var vi = await database.QueryAsync<Cogkerdiv>(queryy);
+                return vi;
+            }
+        }
+        public async Task<List<Cogkerdiv>> GetCogDataKerdivAsProjidAsync(int projId)
+        {
+            {
+                var queryy = $"Select * from Cogkerdiv where projid={projId} ";
+                var vi = await database.QueryAsync<Cogkerdiv>(queryy);
+                return vi;
+                /*var query = from adat in database.Table<Cogkerdiv>() where adat.projid == projId select adat;
+                return query.AsEnumerable();*/
+            }
+        }
+
+
+        public async Task<List<Cogkerdiv>> GetCogDataKerdivAsync()
+        {
+            {
+                var vi= database.QueryAsync<Cogkerdiv>("Select * from CogKerdiv").Result;
+                return vi;
+
+            }
+        }
+        public async Task<int> SaveCogDataKerdivAsync(Cogkerdiv CogDataKerdivAdat)
+        {
+            {
+                if (CogDataKerdivAdat.id != 0)
+                {
+                    database.UpdateAsync(CogDataKerdivAdat);
+                    return CogDataKerdivAdat.id;
+                }
+                else
+                {
+                    database.InsertAsync(CogDataKerdivAdat);
+                    return CogDataKerdivAdat.id;
+                }
+            }
+        }
+        public async Task<int> DeleteCogDataKerdivAsync(Cogkerdiv CogDataKerdivAdat)
+        {
+            var id = CogDataKerdivAdat.id;
+            if (id != 0)
+            {
+
+                {
+                    database.DeleteAsync<Cogkerdiv>(id);
+                }
+
+            }
+            //this.CogDataKerdiv.Remove(CogDataKerdivAdat);
+            return id;
+        }
+        public async Task DeleteCogDataKerdivAllAsync()
+        {
+            {
+                database.DeleteAllAsync<Cogkerdiv>();
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+        public async Task<List<Cogdata>> GetCogDataAsProjidAsync(int projid)
+        {
+            {
+                /*var query = from adat in database.Table<Cogdata>() where adat.projid == projid select adat;
+                return query.AsEnumerable();*/
+                var queryy = $"Select * from Cogdata where projid={projid} ";
+                var vi = await database.QueryAsync<Cogdata>(queryy);
+                return vi;
+            }
+        }
+        public async Task<List<Cogdata>> GetCogDataAsProjidVerAlidAsync(int projid, string kerdivver, int kerdivalid)
+        {
+            {
+                /*var query = from adat in database.Table<Cogdata>() where (adat.projid == projid && adat.kerdivver == kerdivver && adat.alid == kerdivalid) select adat;
+                return query.AsEnumerable();*/
+                var queryy = $"Select * from Cogdata where projid={projid} and  kerdivver={kerdivver} and  alid={kerdivalid}  ";
+                var vi = await database.QueryAsync<Cogdata>(queryy);
+                return vi;
+            }
+        }
+        public async Task<List<Cogdata>> GetCogDataAsProjidVerAlidKErdesAsync(int projid, string kerdivver, int kerdivalid, string kerdes)
+        {
+            {
+                /*var query = from adat in database.Table<Cogdata>() where (adat.projid == projid && adat.kerdivver == kerdivver && adat.alid == kerdivalid && adat.kerdes == kerdes) select adat;
+                return query.AsEnumerable();*/
+                var queryy = $"Select * from Cogdata where projid={projid} and  kerdivver={kerdivver} and  alid={kerdivalid}  and  kerdes={kerdes} ";
+                var vi = await database.QueryAsync<Cogdata>(queryy);
+                return vi;
+            }
+        }
+        public async Task<List<Cogdata>> GetCogDataAsProjidVerAsync(int projid, string kerdivver)
+        {
+            {
+                /*var query = from adat in database.Table<Cogdata>() where (adat.projid == projid && adat.kerdivver == kerdivver) select adat;
+                return query.AsEnumerable();*/
+                var queryy = $"Select * from Cogdata where projid={projid} and  kerdivver={kerdivver}  ";
+                var vi = await database.QueryAsync<Cogdata>(queryy);
+                return vi;
+            }
+        }
+       
+        public async Task<List<Cogdata>> GetCogDataFeltoltveEAsync(bool fele)
+        {
+            {
+                /*var query = from adat in database.Table<Cogdata>() where adat.feltoltve == fele select adat;
+                return query.AsEnumerable();*/
+                var queryy = $"Select * from Cogdata where feltoltve={fele} ";
+                var vi = await database.QueryAsync<Cogdata>(queryy);
+                return vi;
+            }
+        }
+        public async Task<List<Cogdata>> GetCogDataAsync()
+        {
+            {
+                return database.QueryAsync<Cogdata>("Select * from Cogdata").Result;
+
+            }
+        }
+        public async Task<int> UpdateCogDataAsync(Cogdata CogDataAdat)
+        {
+            {
+                database.UpdateAsync(CogDataAdat);
+                return CogDataAdat.id;
+            }
+
+
+        }
+
         public async Task<int> SaveCogDataAsync(Cogdata CogDataAdat)
+        {
+            {
+                if (CogDataAdat.id != 0)
+                {
+                    database.UpdateAsync(CogDataAdat);
+                    return CogDataAdat.id;
+                }
+                else
+                {
+                    database.InsertAsync(CogDataAdat);
+                    return CogDataAdat.id;
+                }
+            }
+        }
+        public async Task<int> DeleteCogDataAsync(Cogdata CogDataAdat)
+        {
+            var id = CogDataAdat.id;
+            if (id != 0)
+            {
+                {
+                    database.DeleteAsync<Cogdata>(id);
+                }
+
+            }
+            //this.CogData.Remove(CogDataAdat);
+            return id;
+        }
+        public async Task DeleteCogDataAllAsync()
+        {
+            
+            {
+                database.DeleteAllAsync<Cogdata>();
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+        public async Task<List<Cogparam>> GetCogparamAsProjidAsync(int projid)
+        {
+            {
+                /*var query = from adat in database.Table<Cogparam>() where adat.projid == projid select adat;
+                return query.AsEnumerable();*/
+                var queryy = $"Select * from Cogparam where projid={projid}  ";
+                var vi = await database.QueryAsync<Cogparam>(queryy);
+                return vi;
+            }
+        }
+        public async Task<List<Cogparam>> GetCogparamAsProjidVerAsync(int projid, string kerdivver)
+        {
+            {
+
+                /*var query = from adat in database.Table<Cogparam>() where (adat.projid == projid && adat.kerdivver == kerdivver) select adat;
+                return query.AsEnumerable();*/
+                var queryy = $"Select * from Cogparam where projid={projid} and  kerdivver={kerdivver}  ";
+                var vi = database.QueryAsync<Cogparam>(queryy).Result;
+                return vi;
+            }
+        }
+        public async Task<List<Cogparam>> GetCogparamAsProjidVerKerdesAsync(int projid, string kerdivver, string kerdes)
+        {
+            {
+                /*var query = from adat in database.Table<Cogparam>() where (adat.projid == projid && adat.kerdivver == kerdivver && adat.kerdes == kerdes) select adat;
+                return query.AsEnumerable();*/
+                var queryy = $"Select * from Cogparam where projid={projid} and  kerdivver={kerdivver} and  kerdes={kerdes} ";
+                var vi =  await database.QueryAsync<Cogparam>(queryy);
+                return vi;
+            }
+        }
+        public async Task<List<Cogparam>> GetCogparamAsync()
+        {
+            {
+                return database.QueryAsync<Cogparam>("Select * from Cogparam").Result;
+
+            }
+        }
+        public async Task<int> UpdateCogparamAsync(Cogparam CogparamAdat)
+        {
+            {
+                database.UpdateAsync(CogparamAdat);
+                return CogparamAdat.id;
+            }
+
+
+        }
+
+        public async Task<int> SaveCogparamAsync(Cogparam CogparamAdat)
+        {
+            {
+                if (CogparamAdat.id != 0)
+                {
+                    database.UpdateAsync(CogparamAdat);
+                    return CogparamAdat.id;
+                }
+                else
+                {
+                    database.InsertAsync(CogparamAdat);
+                    return CogparamAdat.id;
+                }
+            }
+        }
+        public async Task<int> DeleteCogparamAsync(Cogparam CogparamAdat)
+        {
+            var id = CogparamAdat.id;
+            if (id != 0)
+            {
+                {
+                    database.DeleteAsync<Cogparam>(id);
+                }
+
+            }
+            //this.CogParam.Remove(CogparamAdat);
+            return id;
+        }
+        public async Task DeleteCogparamAllAsync()
+        {
+            {
+                database.DeleteAllAsync<Cogparam>();
+            }
+
+
+
+        }
+
+
+
+
+
+
+
+
+
+
+
+
+        /*public async Task<int> SaveCogDataAsync(Cogdata CogDataAdat)
         {
             if (CogDataAdat.id != 0)
                 {
@@ -171,6 +471,6 @@ namespace CognativeSurveyX.myDataBase
                     var vis= database.InsertAsync(CogDataAdat).Result;
                     return CogDataAdat.id;
                 }
-        }
+        }*/
     }
 }

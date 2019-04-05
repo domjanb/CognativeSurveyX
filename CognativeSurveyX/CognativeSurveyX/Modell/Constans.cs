@@ -14,11 +14,13 @@ using System.Diagnostics;
 using Plugin.FileUploader;
 using Plugin.FileUploader.Abstractions;
 using CognativeSurveyX.myDataBase;
+using System.Threading.Tasks;
 
 namespace CognativeSurveyX.Modell
 {
     class Constans
     {
+        
         public struct ParamData
         {
             public ParamData(string idValue, string param1Value, string param2Value, string param3Value)
@@ -113,6 +115,8 @@ namespace CognativeSurveyX.Modell
         
         public static Dictionary<string, string> myParam = new Dictionary<string, string>();
         public static List<Tuple<string, string, string,int>> myParam2 = new List<Tuple<string, string,string,int>>();
+        public static List<Tuple<string, string, string,int>> valaszOKtomb= new List<Tuple<string, string, string,int>>();
+        public static List<Tuple<string, string>> kirtekeltRule = new List<Tuple<string, string>>();
 
         public static int paramNetkapcsolat = 1;
         public static string csekbox_false = "☐";
@@ -160,7 +164,8 @@ namespace CognativeSurveyX.Modell
         {
             ValaszokKiiratasa(valaszok);
             //bool ruleTovabb=ruleTombVizsgal();
-            bool ruleTovabb = true;
+            bool ruleTovabb = ruleTombVizsgalnoSQL();
+            //bool ruleTovabb = true;
             if (ruleTovabb)
             {
                 bool keresem = true;
@@ -218,6 +223,235 @@ namespace CognativeSurveyX.Modell
                 
             }
         }
+
+        private static bool ruleTombVizsgalnoSQL()
+        {
+            bool vissza = true;
+            kirtekeltRule.Clear();
+            if (aktQuestion.rules != null)
+            {
+                foreach (var aktrule in aktQuestion.rules)
+                {
+                    var rulesTomb = aktrule.Split(Convert.ToChar(" "));
+                    string rulesTomb0 = rulesTomb[0];
+                    if (rulesTomb0.ToLower().Equals("if"))
+                    {
+                        /*MegszakadData megszakadtData = new MegszakadData
+                        {
+                            alid = kerdivAlid,
+                            szoveg = aktrule,
+                            bejegyzesTipus = 2,
+                            kerdivver = kerdivVer,
+                            projid = Convert.ToInt16(kerdivId),
+                            kerdivdate = TimeS(DateTime.Now)
+                        };
+                        adatBazis.SaveMegszakadData(megszakadtData);*/
+
+                        vissza = ruleElemezNoSQL(aktrule);
+                        if (!vissza)
+                        {
+                            break;
+                        }
+                    }
+
+                }
+            }
+
+            return vissza;
+        }
+
+        private static bool ruleElemezNoSQL(string aktrule)
+        {
+            //UsersDataAccess adatBazis = new UsersDataAccess();
+            
+            bool vissza = true;
+
+
+            string feltetel = aktrule.Substring(3).Trim();
+            Debug.WriteLine(feltetel);
+            if (feltetel.IndexOf("(") >= 0)
+            {
+                string feltetelTorzs = feltetelTorzsKeres(feltetel);
+                string feltetelFeladat = feltetel.Substring(feltetelTorzs.Length).Trim();
+                string feltetel_vissza = "";
+                bool meglett = false;
+                foreach (var item in kirtekeltRule)
+                {
+                    if (item.Item1 == feltetelTorzs)
+                    {
+                        feltetel_vissza = item.Item2;
+                        meglett = true;
+                        break;
+                    }
+
+                }
+                if (!meglett)
+                {
+                    var feltetelElemzo = new FeltetelElemzo();
+                    feltetelElemzo.Feltetel = feltetelTorzs;
+                    feltetel_vissza = (feltetelElemzo.FeltetelVizsgalo().ToLower().Trim());
+                    kirtekeltRule.Add(Tuple.Create(feltetelTorzs,feltetel_vissza));
+                }
+                
+                if (feltetel_vissza.ToLower().Equals("true"))
+                {
+                    if (feltetelFeladat.Substring(0, "nogo(".Length).Equals("NoGO("))
+                    {
+                        vissza = false;
+                        //string hibajegy = feltetelFeladat.Substring(6, feltetelFeladat.Length - 1);
+                        //break;
+                    }
+                    else if (feltetelFeladat.Substring(0, "PTE(".Length).Equals("PTE("))
+                    {
+                        var al1 = feltetelFeladat.Length;
+                        var al2 = feltetelFeladat.IndexOf(";");
+
+                        string paramKod = feltetelFeladat.Substring(4, feltetelFeladat.IndexOf(";") - 4);
+                        string paramErtek = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - feltetelFeladat.IndexOf(";") - 2);
+                        /*Cogparam cogparam = new Cogparam
+                        {
+                            alid = kerdivAlid,
+                            egyedi1 = "",
+                            egyedi2 = "",
+                            egyedi3 = "",
+                            egyedi4 = "",
+                            kerdes = "PT" + paramKod,
+                            valasz = paramErtek,
+                            kerdivtip = Convert.ToInt16(kerdivTip),
+                            kerdivver = kerdivVer,
+                            projid = Convert.ToInt16(kerdivId),
+                            kerdivdate = TimeS(DateTime.Now)
+                        };
+                        
+                        adatBazis.SaveCogparam(cogparam);*/
+                        valaszOKtomb.Add(Tuple.Create("PT", "PT"+ paramKod, paramErtek,1));
+                    }
+                    else if (feltetelFeladat.Substring(0, "VQ(".Length).Equals("VQ("))
+                    {
+                        string varOut = feltetelFeladat.Substring("VQ(".Length, feltetelFeladat.IndexOf(";") - "VQ(".Length);
+                        string paramErtek = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - feltetelFeladat.IndexOf(";") - 2);
+                        foreach (var kerdes in aktSurvey.questions)
+                        {
+                            if (kerdes.kerdeskod.Equals(varOut))
+                            {
+                                kerdes.visible = Convert.ToBoolean(paramErtek);
+                                valaszOKtomb.Add(Tuple.Create(kerdes.kerdeskod, "", paramErtek, 2));
+                            }
+                        }
+                    }
+                    else if (feltetelFeladat.Substring(0, "VA(".Length).Equals("VA("))
+                    {
+                        string varOut = feltetelFeladat.Substring("VA(".Length, feltetelFeladat.IndexOf(",") - "VA(".Length);
+                        feltetelFeladat = feltetelFeladat.Substring(varOut.Length + "VA(".Length + 1);
+                        string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";"));
+                        string varVisible = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - feltetelFeladat.IndexOf(";") - 2);
+                        visibleChoiceBeallit(varOut, Convert.ToInt16(varOutErtek), Convert.ToBoolean(varVisible.ToLower()));
+                        valaszOKtomb.Add(Tuple.Create(varOut, varOutErtek, varVisible, 3));
+                    }
+                    else if (feltetelFeladat.Substring(0, "VI(".Length).Equals("VI("))
+                    {
+                        string varOut = feltetelFeladat.Substring("VI(".Length, feltetelFeladat.IndexOf(",") - "VI(".Length);
+                        feltetelFeladat = feltetelFeladat.Substring(varOut.Length + "VI(".Length + 1);
+                        string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";"));
+                        string varVisible = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - feltetelFeladat.IndexOf(";") - 2);
+                        visibleItemBeallit(varOut, Convert.ToInt16(varOutErtek), Convert.ToBoolean(varVisible.ToLower()));
+                        valaszOKtomb.Add(Tuple.Create(varOut, varOutErtek, varVisible, 4));
+
+                    }
+                    else if (feltetelFeladat.Substring(0, "QLIE(".Length).Equals("QLIE("))
+                    {
+                        string varOut = feltetelFeladat.Substring("QLIE(".Length, feltetelFeladat.IndexOf(",") - "QLIE(".Length);
+                        feltetelFeladat = feltetelFeladat.Substring(varOut.Length + "QLIE(".Length + 1);
+                        string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";"));
+                        string varIn = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - feltetelFeladat.IndexOf(";") - 2);
+                        string varInErtek = keresErtekNoSQL(varIn);
+
+
+
+                        if (varOut.ToLower().Equals("pt"))
+                        {
+                            /*Cogparam cogparam = new Cogparam
+                            {
+                                alid = kerdivAlid,
+                                egyedi1 = "",
+                                egyedi2 = "",
+                                egyedi3 = "",
+                                egyedi4 = "",
+                                kerdes = "PT" + varOutErtek,
+                                valasz = varInErtek,
+                                kerdivtip = Convert.ToInt16(kerdivTip),
+                                kerdivver = kerdivVer,
+                                projid = Convert.ToInt16(kerdivId),
+                                kerdivdate = TimeS(DateTime.Now)
+                            };
+                            adatBazis.SaveCogparam(cogparam);*/
+                            valaszOKtomb.Add(Tuple.Create("PT", "PT" + varOutErtek, varInErtek, 1));
+                        }
+                        else
+                        {
+                            foreach (var kerdes in aktSurvey.questions)
+                            {
+                                if (kerdes.kerdeskod.Equals(varOut))
+                                {
+                                    kerdes.items[Convert.ToInt16(varOutErtek) - 1] = varInErtek;
+                                    valaszOKtomb.Add(Tuple.Create(kerdes.kerdeskod, varOut, varOutErtek, 5));
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
+                    else if (feltetelFeladat.Substring(0, "QLE(".Length).Equals("QLE("))
+                    {
+                        string varOut = feltetelFeladat.Substring(4, feltetelFeladat.IndexOf(",") - 4);
+                        feltetelFeladat = feltetelFeladat.Substring(varOut.Length + "QLE(".Length + 1);
+                        string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";"));
+                        string varIn = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - feltetelFeladat.IndexOf(";") - 2);
+                        string varInErtek = keresErtekNoSQL(varIn);
+
+                        if (varOut.ToLower().Equals("pt"))
+                        {
+                            /*Cogparam cogparam = new Cogparam
+                            {
+                                alid = kerdivAlid,
+                                egyedi1 = "",
+                                egyedi2 = "",
+                                egyedi3 = "",
+                                egyedi4 = "",
+                                kerdes = "PT" + varOutErtek,
+                                valasz = varInErtek,
+                                kerdivtip = Convert.ToInt16(kerdivTip),
+                                kerdivver = kerdivVer,
+                                projid = Convert.ToInt16(kerdivId),
+                                kerdivdate = TimeS(DateTime.Now)
+                            };
+                            adatBazis.SaveCogparam(cogparam);*/
+                            valaszOKtomb.Add(Tuple.Create("PT", "PT" + varOutErtek, varInErtek, 1));
+                            
+                        }
+                        else
+                        {
+                            foreach (var kerdes in aktSurvey.questions)
+                            {
+                                if (kerdes.kerdeskod.Equals(varOut))
+                                {
+                                    kerdes.choices[Convert.ToInt16(varOutErtek) - 1] = varInErtek;
+                                    valaszOKtomb.Add(Tuple.Create(kerdes.kerdeskod, varOut, varOutErtek, 6));
+                                    break;
+                                }
+                            }
+                        }
+
+                    }
+                }
+            }
+
+
+
+            return vissza;
+        }
+
+        
 
         public static string sorszamErtek()
         {
@@ -636,18 +870,20 @@ namespace CognativeSurveyX.Modell
             {
                 string ptIndex = valtozo.Substring(2);
 
-                var alapAdatokParam = adatBazis.GetCogparamAsProjidVer(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer);
-                //let alapAdatokParam = 
-                //coredataOperations.fetchDataCogParamWhereSern(
-                //  sern: Int16(_vKerdivalid), projAzon: _vKerdivid, ver: _vKerdivver) as [CogParam]
-                foreach (var alapAdat in alapAdatokParam)
+                var alapAdatokParam = adatBazis.GetCogparamAsProjidVerKerdes(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer,valtozo);
+                if (alapAdatokParam.Count() == 1)
                 {
-                    if (alapAdat.kerdes == valtozo)
+                    foreach (var alapAdat in alapAdatokParam)
                     {
-                        vissza_string = alapAdat.valasz;
-                        break;
+                        if (alapAdat.kerdes == valtozo)
+                        {
+                            vissza_string = alapAdat.valasz;
+                            break;
+                        }
                     }
+
                 }
+                /**/
             }
 
             else
@@ -675,6 +911,7 @@ namespace CognativeSurveyX.Modell
 
                 var adatValaszok = adatBazis.GetCogDataAsProjidVerAlid(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer,kerdivAlid);
                 bool vissza = false;
+                
                 foreach (var adatValasz in adatValaszok)
                 {
                     if (vartipus < 3)
@@ -699,6 +936,103 @@ namespace CognativeSurveyX.Modell
                         }
                     }
                 }
+
+            }
+
+            return vissza_string;
+        }
+        private static string keresErtekNoSQL(string valtozo)
+        {
+            //UsersDataAccess adatBazis = new UsersDataAccess();
+            string vissza_string = "";
+            if (valtozo.Equals("."))
+            {
+                vissza_string = "";
+            }
+            else if (valtozo.Substring(0, 2).ToLower().Equals("pt"))
+            {
+
+                foreach(var item in valaszOKtomb)
+                {
+                    if (item.Item4.Equals("1"))
+                    {
+                        if (item.Item1.ToLower().Equals("pt"))
+                        {
+                            if (item.Item2.Equals(valtozo))
+                            {
+                                vissza_string = item.Item3;
+                                break;
+                            }
+                        }
+                    }
+                }
+                string ptIndex = valtozo.Substring(2);
+            }
+
+            else
+            {
+                int vartipus = 2;
+                //0 normal
+                //1 param
+                //2 multi
+                if (valtozo.Substring(0, 1).Trim().ToLower().Equals("pt"))
+                {
+                    vartipus = 1;
+                }
+                else
+                {
+                    foreach (var kerdes in Constans.aktSurvey.questions)
+                    {
+                        if (kerdes.question_type == valtozo)
+                        {
+                            vartipus = 0;
+                        }
+
+                    }
+                }
+
+                foreach (var item in valaszOKtomb)
+                {
+                    if (item.Item4.Equals("1"))
+                    {
+                        //if (item.Item1.ToLower().Equals("pt"))
+                        {
+                            if (item.Item2.Equals(valtozo))
+                            {
+                                vissza_string = item.Item3;
+                                break;
+                            }
+                        }
+                    }
+                }
+                /*var adatValaszok = adatBazis.GetCogDataAsProjidVerAlid(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer, kerdivAlid);
+                bool vissza = false;
+
+                
+                foreach (var adatValasz in adatValaszok)
+                {
+                    if (vartipus < 3)
+                    {
+                        if (adatValasz.kerdes.Equals(valtozo))
+                        {
+                            vissza_string = (adatValasz.valasz.Trim());
+                            vissza = true;
+                        }
+                    }
+                    else
+                    {
+                        int kezd = valtozo.IndexOf("_");
+                        string v1 = valtozo.Substring(0, kezd - 1);
+                        string v2 = valtozo.Substring(kezd + 1);
+                        if ((adatValasz.kerdes.Trim().Equals(v1))
+                            //&&  String(adatValasz.kisid) == v2  
+                            )
+                        {
+                            vissza_string = (adatValasz.valasz.Trim());
+                            vissza = true;
+                        }
+                    }
+                }*/
 
             }
 
@@ -806,7 +1140,7 @@ namespace CognativeSurveyX.Modell
 
         private static void ValaszokKiiratasa(string valasz)
         {
-            UsersDataAccessAsync adatBazis = new UsersDataAccessAsync();
+            UsersDataAccess adatBazis = new UsersDataAccess();
 
             //utolso kiirt kérdés
             //van_e már ez a projekt
@@ -825,9 +1159,23 @@ namespace CognativeSurveyX.Modell
                 {
                     var darabol2 = item.Split(Convert.ToChar("="));
                     //long mostDate1 = TimeS(DateTime.Now);
-                    darabol2[0] = "bee";
-                    darabol2[1] = "111";
-                    var idd2 =  adatBazis.SaveCogDataAsync(new Cogdata
+                    var siker = false;
+                    foreach(var itemV in valaszOKtomb)
+                    {
+                        if (itemV.Item1==aktQuestion.kerdeskod && itemV.Item2== darabol2[0])
+                        {
+                            itemV.Item3.Replace(itemV.Item3, darabol2[0]);
+                            siker = true;
+                            break;
+                        }
+
+                    }
+                    if (!siker)
+                    {
+                        valaszOKtomb.Add(Tuple.Create(aktQuestion.kerdeskod, darabol2[0], darabol2[1],1));
+                    }
+
+                    var idd2 =  adatBazis.SaveCogData(new Cogdata
                     {
                         kerdes = darabol2[0],
                         valasz = darabol2[1],
@@ -840,7 +1188,7 @@ namespace CognativeSurveyX.Modell
                         alid = kerdivAlid,
                         egyedi1 = Convert.ToString(kerdivGPSLongitude) + ";" + Convert.ToString(kerdivGPSLatitude),
                         feltoltve = false
-                    }).Result;
+                    });
                     Debug.WriteLine("idd2=" + idd2);
                     Debug.WriteLine("idd2=" + idd2);
                     /*var idd2 = adatBazis.SaveCogData(new Cogdata

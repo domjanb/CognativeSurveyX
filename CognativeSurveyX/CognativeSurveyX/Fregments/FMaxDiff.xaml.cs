@@ -194,7 +194,11 @@ namespace CognativeSurveyX.Fregments
 
         private void _Continue_Clicked(object sender, EventArgs e)
         {
-            this.IsBusy = true;
+            ai.IsEnabled = true;
+            ai.IsVisible = true;
+            ai.IsRunning = true;
+            
+            //this.IsBusy = true;
             Constans.nextPage();
             Navigation.PushModalAsync(new FPageStep());
         }
