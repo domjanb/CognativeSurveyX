@@ -289,7 +289,12 @@ namespace CognativeSurveyX.Modell
                 {
                     var feltetelElemzo = new FeltetelElemzo();
                     feltetelElemzo.Feltetel = feltetelTorzs;
-                    feltetel_vissza = (feltetelElemzo.FeltetelVizsgalo().ToLower().Trim());
+                    feltetel_vissza = feltetelElemzo.KisElemzo();
+                    if (feltetel_vissza == "")
+                    {
+                        feltetel_vissza = (feltetelElemzo.FeltetelVizsgalo().ToLower().Trim());
+                    }
+                    
                     kirtekeltRule.Add(Tuple.Create(feltetelTorzs,feltetel_vissza));
                 }
                 

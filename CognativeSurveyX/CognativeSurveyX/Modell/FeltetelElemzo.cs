@@ -18,6 +18,239 @@ namespace CognativeSurveyX.Modell
 
         }
 
+
+        public string KisElemzo()
+        {
+            var vissza_truefalse_string = "";
+            var feltetel = _Feltetel.Trim().Substring(1, _Feltetel.Length - 2);
+            feltetel = feltetel.Replace("!=", "<>");
+            string bal_oldal = "";
+            string jobb_oldal = "";
+            string balbal_oldal = "";
+            string jobbjobb_oldal = "";
+            string origString = "";
+
+            if (VanBenneRalacio(feltetel) == true)
+            {
+                int relacio = 0;
+                if (feltetel.ToLower().IndexOf(">=") > 0)
+                {
+                    relacio = 2;
+                    int kezd0 = feltetel.ToLower().IndexOf(">=");
+                    origString = feltetel.Substring(0, kezd0).Trim();
+                    bal_oldal = balSpacenalVissza(origString);
+                    balbal_oldal = "";
+                    if (bal_oldal != origString)
+                    {
+                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length);
+                    };
+                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 2);
+
+                    origString = jobb_oldal;
+                    jobb_oldal = jobbSpacenalVissza(origString);
+                    jobbjobb_oldal = "";
+                    if (jobb_oldal != origString)
+                    {
+                        jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1);
+                    }
+                }
+                else if (feltetel.ToLower().IndexOf("<=") > 0)
+                {
+                    relacio = 5;
+                    int kezd0 = feltetel.ToLower().IndexOf("<=");
+                    origString = feltetel.Substring(0, kezd0).Trim();
+                    bal_oldal = balSpacenalVissza(origString);
+                    balbal_oldal = "";
+                    if (bal_oldal != origString)
+                    {
+                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length);
+                    };
+                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 2);
+
+                    origString = jobb_oldal;
+                    jobb_oldal = jobbSpacenalVissza(origString);
+                    jobbjobb_oldal = "";
+                    if (jobb_oldal != origString)
+                    {
+                        //androidos
+                        //jobbjobb_oldal = origString.substring(jobb_oldal.length()+1);
+                        jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1);
+                    }
+                }
+                else if (feltetel.ToLower().IndexOf("<>") > 0)
+                {
+                    relacio = 6;
+                    int kezd0 = feltetel.ToLower().IndexOf("<>");
+                    origString = feltetel.Substring(0, kezd0).Trim();
+                    bal_oldal = balSpacenalVissza(origString);
+                    balbal_oldal = "";
+                    if (bal_oldal != origString)
+                    {
+                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length);
+                    };
+                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 2);
+
+                    origString = jobb_oldal;
+                    jobb_oldal = jobbSpacenalVissza(origString);
+                    jobbjobb_oldal = "";
+                    if (jobb_oldal != origString)
+                    {
+                        //androidos
+                        //jobbjobb_oldal = origString.substring(jobb_oldal.length()+1);
+                        jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1);
+                    }
+                }
+                else if (feltetel.ToLower().IndexOf(">") > 0)
+                {
+                    relacio = 1;
+                    int kezd0 = feltetel.ToLower().IndexOf(">");
+                    origString = feltetel.Substring(0, kezd0).Trim();
+                    bal_oldal = balSpacenalVissza(origString);
+                    balbal_oldal = "";
+                    if (bal_oldal != origString)
+                    {
+                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length);
+                    };
+                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 1);
+
+                    origString = jobb_oldal;
+                    jobb_oldal = jobbSpacenalVissza(origString);
+                    jobbjobb_oldal = "";
+                    if (jobb_oldal != origString)
+                    {
+                        //androidos
+                        //jobbjobb_oldal = origString.substring(jobb_oldal.length()+1);
+                        jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1);
+                    }
+                }
+                else if (feltetel.ToLower().IndexOf("=") > 0)
+                {
+                    relacio = 3;
+                    int kezd0 = feltetel.ToLower().IndexOf("=");
+                    origString = feltetel.Substring(0, kezd0).Trim();
+                    bal_oldal = balSpacenalVissza(origString);
+                    balbal_oldal = "";
+                    if (bal_oldal != origString)
+                    {
+                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length);
+                    };
+                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 1);
+
+                    origString = jobb_oldal;
+                    jobb_oldal = jobbSpacenalVissza(origString);
+                    jobbjobb_oldal = "";
+                    if (jobb_oldal != origString)
+                    {
+                        //androidos
+                        //jobbjobb_oldal = origString.substring(jobb_oldal.length()+1);
+                        jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1);
+                    }
+                }
+                else if (feltetel.ToLower().IndexOf("<") > 0)
+                {
+                    relacio = 4;
+                    int kezd0 = feltetel.ToLower().IndexOf("<");
+                    bal_oldal = feltetel.Substring(0, kezd0).Trim();
+                    origString = bal_oldal;
+                    bal_oldal = balSpacenalVissza(origString);
+                    balbal_oldal = "";
+                    if (bal_oldal != origString)
+                    {
+                        balbal_oldal = origString.Substring(0, origString.Length - bal_oldal.Length);
+                    };
+                    jobb_oldal = feltetel.Substring(balbal_oldal.Length + bal_oldal.Length + 1);
+                    origString = jobb_oldal;
+                    jobb_oldal = jobbSpacenalVissza(origString);
+                    jobbjobb_oldal = "";
+                    if (jobb_oldal != origString)
+                    {
+                        //androidos
+                        //jobbjobb_oldal = origString.substring(jobb_oldal.length()+1);
+                        jobbjobb_oldal = origString.Substring(jobb_oldal.Length + 1);
+                    }
+                }
+                if (balbal_oldal.Trim().Length==0 && jobbjobb_oldal.Trim().Length==0)
+                {
+                    //
+                    if (!isValidFloat(bal_oldal))
+                    {
+                        bal_oldal = keresErtekNoSQLMini(bal_oldal);
+                    }
+                    if (!isValidFloat(jobb_oldal))
+                    {
+                        bal_oldal = keresErtekNoSQLMini(jobb_oldal);
+                    }
+                }
+                if (bal_oldal!="/" && jobb_oldal != "/")
+                {
+                    vissza_truefalse_string = " false ";
+                    if (relacio != 6 && bal_oldal.Trim().Length == 0 && jobb_oldal.Trim().Length == 0)
+                    {
+                        vissza_truefalse_string = " true ";
+                    }
+                    else if (relacio == 6 && bal_oldal.Trim().Length == 0 && jobb_oldal.Trim().Length == 0)
+                    {
+                        vissza_truefalse_string = " false ";
+                    }
+                    else if (relacio != 6 && bal_oldal.Trim().Length >= 0 && jobb_oldal.Trim().Length == 0)
+                    {
+                        vissza_truefalse_string = " false ";
+                    }
+                    else if (relacio != 6 && bal_oldal.Trim().Length == 0 && jobb_oldal.Trim().Length >= 0)
+                    {
+                        vissza_truefalse_string = " false ";
+                    }
+                    else if (relacio == 6 && bal_oldal.Trim().Length == 0 && jobb_oldal.Trim().Length >= 0)
+                    {
+                        vissza_truefalse_string = " true ";
+                    }
+                    else if (relacio == 6 && bal_oldal.Trim().Length >= 0 && jobb_oldal.Trim().Length == 0)
+                    {
+                        vissza_truefalse_string = " true ";
+                    }
+                    else
+                    {
+                        if (isValidFloat(bal_oldal) && isValidFloat(jobb_oldal))
+                        {
+                            double b = Convert.ToDouble(bal_oldal);
+                            double j = Convert.ToDouble(jobb_oldal);
+
+
+                            if (relacio == 1 && (b > j))
+                            {
+                                vissza_truefalse_string = " true ";
+                            }
+                            if (relacio == 2 && (b >= j))
+                            {
+                                vissza_truefalse_string = " true ";
+                            }
+                            if (relacio == 3 && (b == j))
+                            {
+                                vissza_truefalse_string = " true ";
+                            }
+                            if (relacio == 4 && (b < j))
+                            {
+                                vissza_truefalse_string = " true ";
+                            }
+                            if (relacio == 5 && (b <= j))
+                            {
+                                vissza_truefalse_string = " true ";
+                            }
+                            if (relacio == 6 && (b != j))
+                            {
+                                vissza_truefalse_string = " true ";
+                            }
+                        }
+                    }
+                }
+
+            }
+
+            return vissza_truefalse_string;
+
+
+
+        }
         public string FeltetelVizsgalo()
         {
             var vissza_string = _Feltetel;
@@ -618,6 +851,103 @@ namespace CognativeSurveyX.Modell
         {
             //UsersDataAccess adatBazis = new UsersDataAccess();
             string vissza_string = "";
+            if (valtozo.Equals("."))
+            {
+                vissza_string = "";
+            }
+            else if (valtozo.Substring(0, 2).ToLower().Equals("pt"))
+            {
+
+                foreach (var item in Constans.valaszOKtomb)
+                {
+                    if (item.Item4.Equals("1"))
+                    {
+                        if (item.Item1.ToLower().Equals("pt"))
+                        {
+                            if (item.Item2.Equals(valtozo))
+                            {
+                                vissza_string = item.Item3;
+                                break;
+                            }
+                        }
+                    }
+                }
+                string ptIndex = valtozo.Substring(2);
+            }
+
+            else
+            {
+                int vartipus = 2;
+                //0 normal
+                //1 param
+                //2 multi
+                if (valtozo.Substring(0, 1).Trim().ToLower().Equals("pt"))
+                {
+                    vartipus = 1;
+                }
+                else
+                {
+                    foreach (var kerdes in Constans.aktSurvey.questions)
+                    {
+                        if (kerdes.question_type == valtozo)
+                        {
+                            vartipus = 0;
+                        }
+
+                    }
+                }
+
+                foreach (var item in Constans.valaszOKtomb)
+                {
+                    if (item.Item4.Equals(1))
+                    {
+                        //if (item.Item1.ToLower().Equals("pt"))
+                        {
+                            if (item.Item2.Equals(valtozo))
+                            {
+                                vissza_string = item.Item3;
+                                break;
+                            }
+                        }
+                    }
+                }
+                /*var adatValaszok = adatBazis.GetCogDataAsProjidVerAlid(Convert.ToInt16(Constans.kerdivId), Constans.kerdivVer, kerdivAlid);
+                bool vissza = false;
+
+                
+                foreach (var adatValasz in adatValaszok)
+                {
+                    if (vartipus < 3)
+                    {
+                        if (adatValasz.kerdes.Equals(valtozo))
+                        {
+                            vissza_string = (adatValasz.valasz.Trim());
+                            vissza = true;
+                        }
+                    }
+                    else
+                    {
+                        int kezd = valtozo.IndexOf("_");
+                        string v1 = valtozo.Substring(0, kezd - 1);
+                        string v2 = valtozo.Substring(kezd + 1);
+                        if ((adatValasz.kerdes.Trim().Equals(v1))
+                            //&&  String(adatValasz.kisid) == v2  
+                            )
+                        {
+                            vissza_string = (adatValasz.valasz.Trim());
+                            vissza = true;
+                        }
+                    }
+                }*/
+
+            }
+
+            return vissza_string;
+        }
+        private static string keresErtekNoSQLMini(string valtozo)
+        {
+            //UsersDataAccess adatBazis = new UsersDataAccess();
+            string vissza_string = "/";
             if (valtozo.Equals("."))
             {
                 vissza_string = "";

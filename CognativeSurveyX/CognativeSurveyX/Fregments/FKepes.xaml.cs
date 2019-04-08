@@ -68,7 +68,7 @@ namespace CognativeSurveyX.Fregments
                 
                 idx++;
                 oszlop = 1;
-                //if (idx % 2 == 1)
+                if (idx % 2 == 1)
                 {
                     sor++;
                     oszlop = 0;
@@ -83,19 +83,20 @@ namespace CognativeSurveyX.Fregments
                 button.HorizontalOptions = LayoutOptions.FillAndExpand;
                 button.VerticalOptions= LayoutOptions.FillAndExpand;
                 button.Source= ImageSource.FromFile(ffile);
-                button.Aspect = Aspect.AspectFill;
-                Image im = new Image();
+                button.Aspect = Aspect.AspectFit;
+                button.VerticalOptions = LayoutOptions.FillAndExpand;
+                button.HorizontalOptions = LayoutOptions.FillAndExpand;
+                /*Image im = new Image();
                 im.Source = ImageSource.FromFile(ffile);
 
                 Debug.WriteLine(im.Width);
-                Debug.WriteLine(im.Bounds.Width);
+                Debug.WriteLine(im.Bounds.Width);*/
                 //button.
                 button.BackgroundColor = Color.Red;
                 button.BorderWidth = 1;
                 button.BorderColor = Color.Black;
                 //button.Measure()
-                //button.VerticalOptions = LayoutOptions.FillAndExpand;
-                //button.HorizontalOptions= LayoutOptions.FillAndExpand;
+                
                 
                 //button.Text = Constans.bumbuc_false + "  " + item;
                 //button.HorizontalOptions = LayoutOptions.Start;
@@ -136,7 +137,7 @@ namespace CognativeSurveyX.Fregments
             }*/
 
 
-            Debug.WriteLine("nyomi");
+                Debug.WriteLine("nyomi");
 
 
         }

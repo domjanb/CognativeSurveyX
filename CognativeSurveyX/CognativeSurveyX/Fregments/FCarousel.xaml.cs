@@ -142,6 +142,10 @@ namespace CognativeSurveyX.Fregments
                     im1.VerticalOptions = LayoutOptions.FillAndExpand;
                     sl.Children.Add(im1);
                     slTeljes.Children.Add(sl);
+
+                    Label aa = new Label();
+                    aa.Text = "salal";
+                    slTeljes.Children.Add(aa);
                 }
                 else
                 {
@@ -245,6 +249,9 @@ namespace CognativeSurveyX.Fregments
                     im1.VerticalOptions = LayoutOptions.FillAndExpand;
                     sl.Children.Add(im1);
                     slTeljes.Children.Add(sl);
+                    Label aa = new Label();
+                    aa.Text = "salal";
+                    slTeljes.Children.Add(aa);
                 }
                 else
                 {

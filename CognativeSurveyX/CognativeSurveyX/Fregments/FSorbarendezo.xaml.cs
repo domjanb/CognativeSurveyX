@@ -208,15 +208,25 @@ namespace CognativeSurveyX.Fregments
 
 
         }
-        private void _Continue_Clicked(object sender, EventArgs e)
+        private async void _Continue_Clicked(object sender, EventArgs e)
         {
+            var x =  szuinez((Button)sender);
+            ((Button)sender).BackgroundColor = Color.Red;
             ai.IsEnabled = true;
             ai.IsVisible = true;
             ai.IsRunning = true;
-            Constans.nextPage();
-            Navigation.PushModalAsync(new FPage());
+            
+            
+            
         }
         
+        private async Task<bool> szuinez(Button btn)
+        {
+            
+            Constans.nextPage();
+            Navigation.PushModalAsync(new FPage());
+            return true;
+        }
 
     }
 }

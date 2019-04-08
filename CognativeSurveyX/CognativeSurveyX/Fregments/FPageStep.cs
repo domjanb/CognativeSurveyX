@@ -31,7 +31,8 @@ namespace CognativeSurveyX.Fregments
                 }
                 else if (Constans.aktQuestion.question_type == "Tilitoli")
                 {
-                    Navigation.PushModalAsync(new FCarousel());
+                    //Navigation.PushModalAsync(new FCarousel());
+                    Navigation.PushModalAsync(new FKepes());
                 }
                 else if (Constans.aktQuestion.question_type == "Kepes")
                 {
