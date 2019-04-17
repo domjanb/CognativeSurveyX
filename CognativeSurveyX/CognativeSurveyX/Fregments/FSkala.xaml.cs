@@ -97,9 +97,9 @@ namespace CognativeSurveyX.Fregments
             {
                 var item = Constans.ValaszParameterNelkul(itemTomb.Item2);
 
-                Label lbl = new Label();
+                /*Label lbl = new Label();
                 lbl.Text = item;
-                myStack.Children.Add(lbl);
+                myStack.Children.Add(lbl);*/
 
                 CsillagSkala button = itemTomb.Item3;
 
@@ -109,6 +109,7 @@ namespace CognativeSurveyX.Fregments
                 button.FontMeret = Device.GetNamedSize(NamedSize.Medium, typeof(Label));
                 button.CheckedChange += button_CheckedChange;
                 button.Text = item;
+                //button.BackgroundColor = Color.Red;
 
                 if (idx % 2 != 1)
                 {

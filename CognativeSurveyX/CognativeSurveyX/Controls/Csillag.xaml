@@ -2,9 +2,10 @@
 <ContentView xmlns="http://xamarin.com/schemas/2014/forms" 
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="CognativeSurveyX.Controls.Csillag">
-    <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="Fill"  Margin="0,0,0,0" >
-        <Label x:Name="boxLabel" Text="☆" />
-        <Label x:Name="textLabel" IsVisible="False"/>
+    <StackLayout Orientation="Horizontal" HorizontalOptions="Fill" VerticalOptions="Fill"  Margin="0,0,0,0">
+
+        <Label x:Name="boxLabel" Text="⭐"  />
+        <Label x:Name="textLabel" Text="ola"  IsVisible="false"/>
     </StackLayout>
     <ContentView.GestureRecognizers>
         <TapGestureRecognizer Tapped="OnCheckBoxTapped" />

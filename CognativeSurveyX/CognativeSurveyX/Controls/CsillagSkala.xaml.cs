@@ -76,7 +76,7 @@ namespace CognativeSurveyX.Controls
             sor.Margin = new Thickness(2, 2, 2, 2);
             BoxView bwTop = new BoxView();
             bwTop.WidthRequest = 1;
-            bwTop.BackgroundColor = Color.Black;
+            ///////bwTop.BackgroundColor = Color.Black;
             bwTop.VerticalOptions = LayoutOptions.Fill;
             bwTop.HorizontalOptions = LayoutOptions.Fill;
             bwTop.Opacity = 0.01;
@@ -98,7 +98,7 @@ namespace CognativeSurveyX.Controls
                 sor.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             }
             
-            sor.Children.Add(bwTop);
+            ///////sor.Children.Add(bwTop);
 
             for (var i = 0; i < ValaszDB; i++)
             {
@@ -107,32 +107,32 @@ namespace CognativeSurveyX.Controls
                 //listGr.Add(gr);
 
                 Csillag rb = new Csillag();
-                //rb.BackgroundColor = Color.Peru;
+                //rb.BackgroundColor = Color.GreenYellow;
                 rb.HorizontalOptions = LayoutOptions.Center;
                 rb.VerticalOptions = LayoutOptions.Center;
-                rb.FontSize = FontMeret;
+                rb.FontSize = _FontMeret;
                 listCheckbox.Add(rb);
                 rb.CheckedChange += rb_CheckedChange;
                 //sor.Children.Add(bwTop);
-                BoxView bwTop2 = new BoxView();
+                /*BoxView bwTop2 = new BoxView();
                 bwTop2.WidthRequest = 1;
-                bwTop2.BackgroundColor = Color.Black;
+                ////bwTop2.BackgroundColor = Color.Black;
                 bwTop2.VerticalOptions = LayoutOptions.Fill;
                 bwTop2.HorizontalOptions = LayoutOptions.Fill;
                 bwTop2.Opacity = 0.01;
                 bwTop2.GestureRecognizers.Add(gr);
-                listGr.Add(bwTop2);
+                listGr.Add(bwTop2);*/
                 //bw.VerticalOptions = LayoutOptions.Fill;
 
                 if (lbl.Text!=null)
                 {
                     sor.Children.Add(rb, i + 1, 0);
-                    sor.Children.Add(bwTop2, i + 1, 0);
+                    //sor.Children.Add(bwTop2, i + 1, 0);
                 }
                 else
                 {
                     sor.Children.Add(rb, i , 0);
-                    sor.Children.Add(bwTop2, i, 0);
+                    //sor.Children.Add(bwTop2, i, 0);
                 }
                     
             }

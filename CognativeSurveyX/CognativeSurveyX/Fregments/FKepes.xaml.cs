@@ -43,16 +43,16 @@ namespace CognativeSurveyX.Fregments
             
             int itemDb = Constans.aktQuestion.choices.Count;
             var regForm2 = new Grid();
-            //regForm2.HorizontalOptions = LayoutOptions.Center;
-            //regForm2.VerticalOptions = LayoutOptions.FillAndExpand;
+            regForm2.HorizontalOptions = LayoutOptions.FillAndExpand;
+            regForm2.VerticalOptions = LayoutOptions.FillAndExpand;
             regForm2.Padding = 15;
             
             regForm2.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             //regForm2.ColumnDefinitions.Add(new ColumnDefinition { Width = new GridLength(1, GridUnitType.Star) });
             for (var i = 0; i < itemDb / 2; i++)
             {
-                //regForm2.RowDefinitions.Add(new RowDefinition { Height = new GridLength(i, GridUnitType.Star) });
-                regForm2.RowDefinitions.Add(new RowDefinition { Height =  GridLength.Auto });
+                regForm2.RowDefinitions.Add(new RowDefinition { Height = new GridLength(2, GridUnitType.Star) });
+                //regForm2.RowDefinitions.Add(new RowDefinition { Height =  GridLength.Auto });
             }
             /*for (var i = 0; i < 1 ; i++)
             {
@@ -83,9 +83,12 @@ namespace CognativeSurveyX.Fregments
                 button.HorizontalOptions = LayoutOptions.FillAndExpand;
                 button.VerticalOptions= LayoutOptions.FillAndExpand;
                 button.Source= ImageSource.FromFile(ffile);
-                button.Aspect = Aspect.AspectFit;
+                button.Aspect = Aspect.AspectFill;
                 button.VerticalOptions = LayoutOptions.FillAndExpand;
-                button.HorizontalOptions = LayoutOptions.FillAndExpand;
+                button.HorizontalOptions = LayoutOptions.Fill;
+                
+                Debug.WriteLine(button.Height);
+                Debug.WriteLine(button.HeightRequest);
                 /*Image im = new Image();
                 im.Source = ImageSource.FromFile(ffile);
 
@@ -112,11 +115,24 @@ namespace CognativeSurveyX.Fregments
             }
 
             myStack.Children.Add(regForm2);
+            //regForm2.RowDefinitions[1].Height =listButtons[1].Height;
+            //regForm2.RowDefinitions[2].Height = new GridLength(2, GridUnitType.Star);
             myLayout.Children.Add(myScroll);
+            this.Appearing += FKepes_Appearing;
             
         }
 
-        
+        private void FKepes_Appearing(object sender, EventArgs e)
+        {
+            //FKepes a=(Fkepes)sender ;
+            foreach(var item in (ContentPage)sender)
+            {
+
+            }
+            Debug.WriteLine(a);
+            Debug.WriteLine(a);
+
+        }
 
         private void button_Clicked(object sender, EventArgs e)
         {
@@ -141,6 +157,7 @@ namespace CognativeSurveyX.Fregments
 
 
         }
+        
         private void _Continue_Clicked(object sender, EventArgs e)
         {
 

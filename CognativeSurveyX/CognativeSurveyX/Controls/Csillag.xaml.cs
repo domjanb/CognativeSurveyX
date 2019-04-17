@@ -1,4 +1,5 @@
 ﻿using System;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -39,7 +40,7 @@ namespace CognativeSurveyX.Controls
                 Device.GetNamedSize(NamedSize.Default, typeof(Label)),
                 propertyChanged: (bindable, oldValue, newValue) =>
                 {
-                    ((Csillag)bindable).textLabel.FontSize = (double)newValue;
+                    //((Csillag)bindable).textLabel.FontSize = (double)newValue;
                     ((Csillag)bindable).boxLabel.FontSize = (double)newValue;
                 }
                 );
@@ -53,6 +54,7 @@ namespace CognativeSurveyX.Controls
                 {
                     ((Csillag)bindable).BackgroundColor = Color.Gray.MultiplyAlpha(0.1);
                     ((Csillag)bindable).boxLabel.Text = (bool)newValue ? "⭐" : "☆";
+                    //((Csillag)bindable).boxLabel1.Text = (bool)newValue ? "a" : "A";
                     if ((bool)newValue)
                     {
                         if (((Csillag)bindable).FontMeret < Device.GetNamedSize(NamedSize.Large, typeof(Label)))
@@ -85,6 +87,7 @@ namespace CognativeSurveyX.Controls
             {
                 this._myIschecked = value;
                 boxLabel.Text = (bool)_myIschecked ? "⭐" : "☆";
+                //boxLabel1.Text = (bool)_myIschecked ? "a" : "A";
                 if ((bool)_myIschecked)
                 {
                     if (FontMeret < Device.GetNamedSize(NamedSize.Large, typeof(Label)))
@@ -114,7 +117,7 @@ namespace CognativeSurveyX.Controls
             set
             {
                 this._enModositok = value;
-                //boxLabel.Text = (bool)_myIschecked ? "⚫" : "⚪";
+                //boxLabel1.Text = (bool)_myIschecked ? "⚫" : "⚪";
                 //CheckedChange?.Invoke(this, (bool)_myIschecked);
 
                 //myFrame.BackgroundColor = _myIschecked ? Color.White : Color.Aqua;
