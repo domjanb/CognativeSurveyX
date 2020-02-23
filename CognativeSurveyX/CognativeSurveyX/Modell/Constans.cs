@@ -143,6 +143,7 @@ namespace CognativeSurveyX.Modell
         public static double ScreenHeight;
         public static Exception exception;
         public static string valaszok = "";
+        public static string valaszokKozponti = "";
 
         public static string kerdivId = "";
         public static string kerdivVer = "";
@@ -268,7 +269,7 @@ namespace CognativeSurveyX.Modell
 
 
             string feltetel = aktrule.Substring(3).Trim();
-            Debug.WriteLine(feltetel);
+            //Debug.WriteLine("feltetel: "+feltetel);
             if (feltetel.IndexOf("(") >= 0)
             {
                 string feltetelTorzs = feltetelTorzsKeres(feltetel);
@@ -292,14 +293,20 @@ namespace CognativeSurveyX.Modell
                     feltetel_vissza = feltetelElemzo.KisElemzo();
                     if (feltetel_vissza == "")
                     {
-                        feltetel_vissza = (feltetelElemzo.FeltetelVizsgalo().ToLower().Trim());
+                        feltetel_vissza = (feltetelElemzo.FeltetelVizsgalo().ToLower().Trim()).Trim();
                     }
                     
                     kirtekeltRule.Add(Tuple.Create(feltetelTorzs,feltetel_vissza));
                 }
-                
+                feltetel_vissza = feltetel_vissza.Trim();
+                //if (feltetel.Equals("(K1_2>=1) VA(K2,2;FALSE)"))
+                //{
+                //    var a = 12;
+                //}
+                //Debug.WriteLine("true2 feltetel: " + feltetel + " "+ feltetel_vissza);
                 if (feltetel_vissza.ToLower().Equals("true"))
                 {
+                    //Debug.WriteLine("true feltetel: " + feltetel);
                     if (feltetelFeladat.Substring(0, "nogo(".Length).Equals("NoGO("))
                     {
                         vissza = false;
@@ -350,6 +357,7 @@ namespace CognativeSurveyX.Modell
                         feltetelFeladat = feltetelFeladat.Substring(varOut.Length + "VA(".Length + 1);
                         string varOutErtek = feltetelFeladat.Substring(0, feltetelFeladat.IndexOf(";"));
                         string varVisible = feltetelFeladat.Substring(feltetelFeladat.IndexOf(";") + 1, feltetelFeladat.Length - feltetelFeladat.IndexOf(";") - 2);
+                        Debug.WriteLine("true feltetel: var:"+ varOut + " idx:"+ varOutErtek + " logika: " + varVisible);
                         visibleChoiceBeallit(varOut, Convert.ToInt16(varOutErtek), Convert.ToBoolean(varVisible.ToLower()));
                         valaszOKtomb.Add(Tuple.Create(varOut, varOutErtek, varVisible, 3));
                     }
@@ -1145,8 +1153,25 @@ namespace CognativeSurveyX.Modell
 
         private static void ValaszokKiiratasa(string valasz)
         {
+            Debug.WriteLine("kiirva:" + valaszokKozponti);
             UsersDataAccess adatBazis = new UsersDataAccess();
+            if (valaszokKozponti.Length>0)
+            {
+                var darabok = valaszokKozponti.Split(Convert.ToChar("="));
+                Debug.WriteLine("kiirva0:" + darabok[0]);
+                Debug.WriteLine("kiirva1:" + darabok[1]);
+                var idd2 = adatBazis.SaveKozponti(new Kozponti
+                {
 
+                    kerdes = darabok[0].ToString(),
+                    valasz = darabok[1].ToString(),
+                    kerdivdate = TimeS(DateTime.Now)
+
+                });
+                valaszokKozponti = "";
+
+
+            }
             //utolso kiirt kérdés
             //van_e már ez a projekt
             /*var megszakadtKerdivek = adatBazis.GetMegszakadDataAsProjidVerAlid(Convert.ToInt16(kerdivId), kerdivVer, kerdivAlid, 1);
@@ -1231,7 +1256,7 @@ namespace CognativeSurveyX.Modell
             UsersDataAccess adatBazis = new UsersDataAccess();
             var rs = new Data.RestService();
             var allData = adatBazis.GetCogDataFeltoltveE(false);
-            var A = 1;
+            //var A = 1;
             //if (allData.Count() > 0)
             {
                 foreach (var item in allData)
@@ -1273,7 +1298,7 @@ namespace CognativeSurveyX.Modell
                         /*<HEADERS HERE>*/
                     });
 
-                    var a = 2;
+                    //var a = 2;
                 }
                 
             }

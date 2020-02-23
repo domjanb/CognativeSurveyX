@@ -13,6 +13,7 @@ using Plugin.Media;
 using Plugin.Permissions;
 using Plugin.CurrentActivity;
 
+
 namespace CognativeSurveyX.Droid
 {
     [Activity(Label = "CognativeSurveyX", Icon = "@mipmap/icon", Theme = "@style/MainTheme", MainLauncher = true, ConfigurationChanges = ConfigChanges.ScreenSize | ConfigChanges.Orientation)]
@@ -33,11 +34,13 @@ namespace CognativeSurveyX.Droid
 
             global::Xamarin.Forms.Forms.Init(this, savedInstanceState);
             LoadApplication(new App());
+            
         }
         public override void OnRequestPermissionsResult(int requestCode, string[] permissions, Permission[] grantResults)
         {
             PermissionsImplementation.Current.OnRequestPermissionsResult(requestCode, permissions, grantResults);
         }
+        
     }
     
 }

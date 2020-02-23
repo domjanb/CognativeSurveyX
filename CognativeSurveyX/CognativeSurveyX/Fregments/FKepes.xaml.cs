@@ -125,12 +125,12 @@ namespace CognativeSurveyX.Fregments
         private void FKepes_Appearing(object sender, EventArgs e)
         {
             //FKepes a=(Fkepes)sender ;
-            foreach(var item in (ContentPage)sender)
+            //foreach(var item in (ContentPage)sender)
             {
 
             }
-            Debug.WriteLine(a);
-            Debug.WriteLine(a);
+            //Debug.WriteLine(a);
+            //Debug.WriteLine(a);
 
         }
 

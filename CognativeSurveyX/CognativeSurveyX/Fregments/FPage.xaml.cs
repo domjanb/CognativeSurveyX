@@ -67,6 +67,10 @@ namespace CognativeSurveyX.Fregments
                 {
                     Navigation.PushModalAsync(new FSzurRadio());
                 }
+                else if (Constans.aktQuestion.question_type == "SzurRadioRegiValasz")
+                {
+                    Navigation.PushModalAsync(new FSzurRadioRegiV());
+                }
                 else if (Constans.aktQuestion.question_type == "TablesRadio")
                 {
                     Navigation.PushModalAsync(new FTablesRadio());

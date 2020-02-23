@@ -348,8 +348,8 @@ namespace CognativeSurveyX.Modell
                 if (kezd4 == kezd5) { kezd4 = -1; }
                 if (kezd6 == kezd4) { kezd4 = -1; }
                 if (kezd6 == kezd1) { kezd4 = -1; }
-                int csereRange1= 1;
-                int csereRange2= 0;
+                //int csereRange1= 1;
+                //int csereRange2= 0;
                 int relacio = 0;
                 var miniMegold = mini(kezd1, kezd2, kezd3, kezd4, kezd5, kezd6);
                 if (kezd1 >= 0 && miniMegold == kezd1)

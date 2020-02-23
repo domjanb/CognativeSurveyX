@@ -73,7 +73,7 @@ namespace CognativeSurveyX.Fregments
                     }
 
                 }
-                var a = 2;
+                
             }
 
             myLayout.Margin = new Thickness(10, 0, 10, 0);

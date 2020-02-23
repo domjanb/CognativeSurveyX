@@ -40,6 +40,14 @@ namespace CognativeSurveyX
             };
             myLayout.Children.Add(torolKerdiv);
 
+
+            Button torolKozponti = new Button();
+            torolKozponti.Text = "DeleCentral";
+            torolKozponti.Clicked += async (sender, e) =>
+            {
+                adatBazis.DeleteKozpontiAll();
+            };
+            myLayout.Children.Add(torolKozponti);
         }
     }
 }

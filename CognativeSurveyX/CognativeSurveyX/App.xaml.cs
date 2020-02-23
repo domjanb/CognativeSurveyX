@@ -4,6 +4,10 @@ using System;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+//using Microsoft.AppCenter;
+//using Microsoft.AppCenter.Push;
+
+
 [assembly: XamlCompilation(XamlCompilationOptions.Compile)]
 namespace CognativeSurveyX
 {
@@ -19,8 +23,10 @@ namespace CognativeSurveyX
         protected override void OnStart()
         {
             // Handle when your app starts
-        }
+            //AppCenter.Start("1611df4e-a362-4fb4-a1f4-42ce5508c0d2", typeof(Push));
 
+        }
+    
         protected override void OnSleep()
         {
             // Handle when your app sleeps

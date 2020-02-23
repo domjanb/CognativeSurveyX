@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "613746334038",
+    "firebase_url": "https://cognativesurveyx.firebaseio.com",
+    "project_id": "cognativesurveyx",
+    "storage_bucket": "cognativesurveyx.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:613746334038:android:2aa668494e5c8719e45ef7",
+        "android_client_info": {
+          "package_name": "hu.cognative.CognativeSurveyX"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "613746334038-t9mh35gto2kng622qdjdagvejj6oe64j.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBpe3y0PfKUlED6rYru0aY--WPT04tbmhg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "613746334038-t9mh35gto2kng622qdjdagvejj6oe64j.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

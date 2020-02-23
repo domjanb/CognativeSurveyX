@@ -19,6 +19,7 @@ namespace CognativeSurveyX
         public ObservableCollection<Cogdata> CogData { get; set; }
         public ObservableCollection<Cogparam> CogParam { get; set; }
         public ObservableCollection<MegszakadData> MegszakadData { get; set; }
+        public ObservableCollection<Kozponti> Kozponti { get; set; }
 
         public UsersDataAccess()
         {
@@ -29,6 +30,7 @@ namespace CognativeSurveyX
             database.CreateTable<Cogdata>();
             database.CreateTable<Cogparam>();
             database.CreateTable<MegszakadData>();
+            database.CreateTable<Kozponti>();
 
 
             this.CogUser = new ObservableCollection<Cogazon>(database.Table<Cogazon>());
@@ -36,6 +38,8 @@ namespace CognativeSurveyX
             this.CogData = new ObservableCollection<Cogdata>(database.Table<Cogdata>());
             this.CogParam = new ObservableCollection<Cogparam>(database.Table<Cogparam>());
             this.MegszakadData = new ObservableCollection<MegszakadData>(database.Table<MegszakadData>());
+            this.Kozponti = new ObservableCollection<Kozponti>(database.Table<Kozponti>());
+
 
             if (!database.Table<Cogazon>().Any())
             {
@@ -400,6 +404,63 @@ namespace CognativeSurveyX
 
         }
 
+        public IEnumerable<Kozponti> GetKozpontiAsSzur(string szur)
+        {
+            lock (collisionLock)
+            {
+                var query = from adat in database.Table<Kozponti>() where (adat.kerdes == szur) select adat;
+                return query.AsEnumerable();
+            }
+        }
+        public IEnumerable<Kozponti> GetKozponti()
+        {
+            lock (collisionLock)
+            {
+                return database.Query<Kozponti>("Select * from Kozponti").AsEnumerable();
+
+            }
+        }
+
+        public int SaveKozponti(Kozponti Kozponti)
+        {
+            lock (collisionLock)
+            {
+                if (Kozponti.id != 0)
+                {
+                    database.Update(Kozponti);
+                    return Kozponti.id;
+                }
+                else
+                {
+                    database.Insert(Kozponti);
+                    return Kozponti.id;
+                }
+            }
+        }
+        public int DeleteKozponti(Kozponti Kozponti)
+        {
+            var id = Kozponti.id;
+            if (id != 0)
+            {
+                lock (collisionLock)
+                {
+                    database.Delete<Kozponti>(id);
+                }
+
+            }
+            this.Kozponti.Remove(Kozponti);
+            return id;
+        }
+        public void DeleteKozpontiAll()
+        {
+            lock (collisionLock)
+            {
+                database.DeleteAll<Kozponti >();
+            }
+
+
+
+        }
 
 
 

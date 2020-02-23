@@ -9,7 +9,7 @@
         <StackLayout BackgroundColor="Aqua" HorizontalOptions="FillAndExpand" Padding="20">
             <Label Text="Cognative TouchPoint"
                    FontAttributes="Bold"
-               HeightRequest="20"
+               HeightRequest="25"
               HorizontalOptions="CenterAndExpand"
            VerticalOptions="CenterAndExpand" />
         </StackLayout>

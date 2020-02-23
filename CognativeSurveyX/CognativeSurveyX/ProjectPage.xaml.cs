@@ -40,7 +40,7 @@ namespace CognativeSurveyX
             //this.InitializeComponent();
             this.BindingContext = this;
             this.IsBusy = false;
-
+            
             gpsBeallit();
             Constans.webUrl = "http://qnr.cognative.hu/cogsurv/fresh_xam.php";
             Constans.myZipPath = mypt.MyPath;
@@ -305,7 +305,7 @@ namespace CognativeSurveyX
                     BackgroundColor = Color.Transparent
 
                 };
-                int padding = Convert.ToInt16(Constans.ScreenWidth / 7);
+                int padding = Convert.ToInt16(Constans.ScreenWidth / 10);
                 button.Padding = new Thickness(padding, 1, padding, 1);
                 listOfButtons.Add(button);
                 button.CheckedChange += button_CheckedChange;
