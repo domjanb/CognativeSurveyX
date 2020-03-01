@@ -54,6 +54,7 @@
     <AndroidEnableProfiledAot>false</AndroidEnableProfiledAot>
     <EmbedAssembliesIntoApk>true</EmbedAssembliesIntoApk>
     <MandroidI18n />
+    <AndroidKeyStore>false</AndroidKeyStore>
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="Mono.Android" />
