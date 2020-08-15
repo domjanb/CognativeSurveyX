@@ -263,6 +263,7 @@ namespace CognativeSurveyX.Fregments
         }
         private void _Continue_Clicked(object sender, EventArgs e)
         {
+            var folytat = true;
             string szoveg = szuroMezo.Text;
             
             if (szoveg!=null)
@@ -294,6 +295,7 @@ namespace CognativeSurveyX.Fregments
                     Debug.WriteLine("egyenlo");
                     uzeno.Text = "Volt már ilyen név";
                     uzeno.IsVisible = true;
+                    folytat = false;
                 }
                 if (item.IsChecked)
                 {
@@ -304,28 +306,32 @@ namespace CognativeSurveyX.Fregments
                 }
             }
             
-            if (szoveg.Length>0) {
-                //Entry szuro = (Entry)szuroMezo;
-                
-                Constans.valaszok = Constans.aktQuestion.kerdeskod + "=" + szoveg;
-                Constans.valaszokKozponti = "Ismerosok"+ "=" + szoveg;
-            }
-            else
-            {
-                if (voltPipa)
+            if (folytat) {
+                if (szoveg.Length > 0)
                 {
-                    Constans.valaszok = Constans.aktQuestion.kerdeskod + "=" + pipaltSzoveg;
-                }
+                    //Entry szuro = (Entry)szuroMezo;
 
-            }
-            if (voltPipa || szoveg.Length > 0)
-            {
-                if (!uzeno.IsVisible)
+                    Constans.valaszok = Constans.aktQuestion.kerdeskod + "=" + szoveg;
+                    Constans.valaszokKozponti = "Ismerosok" + "=" + szoveg;
+                }
+                else
                 {
-                    Constans.nextPage();
-                    Navigation.PushModalAsync(new FPage());
+                    if (voltPipa)
+                    {
+                        Constans.valaszok = Constans.aktQuestion.kerdeskod + "=" + pipaltSzoveg;
+                    }
+
+                }
+                if (voltPipa || szoveg.Length > 0)
+                {
+                    if (!uzeno.IsVisible)
+                    {
+                        Constans.nextPage();
+                        Navigation.PushModalAsync(new FPage());
+                    }
                 }
             }
+            
             
             
         }

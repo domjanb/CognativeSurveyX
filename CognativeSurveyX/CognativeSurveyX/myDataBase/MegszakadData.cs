@@ -76,5 +76,8 @@ namespace CognativeSurveyX.myDataBase
                 //OnProperityChange(nameof(kerdivdate));
             }
         }
+        public MegszakadData()
+        {
+        }
     }
 }

@@ -25,7 +25,7 @@ namespace CognativeSurveyX.Data
             client2.MaxResponseContentBufferSize = 256000;
             client2.DefaultRequestHeaders.Accept.Add(new System.Net.Http.Headers.MediaTypeWithQualityHeaderValue("application/x-www-form-urlencoded"));
             
-            //var client2 = new RestSharp.Portable.HttpClient.RestClient("http://qnr.cognative.hu/cogsurv/");
+            //var client2 = new RestSharp.Portable.HttpClient.RestClient("https://qnr.cognative.hu/cogsurv/");
             //var request2 = new RestSharp.Portable.RestRequest("regist_ios.php");
 
 
@@ -46,6 +46,7 @@ namespace CognativeSurveyX.Data
             var uri = Constans.webUrl;
             //Debug.WriteLine("egynek jo");
             var response = await PostResponseReggi<Token>(uri,content);
+            Debug.WriteLine("response____:" + Convert.ToString(response));
             return response;
 
         }
@@ -93,28 +94,39 @@ namespace CognativeSurveyX.Data
             //Debug.WriteLine("kodeaaaaaa " );
             try
             {
-                //Debug.WriteLine("kodeaaaaaa2 ");
+                Debug.WriteLine("kodeaaaaaa2 ");
                 //Debug.WriteLine(client2);
-                //Debug.WriteLine(uri);
-                //Debug.WriteLine(content);
+                Debug.WriteLine(uri);
+                Debug.WriteLine(content);
+                Debug.WriteLine("eeeeeeeeeeeeeeeeeee");
                 //var response = await client2.GetStringAsync(uri);
-                var response = await client2.PostAsync(uri, content);
-                //Debug.WriteLine("kode " + Convert.ToString(response));
+                using (var response = await client2.PostAsync(uri, content)) { 
+                    //var response = client2.PostAsync(uri, content).Result;
+                    Debug.WriteLine("eeeeeeeeeeeeeeeeeee2");
+                
+                Debug.WriteLine("oléé");
+
+                Debug.WriteLine("kode " + Convert.ToString(response));
+                Debug.WriteLine("kode1 " + Convert.ToString(response.StatusCode));
                 if (response.StatusCode == System.Net.HttpStatusCode.OK)
                 {
                     var jsonResult = response.Content.ReadAsStringAsync().Result;
                     Debug.WriteLine(jsonResult);
                     try
                     {
+                            Debug.WriteLine("try ag");
                         var responseObject = JsonConvert.DeserializeObject<RestApiModell>(jsonResult);
                         Debug.WriteLine(responseObject);
-                        return responseObject;
+                            Debug.WriteLine("try ag vege");
+                            return responseObject;
                     }
                     catch
                     {
-                        return null; 
+                            Debug.WriteLine("catch  ag");
+                            return null; 
                     }
                     
+                }
                 }
             } catch {
                 return null; 
@@ -192,12 +204,12 @@ namespace CognativeSurveyX.Data
 
             }));
             
-            //var uri = new Uri(string.Format("http://qnr.cognative.hu/cogsurv/regist_ios2.php", content));
-            var uri = new Uri("http://qnr.cognative.hu/cogsurv/regist_ios2.php");
+            //var uri = new Uri(string.Format("https://qnr.cognative.hu/cogsurv/regist_ios2.php", content));
+            var uri = new Uri("https://qnr.cognative.hu/cogsurv/regist_ios2.php");
             //var response = await client2.GetAsync(uri);
             string result;
             try {
-                result = await client2.GetStringAsync("http://qnr.cognative.hu/cogsurv/regist_ios2.php");
+                result = await client2.GetStringAsync("https://qnr.cognative.hu/cogsurv/regist_ios2.php");
                 var posts = JsonConvert.DeserializeObject<RestApiModell>(result);
             }
             catch {
@@ -234,7 +246,7 @@ namespace CognativeSurveyX.Data
                     user_email = emil
 
                 }));
-                var uri = new Uri(string.Format("http://qnr.cognative.hu/cogsurv/regist_ios2.php", content));
+                var uri = new Uri(string.Format("https://qnr.cognative.hu/cogsurv/regist_ios2.php", content));
 
                 var client = new System.Net.Http.HttpClient();
                 var response = await client.GetAsync(uri);
@@ -259,7 +271,7 @@ namespace CognativeSurveyX.Data
         }*/
         /*public RestApiModell ReggiFutAsync()
         {
-            using (var client = new RestClient(new Uri("http://qnr.cognative.hu/cogsurv/regist_ios2.php")))
+            using (var client = new RestClient(new Uri("https://qnr.cognative.hu/cogsurv/regist_ios2.php")))
             {
                 var request = new RestRequest("name /{ name }", RestSharp.Portable.Method.POST);
                 //var request = new RestSharp.Portable.RestRequest();

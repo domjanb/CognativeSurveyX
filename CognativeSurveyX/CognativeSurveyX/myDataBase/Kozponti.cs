@@ -7,7 +7,7 @@ using System.Text;
 namespace CognativeSurveyX
 {
     [Table("Kozponti")]
-    public class Kozponti : INotifyPropertyChanged
+    public class Kozponti //: INotifyPropertyChanged
     {
         private int _id;
         [PrimaryKey, AutoIncrement]

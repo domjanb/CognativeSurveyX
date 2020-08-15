@@ -18,14 +18,19 @@ namespace CognativeSurveyX.Droid
 {
     public class DatabaseConnection_Android : IDatabaseConnection
     {
+        static SQLiteConnection conn;
         public DatabaseConnection_Android() { }
         public SQLiteConnection DbConnection()
         {
            
             {
-                var dbName = "myDb.db3";
-                var path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), dbName);
-                return new SQLiteConnection(path);
+                if (conn == null)
+                {
+                    var dbName = "myDb.db3";
+                    var path = Path.Combine(System.Environment.GetFolderPath(System.Environment.SpecialFolder.Personal), dbName);
+                    conn = new SQLiteConnection(path);
+                }
+                return conn;
             }
         }
     }

@@ -13,8 +13,8 @@ using CognativeSurveyX.Data;
 using System.Net.Http;
 using Newtonsoft.Json;
 using CognativeSurveyX.myDataBase;
-using Plugin.DownloadManager;
-using Plugin.DownloadManager.Abstractions;
+//using Plugin.DownloadManager;
+//using Plugin.DownloadManager.Abstractions;
 using CognativeSurveyX.Modell;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Core;
@@ -63,15 +63,14 @@ namespace CognativeSurveyX
             Constans.ScreenHeight=display.Height;
             Constans.ScreenWidth = display.Width;
             downloader.OnFileDownloaded += OnFileDownloaded;
-            CrossDownloadManager.Current.CollectionChanged += (sender, e) =>
-            System.Diagnostics.Debug.WriteLine(
-                "[DownloadManager] " + e.Action + 
-                " -> New Items: " + (e.NewItems?.Count ?? 0) +
-                " at " + e.NewStartingIndex +
-                " || old items: " + (e.OldItems?.Count ?? 0) +
-                " at " + e.OldStartingIndex
-
-                );
+            //CrossDownloadManager.Current.CollectionChanged += (sender, e) =>
+            //System.Diagnostics.Debug.WriteLine(
+            //    "[DownloadManager] " + e.Action + 
+            //    " -> New Items: " + (e.NewItems?.Count ?? 0) +
+            //    " at " + e.NewStartingIndex +
+            //    " || old items: " + (e.OldItems?.Count ?? 0) +
+            //    " at " + e.OldStartingIndex
+            //    );
             Constans.kerdivPlatformGep = myPlatform.GetModell();
             Constans.kerdivPlatformSoftver = myPlatform.GetVersion();
 
@@ -104,6 +103,7 @@ namespace CognativeSurveyX
             ///
             //var milyenANet = 0;
             int netTipus = milyenANet();
+            Debug.WriteLine("____________---nettipus____:" + netTipus);
 
             UsersDataAccess adatBazis = new UsersDataAccess();
             int regisztrácioDarab = adatBazis.GetCogAzon().Count();
@@ -116,7 +116,7 @@ namespace CognativeSurveyX
 
                 /// ha nem egy ember van ide regisztrálva, hanem több, vagyegym, akkor delete table és a reg.xaml meghívása
                 adatBazis.DeleteCogAzonAll();
-
+                Debug.WriteLine("____________---nettipus____:" + netTipus);
                 //regform
                 if (netTipus != 0)
                 {
@@ -160,11 +160,11 @@ namespace CognativeSurveyX
                     //regButton.Clicked +=await regButtonClickAsync;
                     regButton.Clicked += async (sender, e) =>
                     {
-                        valaszok[0].Text = "33";
-                        valaszok[1].Text = "33";
-                        valaszok[2].Text = "33";
-                        valaszok[3].Text = "33";
-                        valaszok[4].Text = "33";
+                        //valaszok[0].Text = "33";
+                        //valaszok[1].Text = "33";
+                        //valaszok[2].Text = "33";
+                        //valaszok[3].Text = "33";
+                        //valaszok[4].Text = "33";
                         User user = new User();
                         user.user_name = valaszok[0].Text;
                         user.user_surnamed = valaszok[1].Text;
@@ -174,7 +174,8 @@ namespace CognativeSurveyX
                         var rs = new Data.RestService();
                         Debug.WriteLine(user);
                         vissza = await rs.Reggi(user);
-                        Debug.WriteLine("visszastring:"+Convert.ToString( vissza));
+                        Debug.WriteLine("____________---nettipus____:" + netTipus);
+                        Debug.WriteLine("visszastring____:"+Convert.ToString( vissza));
                         if (vissza.error)
                         {
                             var idd2 = adatBazis.SaveCogAzon(new Cogazon
@@ -182,7 +183,7 @@ namespace CognativeSurveyX
                                 uemail = user.user_emil,
                                 uname = user.user_name,
                                 upass = user.user_password,
-                                userid =Convert.ToInt16(user.user_kod),
+                                userid =Convert.ToInt32(user.user_kod),
                                 usname = user.user_surnamed
                             });
 
@@ -327,7 +328,7 @@ namespace CognativeSurveyX
                             if (!File.Exists(Constans.myZipPath+ mostFile))
                             {
                                 Debug.WriteLine("nem kell " + mostFile);
-                                var Url = "http://qnr.cognative.hu/cogsurv" + mostFile;
+                                var Url = "https://qnr.cognative.hu/cogsurv" + mostFile;
                                 DownloadFile2(Url);
                                 //myDownloadFile(Url);
                                 

@@ -16,6 +16,9 @@ using System.Threading.Tasks;
 using Xamarin.Forms;
 using Xamarin.Forms.Xaml;
 
+
+
+
 namespace CognativeSurveyX
 {
 	[XamlCompilation(XamlCompilationOptions.Compile)]
@@ -44,6 +47,7 @@ namespace CognativeSurveyX
 
             //regform
             int netTipus = Constans.milyenANet();
+            Debug.WriteLine("____________---nettipus____:" + netTipus);
             if (netTipus == 0)
             {
                 
@@ -93,25 +97,28 @@ namespace CognativeSurveyX
             var emil = new Entry { Placeholder = Nyelv.AppResource.Email };
             emil.TextChanged += OnEntryTextChanged;
             var regButton = new Button { Text = Nyelv.AppResource.Registration };
+            
             //regButton.IsVisible = false;
             //regButton.Clicked +=await regButtonClickAsync;
             regButton.Clicked += async (sender, e) =>
             {
-                valaszok[0].Text = "33";
-                valaszok[1].Text = "33";
-                valaszok[2].Text = "33";
-                valaszok[3].Text = "33";
-                valaszok[4].Text = "33";
+                //valaszok[0].Text = "33";
+                //valaszok[1].Text = "33";
+                //valaszok[2].Text = "33";
+                //valaszok[3].Text = "33";
+                //valaszok[4].Text = "33";
                 User user = new User();
                 user.user_name = valaszok[0].Text;
                 user.user_surnamed = valaszok[1].Text;
                 user.user_kod = valaszok[2].Text;
                 user.user_password = valaszok[3].Text;
                 user.user_emil = valaszok[4].Text;
-                var rs = new Data.RestService();
+                var rs = new RestService();
                 Debug.WriteLine(user);
                 visszaRestApi = await rs.Reggi(user);
+                Debug.WriteLine("ITT");
                 Debug.WriteLine("visszastring:" + Convert.ToString(visszaRestApi));
+                //Debug.WriteLine("visszastring:" + Convert.ToString(visszaRestApi.error));
                 if (visszaRestApi.error)
                 {
                     var idd2 = adatBazis.SaveCogAzon(new Cogazon
@@ -119,7 +126,7 @@ namespace CognativeSurveyX
                         uemail = user.user_emil,
                         uname = user.user_name,
                         upass = user.user_password,
-                        userid = Convert.ToInt16(user.user_kod),
+                        userid = Convert.ToInt32(user.user_kod),
                         usname = user.user_surnamed
                     });
 
@@ -130,7 +137,7 @@ namespace CognativeSurveyX
                 var cc = visszaRestApi.message;
 
                 //var visszatrue= vissza.Rootobject.error;
-                Debug.WriteLine("vlasz " + Convert.ToString(visszaRestApi));
+                Debug.WriteLine("vlasz " + Convert.ToString(visszaRestApi.message));
                 if (visszaRestApi.message == "Regisztráció rendben")
                 {
                     //this.Master = new MenuPage();

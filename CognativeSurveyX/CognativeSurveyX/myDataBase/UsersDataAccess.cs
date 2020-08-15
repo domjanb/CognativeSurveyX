@@ -12,7 +12,9 @@ namespace CognativeSurveyX
     {
         //private SQLiteConnection database;
         private static object collisionLock = new object();
-        private SQLiteConnection database;
+        SQLiteConnection database;
+
+        
 
         public ObservableCollection<Cogazon> CogUser { get; set; }
         public ObservableCollection<Cogkerdiv> CogDataKerdiv { get; set; }
@@ -23,15 +25,49 @@ namespace CognativeSurveyX
 
         public UsersDataAccess()
         {
+            
             database = DependencyService.Get<IDatabaseConnection>().DbConnection();
-           
-            database.CreateTable<Cogazon>();
-            database.CreateTable<Cogkerdiv>();
-            database.CreateTable<Cogdata>();
-            database.CreateTable<Cogparam>();
-            database.CreateTable<MegszakadData>();
-            database.CreateTable<Kozponti>();
 
+            //database.DropTable<Cogdata>();
+            //database.DropTable<Cogazon>();
+
+
+            //database.DropTable<MegszakadData>();
+            //database.DropTable<Kozponti>();
+
+            if (!TableExists("Cogkerdiv"))
+            {
+                database.CreateTable<Cogkerdiv>();
+            }
+            if (!TableExists("Kozponti"))
+            {
+                database.CreateTable<Kozponti>();
+            }
+            if (!TableExists("MegszakadData"))
+            {
+                database.CreateTable<MegszakadData>();
+            }
+            if (!TableExists("Cogdata"))
+            {
+                database.CreateTable<Cogdata>();
+            }
+            if (!TableExists("Cogparam"))
+            {
+                database.CreateTable<Cogparam>();
+            }
+            if (!TableExists("Cogazon"))
+            {
+                database.CreateTable<Cogazon>();
+            }
+            //database.CreateTable<Cogkerdiv>();
+            //database.CreateTable<Kozponti>();
+            //database.CreateTable<MegszakadData>();
+
+            //database.CreateTable<Cogdata>();
+            //database.CreateTable<Cogparam>();
+            
+            
+            //database.CreateTable<Cogazon>();
 
             this.CogUser = new ObservableCollection<Cogazon>(database.Table<Cogazon>());
             this.CogDataKerdiv = new ObservableCollection<Cogkerdiv>(database.Table<Cogkerdiv>());
@@ -48,6 +84,31 @@ namespace CognativeSurveyX
 
         }
 
+
+        public virtual bool TableExists(string tableName)
+        {
+            bool sw = false;
+            try
+            {
+                //using (var connection = new SQLiteConnection(new SQLite.Net.Platform.XamarinAndroid.SQLitePlatformAndroid(), PathDataBase))
+                {
+                    string query = string.Format("SELECT name FROM sqlite_master WHERE type='table' AND name='{0}';", tableName);
+                    //string query = string.Format("SELECT name FROM sqlite_master WHERE type='table' ;");
+                    var vissza = database.Query<TableName>(query);
+                    SQLiteCommand cmd =  database.CreateCommand(query);
+                    var item = database.Query<object>(query);
+                    if (item.Count > 0)
+                        sw = true;
+                    return sw;
+                }
+            }
+            catch (SQLiteException ex)
+            {
+                //Log.Info("SQLiteEx", ex.Message);
+                //throw;
+            }
+            return sw;
+        }
         private void AddNewUser()
         {
             //throw new NotImplementedException();
@@ -549,5 +610,10 @@ namespace CognativeSurveyX
         }
 
 
+    }
+    public class TableName
+    {
+        public TableName() { }
+        public string name { get; set; }
     }
 }

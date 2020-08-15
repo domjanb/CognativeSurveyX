@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace CognativeSurveyX
 {
-    [Table("Cogdata")]
-    public class Cogdata : INotifyPropertyChanged
+    [Table("CogData")]
+    public class Cogdata 
     {
         private int _id;
         [PrimaryKey, AutoIncrement]
@@ -154,11 +155,7 @@ namespace CognativeSurveyX
             }
         }
 
-        public event PropertyChangedEventHandler PropertyChanged;
-        private void OnProperityChange(string propertyName)
-        {
-            //this.PropertyChanged.Invoke(this, new PropertyChangedEventArgs(propertyName));
-        }
+        
 
     }
 }

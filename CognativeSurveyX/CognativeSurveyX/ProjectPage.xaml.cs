@@ -40,9 +40,15 @@ namespace CognativeSurveyX
             //this.InitializeComponent();
             this.BindingContext = this;
             this.IsBusy = false;
-            
+
+            var reggiAdatok2 = adatBazis.GetCogAzon();
+            foreach (Cogazon item in reggiAdatok2)
+            {
+                Constans.kerdivUser = Convert.ToString(item.userid);
+            }
+
             gpsBeallit();
-            Constans.webUrl = "http://qnr.cognative.hu/cogsurv/fresh_xam.php";
+            Constans.webUrl = "https://qnr.cognative.hu/cogsurv/fresh_xam.php";
             Constans.myZipPath = mypt.MyPath;
             Constans.ScreenHeight = display.Height;
             Constans.ScreenWidth = display.Width;

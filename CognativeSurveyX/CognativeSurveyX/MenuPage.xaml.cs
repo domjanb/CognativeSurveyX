@@ -15,7 +15,7 @@ namespace CognativeSurveyX
         public MenuPage()
         {
             InitializeComponent();
-            UsersDataAccess adatBazis = new UsersDataAccess();
+            /*UsersDataAccess adatBazis = new UsersDataAccess();
             Button torolValasz = new Button();
             torolValasz.Text = "DeleAnswers";
             torolValasz.Clicked += async (sender, e) =>
@@ -47,7 +47,7 @@ namespace CognativeSurveyX
             {
                 adatBazis.DeleteKozpontiAll();
             };
-            myLayout.Children.Add(torolKozponti);
+            myLayout.Children.Add(torolKozponti);*/
         }
     }
 }

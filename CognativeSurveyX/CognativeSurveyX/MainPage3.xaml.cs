@@ -35,9 +35,10 @@ namespace CognativeSurveyX
             }*/
 
 
-            
+
 
             UsersDataAccess adatBazis = new UsersDataAccess();
+            
             int regisztrácioDarab = adatBazis.GetCogAzon().Count();
             if (regisztrácioDarab == 1)
             {

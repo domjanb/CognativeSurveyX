@@ -129,10 +129,15 @@ namespace CognativeSurveyX.Modell
         public static int pageNumber = -100;
         public static Color BackgroundColor = Color.FromRgb(58, 153, 212);
         public static Color MainTextColor = Color.White;
-        public static string webUrl = "http://qnr.cognative.hu/cogsurv/regist_ios2.php";
-        public static string uploadUrl = "http://qnr.cognative.hu/cogsurv/file_upload_ios.php";
-        public static string webUrlfeltolt = "http://qnr.cognative.hu/cogsurv/feltolt_xam.php";
-        public static string downUrl = "http://qnr.cognative.hu/cogsurv/";
+        public static string webUrl = "https://qnr.cognative.hu/cogsurv/regist_ios2.php";
+        
+
+
+
+        public static string uploadUrl = "https://qnr.cognative.hu/cogsurv/file_upload_ios.php";
+        public static string webUrlfeltolt = "https://qnr.cognative.hu/cogsurv/feltolt_xam.php";
+        
+        public static string downUrl = "https://qnr.cognative.hu/cogsurv/";
         public static string myZipPath = "";
         public static string myFilePath = "";
         public static string myZipFile = "";
@@ -147,7 +152,7 @@ namespace CognativeSurveyX.Modell
 
         public static string kerdivId = "";
         public static string kerdivVer = "";
-        public static string kerdivUser = "33";
+        public static string kerdivUser = "";
         public static string kerdivTip = "";
         public static int kerdivAlid = 0;
 
@@ -1265,11 +1270,15 @@ namespace CognativeSurveyX.Modell
                     {
                         Cogdata cogdata = (Cogdata)item;
                         RestApiModell visszaUpload = await rs.kerdesUpload(cogdata);
-                        if (visszaUpload.message == "OK")
+                        if (visszaUpload != null)
                         {
-                            cogdata.feltoltve = true;
-                            adatBazis.UpdateCogData(cogdata);
+                            if (visszaUpload.message == "OK")
+                            {
+                                cogdata.feltoltve = true;
+                                adatBazis.UpdateCogData(cogdata);
+                            }
                         }
+                            
                     }
 
                 }

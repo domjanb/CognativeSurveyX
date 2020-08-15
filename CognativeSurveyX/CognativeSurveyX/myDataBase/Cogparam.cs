@@ -4,10 +4,11 @@ using System.ComponentModel;
 using System.Collections.Generic;
 using System.Text;
 
+
 namespace CognativeSurveyX
 {
-    [Table("Cogparam")]
-    public class Cogparam : INotifyPropertyChanged
+    [Table("CogParam")]
+    public class Cogparam //: INotifyPropertyChanged
     {
         private int _id;
         [PrimaryKey, AutoIncrement]

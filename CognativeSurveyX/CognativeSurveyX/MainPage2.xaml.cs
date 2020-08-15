@@ -13,8 +13,8 @@ using CognativeSurveyX.Data;
 using System.Net.Http;
 using Newtonsoft.Json;
 using CognativeSurveyX.myDataBase;
-using Plugin.DownloadManager;
-using Plugin.DownloadManager.Abstractions;
+//using Plugin.DownloadManager;
+//using Plugin.DownloadManager.Abstractions;
 using CognativeSurveyX.Modell;
 using ICSharpCode.SharpZipLib.Zip;
 using ICSharpCode.SharpZipLib.Core;
@@ -85,20 +85,19 @@ namespace CognativeSurveyX
             Detail = new NavigationPage((Page)Activator.CreateInstance(typeof(HomePage)));*/
 
             gpsBeallit();
-            Constans.webUrl = "http://qnr.cognative.hu/cogsurv/fresh_xam.php";
+            Constans.webUrl = "https://qnr.cognative.hu/cogsurv/fresh_xam.php";
             Constans.myZipPath = mypt.MyPath;
             Constans.ScreenHeight = display.Height;
             Constans.ScreenWidth = display.Width;
             downloader.OnFileDownloaded += OnFileDownloaded;
-            CrossDownloadManager.Current.CollectionChanged += (sender, e) =>
-            System.Diagnostics.Debug.WriteLine(
-                "[DownloadManager] " + e.Action +
-                " -> New Items: " + (e.NewItems?.Count ?? 0) +
-                " at " + e.NewStartingIndex +
-                " || old items: " + (e.OldItems?.Count ?? 0) +
-                " at " + e.OldStartingIndex
-
-                );
+            //CrossDownloadManager.Current.CollectionChanged += (sender, e) =>
+            //System.Diagnostics.Debug.WriteLine(
+            //    "[DownloadManager] " + e.Action +
+            //    " -> New Items: " + (e.NewItems?.Count ?? 0) +
+            //    " at " + e.NewStartingIndex +
+            //    " || old items: " + (e.OldItems?.Count ?? 0) +
+            //    " at " + e.OldStartingIndex
+             //   );
             if (myPlatform != null)
             {
                 Constans.kerdivPlatformGep = myPlatform.GetModell();
@@ -208,11 +207,11 @@ namespace CognativeSurveyX
                     //regButton.Clicked +=await regButtonClickAsync;
                     regButton.Clicked += async (sender, e) =>
                     {
-                        valaszok[0].Text = "33";
-                        valaszok[1].Text = "33";
-                        valaszok[2].Text = "33";
-                        valaszok[3].Text = "33";
-                        valaszok[4].Text = "33";
+                        //valaszok[0].Text = "33";
+                        //valaszok[1].Text = "33";
+                        //valaszok[2].Text = "33";
+                        //valaszok[3].Text = "33";
+                        //valaszok[4].Text = "33";
                         User user = new User();
                         user.user_name = valaszok[0].Text;
                         user.user_surnamed = valaszok[1].Text;
@@ -222,7 +221,8 @@ namespace CognativeSurveyX
                         var rs = new Data.RestService();
                         Debug.WriteLine(user);
                         visszaRestApi = await rs.Reggi(user);
-                        Debug.WriteLine("visszastring:" + Convert.ToString(visszaRestApi));
+                        Debug.WriteLine("____________---nettipus____:" + netTipus);
+                        Debug.WriteLine("visszastring22:" + Convert.ToString(visszaRestApi));
                         if (visszaRestApi.error)
                         {
                             var idd2 = adatBazis.SaveCogAzon(new Cogazon
@@ -230,7 +230,7 @@ namespace CognativeSurveyX
                                 uemail = user.user_emil,
                                 uname = user.user_name,
                                 upass = user.user_password,
-                                userid = Convert.ToInt16(user.user_kod),
+                                userid = Convert.ToInt32(user.user_kod),
                                 usname = user.user_surnamed
                             });
 
@@ -379,7 +379,7 @@ namespace CognativeSurveyX
                             if (!File.Exists(Constans.myZipPath+ mostFile))
                             {
                                 Debug.WriteLine("nem kell " + mostFile);
-                                var Url = "http://qnr.cognative.hu/cogsurv" + mostFile;
+                                var Url = "https://qnr.cognative.hu/cogsurv" + mostFile;
                                 DownloadFile2(Url);
                                 //myDownloadFile(Url);
                                 
